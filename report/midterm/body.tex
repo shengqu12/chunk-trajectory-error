@@ -1,0 +1,317 @@
+\newcommand{\fillin}[1]{\textcolor{red}{[#1]}}
+% Shows a placeholder box until the figure file has been uploaded to the project.
+\newcommand{\safefig}[2][]{\IfFileExists{#2}{\includegraphics[#1]{#2}}{\fbox{\parbox{0.9\linewidth}{\centering\vspace{1em}Upload \texttt{\detokenize{#2}} to the project\vspace{1em}}}}}
+\newcommand{\Ecrit}{E_\phi}
+\newcommand{\pp}{\,pp\xspace}
+
+\title{Can a Learned Trajectory-Error Critic Improve Action-Chunk Policies? A Simulator-Labelled Study}
+
+% \reportnumber{}
+
+% TODO: replace the placeholders below with the team members' names and affiliations.
+\author[1]{\fillin{Member 1}}
+\author[1]{\fillin{Member 2}}
+\author[1]{\fillin{Member 3}}
+\author[1]{\fillin{Member 4}}
+
+\affil[1]{Carnegie Mellon University}
+
+\correspondingauthor{\fillin{email}}
+
+\hyphenation{pre-print}
+
+\begin{abstract}
+Action-chunking policies execute several actions per inference call, so small per-step errors can accumulate within a chunk and consecutive chunks can disagree at the hand-over point. We set out to test whether a frozen critic that predicts the $K$-step end-effector deviation of an action chunk, trained on labels computed in simulation, can serve as a training-time penalty that improves imitation policies at no inference cost. In the first weeks we built and audited the full pipeline on ManiSkill PickCube-v1: state restore and replay checks, branch labelling, critic training, a gradient audit, policy fine-tuning and closed-loop evaluation under injected delay. The critic is accurate (held-out Pearson correlation 0.97) and its action gradient lowers the true deviation, yet adding it to behaviour cloning never improved held-out deviation, hand-over smoothness or task success, on two machines and two data sources. A follow-up in which the critic predicts the trajectory gap between a source simulator and a physics-shifted target gave the same negative result for two different shifts. Before deciding on the planned LIBERO/SmolVLA stage, we will test whether the conclusion holds for a flow-matching policy.
+\end{abstract}
+
+\begin{document}
+
+\maketitle
+
+%======================================================================
+\section{Project Overview and Motivation}
+%======================================================================
+
+\textbf{Problem.} Modern visuomotor imitation policies predict a chunk of $H$ future actions and execute only the first $e$ of them before predicting again~\cite{zhao2023act,chi2023diffusion,black2024pi0}. Chunking is needed because large policies are slow, but it has two side effects. First, per-step errors that point in a consistent direction accumulate in the end-effector position over a chunk, even when the per-step imitation loss is small. Second, consecutive chunks are predicted from different observations and may disagree at the hand-over point; when inference is slow, the next chunk must be requested from an observation that is already $r$ steps old, which makes the disagreement worse. Real-time chunking (RTC)~\cite{black2025rtc} addresses the hand-over at inference time: it freezes the actions that will be executed while the next chunk is computed and inpaints the rest with the diffusion or flow sampler, without retraining.
+
+\textbf{Original goal.} We proposed to move the correction from inference time to training time. A critic $\Ecrit$ is trained on labels computed in simulation: from a restored state, a candidate action tail and the expert's actions are each executed for $K$ steps, and the label $J$ is the mean squared distance between the two end-effector trajectories. The critic is then frozen and added to the imitation loss with weight $\lambda$, so the policy receives a gradient that encodes multi-step consequences of its actions. The deployed policy is unchanged and runs without the critic. The plan was to validate the pipeline on ManiSkill PickCube-v1 with a small state-based policy, and then run the main experiment on a LIBERO-Spatial task~\cite{liu2023libero} with a pre-trained SmolVLA policy~\cite{shukor2025smolvla}.
+
+\textbf{What changed since the proposal.} (i) The ManiSkill stage turned into an experiment in its own right, because it produced a clear negative result; we replicated it on a second machine with the official demonstrations. (ii) To test whether the mechanism fails only because its label carries no information beyond behaviour cloning (BC), we added a sim-to-sim variant in which the critic predicts the trajectory gap between a source simulator and a target with shifted physics, a stand-in for the sim-to-real gap. (iii) The LIBERO/SmolVLA stage has not started; \cref{sec:plan} explains how we will decide whether to run it.
+
+%======================================================================
+\section{Progress and Technical Work So Far}
+%======================================================================
+
+\begin{figure*}[t]
+  \centering
+  \safefig[width=\linewidth]{fig_method_overview.pdf}
+  \caption{\textbf{Method.} (a) A label is computed by restoring the simulator to an anchor state and executing a reference and a candidate action tail for $K$ steps. (b) The critic $\Ecrit$ is fitted to these labels, frozen, and its prediction on the policy's own chunk is added to the imitation loss; only the policy parameters $\theta$ are updated. (c) At deployment only the policy and the chunk scheduler run.}
+  \label{fig:method}
+\end{figure*}
+
+\subsection{Formulation}
+\label{sec:formulation}
+
+At step $t$ the policy maps the observation $o_t$ to a chunk $A_\theta(o_t)\in\mathbb{R}^{H\times d}$. A shared scheduler executes it: the first chunk is synchronous; for each later hand-over point $b$, a new chunk is predicted from the observation at $b-r$, the old chunk keeps running for those $r$ steps, and the new chunk takes over at $b$ with actions $A[r{:}r{+}e]$. The delay $r$ is injected, so it can be varied independently of the real inference time. We use $H=20$, $e=5$, history length $L=15$ and evaluation window $K=10$, train at $r=0$ and evaluate at $r\in\{0,2,4\}$.
+
+\textbf{Label.} For an anchor $(t,r)$ on an expert trajectory, the simulator is restored to the recorded state before action $t+r$, and two branches of $K$ steps are executed from it (\cref{fig:method}a):
+\begin{equation}
+J \;=\; \frac{1}{K}\sum_{j=1}^{K}\bigl\lVert p^{\mathrm{cand}}_{j}-p^{\mathrm{ref}}_{j}\bigr\rVert_2^2 \qquad [\mathrm{m}^2],
+\label{eq:label}
+\end{equation}
+where $p_j$ is the end-effector position after the $j$-th action. In Experiment~1 the reference branch executes the expert's actions; in Experiment~2 both branches execute the same actions, in the source and the target simulator.
+
+\textbf{Critic and policy objective.} The critic $\Ecrit(h_t, q_t, A[r{:}r{+}K])$ receives the past $L$ end-effector positions relative to the current one ($h_t$), the robot's proprioceptive state ($q_t$) and the action tail, and regresses $J$: separate MLP encoders (width 128) for the history, the state and the action tail are concatenated with $r$ and mapped to a non-negative scalar. After training it is frozen, and the policy is fine-tuned with
+\begin{equation}
+\mathcal{L}(\theta) \;=\; \mathcal{L}_{\mathrm{imit}}(\theta) \;+\; \lambda\,\mathbb{E}\bigl[\,\Ecrit\bigl(h_t, q_t, A_\theta[r{:}r{+}K]\bigr)\bigr],
+\label{eq:objective}
+\end{equation}
+where the gradient reaches $\theta$ only through the action chunk. The weight $\lambda$ is selected on validation anchors by the simulator-recomputed $J$ of the policy's own chunk, never by the critic's own prediction.
+
+\subsection{Pipeline and audits}
+
+We implemented the pipeline as nine stages (environment audit, replay audit, BC training, branch labelling, critic training, gradient audit, policy fine-tuning, closed-loop evaluation and reporting) with unit tests for data loading, label alignment and the scheduler's command indexing. Every stage writes a manifest with versions, seeds and file hashes, and selection rules and acceptance gates were fixed in the configuration before results were inspected.
+
+The labels are only meaningful if a restored state reproduces the dynamics. Across 60 training anchors on each of two machines, restoring a saved state and re-executing the expert's 10 actions stayed within 0.54\,mm of an uninterrupted replay (tolerance 1\,mm). Two restores of the same state produced bit-identical rollouts, so the expert-versus-expert label is exactly zero and the labels carry no simulator noise. A one-frame misalignment, used as a negative control, was rejected on every anchor where the arm moves at least 2\,mm per step. Details are in \cref{app:audit}.
+
+\subsection{Experiment 1: a critic of deviation from the expert}
+
+\textbf{Setup.} We used 600 motion-planning demonstrations of PickCube-v1, split by episode into 400/100/100 for training, validation and test. The initial policy $\pi_0$ is a state-based MLP (two hidden layers of 256) trained by BC for 20{,}000 steps. Each training episode contributes 4 anchors, and each anchor 8 candidates: the expert's actions, $\pi_0$'s chunk, four perturbations of $\pi_0$'s chunk and two of the expert's, where a perturbation is a constant bias plus a linear ramp on the translation channels with log-uniform amplitude in $[0.01,0.2]$. This gives 12{,}800 labelled training branches. All variants are fine-tuned from $\pi_0$ for 5{,}000 steps with identical data and batches: BC alone ($\lambda=0$), BC with the critic, BC with a critic that sees no history, and BC with a plain action-smoothness penalty. Closed-loop evaluation uses 150 initial states (100 test episodes and 50 unseen seeds) with a 200-step limit.
+
+\textbf{The critic is accurate and its gradient is locally useful.} On held-out test branches the critic reaches a Pearson correlation of 0.97 with the true $J$ (mean absolute error $7.2\times10^{-5}$ versus $3.4\times10^{-4}\,\mathrm{m}^2$ for a constant predictor) and ranks the candidates of the same anchor with a mean Spearman correlation of 0.88; without history these are 0.96 and 0.85. A step of norm 0.05 along $-\nabla_A \Ecrit$ on $\pi_0$'s own chunks lowers the true $J$ by 19\% (change $-3.9\times10^{-6}\,\mathrm{m}^2$, 95\% CI $[-5.6,-2.3]\times10^{-6}$), while an equal-norm random step raises it by 9\%.
+
+\textbf{As a training penalty, the critic does not help.} \Cref{fig:exp1-success} and \cref{tab:exp1} show the closed-loop results. Validation selected the smallest weight in the grid, $\lambda=10^{-3}$, and even there the policy was less successful than BC fine-tuning at every delay and had larger hand-over jumps. Removing the history input did not change the picture, and neither did one round of relabelling with the fine-tuned policy or a $\sqrt{J}$ regression target. A plain smoothness penalty was indistinguishable from BC on every metric.
+
+\begin{figure}[t]
+  \centering
+  \safefig[width=\linewidth]{fig_exp1_success.pdf}
+  \caption{\textbf{Experiment 1, closed-loop success} on 150 held-out initial states (official demonstrations; one training run per variant). Bars are Wilson 95\% intervals. All fine-tuned variants start from $\pi_0$ with the same data and number of updates. Delays $r>0$ are a stress test: every policy was trained at $r=0$.}
+  \label{fig:exp1-success}
+\end{figure}
+
+\begin{table}[t]
+  \centering
+  \small
+  \caption{\textbf{Experiment 1, comparison with BC fine-tuning} on the same 150 initial states, for the official-demonstration run / the run on locally generated demonstrations. Held-out $J$ is the simulator-recomputed deviation of each policy's own chunk on 300 test anchors; the hand-over jump is $\lVert u_b-u_{b-1}\rVert_2$ on the translation commands at executed hand-over points; success is pooled over $r\in\{0,2,4\}$. Positive $J$ and jump changes are worse. n.s.: 95\% interval includes zero.}
+  \label{tab:exp1}
+  \setlength{\tabcolsep}{4pt}
+  \resizebox{\linewidth}{!}{%
+  \begin{tabular}{lccc}
+    \toprule
+    Variant (vs.\ BC fine-tune) & Held-out $J$ & Hand-over jump & Success (pp) \\
+    \midrule
+    BC + critic, selected $\lambda$       & $+2.7\%$ n.s.\ / $-1.3\%$ n.s. & $+16.6\%$ / $+16.2\%$ & $-12.7$ / $-8.4$ \\
+    BC + critic without history           & $+9.9\%$ / $+1.9\%$ n.s.       & $+34.9\%$ / $+39.9\%$ & $-7.3$ / $-6.2$ \\
+    BC + smoothness penalty               & $+0.5\%$ n.s.\ / $+1.0\%$ n.s. & $+2.6\%$ n.s.\ / $-3.2\%$ n.s. & $+1.8$ n.s.\ / $+2.7$ n.s. \\
+    BC + critic, fixed $\lambda=0.03$     & $+146\%$ / $+92\%$             & $+133\%$ / $+180\%$   & $-58.7$ / $-56.0$ \\
+    BC + critic after one relabelling round & $+7.7\%$ n.s.\ / $+17.9\%$   & $+33.8\%$ / $+33.6\%$ & $-24.9$ / $-20.4$ \\
+    BC + critic, $\sqrt{J}$ target        & $+4.0\%$ n.s.\ / $+8.9\%$      & $+39.8\%$ / $+53.2\%$ & $-20.9$ / $-24.0$ \\
+    \bottomrule
+  \end{tabular}}
+\end{table}
+
+\textbf{Why it fails: the policy sits inside the critic's error.} \Cref{fig:exp1-surrogate}a shows the validation sweep over $\lambda$. As $\lambda$ grows, the critic's prediction for the policy's chunk falls twelve-fold while the true deviation rises nine-fold: the policy learns to please the critic rather than the expert. \Cref{fig:exp1-surrogate}b shows why. The critic is well calibrated for large deviations, but for the expert's own actions, whose true $J$ is exactly zero, it predicts $3.2\times10^{-5}\,\mathrm{m}^2$ on average, more than the true deviation of $\pi_0$ ($2.1\times10^{-5}\,\mathrm{m}^2$). Behaviour cloning already regresses the expert's actions directly, so the BC policy operates in the range the critic cannot resolve, and any weight large enough to matter lets it exploit the critic's errors.
+
+\begin{figure}[t]
+  \centering
+  \safefig[width=\linewidth]{fig_exp1_surrogate.pdf}
+  \caption{\textbf{Experiment 1, diagnosis} (run on locally generated demonstrations). (a) Mean cost of the fine-tuned policy's chunk on 300 validation anchors as a function of $\lambda$: the critic's prediction falls while the simulator-measured deviation rises. (b) Predicted against true deviation on held-out test branches (square-root scale; up to 300 points per type shown). Expert actions have true $J=0$ but receive predictions of several millimetres.}
+  \label{fig:exp1-surrogate}
+\end{figure}
+
+\textbf{Reproducibility.} The two runs used different machines and different demonstration files (the locally generated episodes match the first official ones exactly), and every conclusion in \cref{tab:exp1} agrees between them. The size of the effects does not: with identical data and a single training run, BC fine-tuning reached 44\% success at $r=0$ on one machine and 57\% on the other. Differences of 10 to 15 points between single runs are therefore not reliable, which is why Experiment~2 uses five training seeds.
+
+\begin{AIbox}{Takeaways}
+\begin{itemize}[leftmargin=*, itemsep=2pt, topsep=2pt]
+  \item An accurate critic with a locally correct action gradient was \emph{not} enough. When BC already regresses the expert's actions, the critic adds little information, and any non-negligible weight lets the policy exploit the critic's errors near zero cost.
+  \item The audits (bit-identical restores, exactly zero expert labels, gradient checks, a negative control) rule out the obvious implementation errors, so the negative result concerns the objective rather than the code.
+  \item A plain smoothness penalty matched or beat the learned critic in every comparison we ran, in both experiments.
+  \item Single-run closed-loop success varies by more than 10 points; conclusions need several seeds and paired intervals.
+\end{itemize}
+\end{AIbox}
+
+\subsection{Experiment 2: a critic of the sim-to-sim gap}
+
+\textbf{Motivation and setup.} In Experiment~1 the label is nearly a function of how far the candidate's actions are from the expert's, which BC already sees. A label that BC cannot see is the difference between the training simulator and the dynamics at deployment. We therefore relabelled the same critic: the source is nominal PickCube; the target is the same task with one physics shift and plays the role of a real robot, so it is only run forward and logged, never restored. The BC policy is rolled out in the target for 20{,}000 steps (half of the episodes with perturbed chunks); the source simulator is then set to each logged state and replays the same $K$ commands, and the label is the gap of \cref{eq:label} between the two trajectories. Policies are fine-tuned on source demonstrations with the critic applied at demonstration states. Baselines are zero-shot transfer, a same-budget fine-tune that adds the successful logged target episodes to the imitation data, the smoothness penalty, and for the stiffness shift also an imitation-only fine-tune with the checkpoint selected on target rollouts and an action-magnitude penalty. Each method uses five training seeds and is evaluated on 150 initial states not used for any selection; all gates and selection rules were registered before the results.
+
+\textbf{Results.} \Cref{fig:sim2sim} and \cref{tab:sim2sim} summarise the pilot.
+\begin{itemize}[leftmargin=*, itemsep=2pt]
+  \item \emph{Gap.} A one-step command delay (85 to 30 successes out of 150) and arm stiffness and damping scaled to $0.4\times$ (85 to 51) created a clear gap. Lower cube friction with higher cube mass never cost more than 9 points and was dropped.
+  \item \emph{Critic.} The critic captured more than simple proxies: rank correlation with the true gap of 0.89 versus 0.63 for action roughness under the delay, and 0.86 versus 0.64 for action magnitude under the stiffness shift. It stayed calibrated on demonstration states (rank correlation 0.82 and 0.90), and a gradient step lowered the true gap on both shifts.
+  \item \emph{Transfer.} The gap penalty never improved target success: $-0.4$\pp (95\% CI $[-6.7, 6.0]$) under the delay and $-7.7$\pp ($[-13.5,-2.3]$) under the stiffness shift, while source success fell. Applying the penalty at logged target states instead let the policy push its commands to the action limits, where the critic predicted a gap more than 400 times too small. Only the smoothness penalty beat zero-shot transfer with an interval above zero under both shifts; the same-budget fine-tune did so under the stiffness shift ($+9.1$\pp, $[0.3, 17.7]$) and was positive but not significant under the delay ($+6.1$\pp, $[-0.5, 13.2]$).
+\end{itemize}
+The pattern repeats Experiment~1, but with a stronger diagnosis: here the critic was accurate on the states where it was applied and the policy did reduce the true gap of its own chunks, yet it completed the task less often. Making a chunk behave the same in two environments is not the same goal as completing the task in the target, and it competes with imitation. One caveat applies to every method with a tuned weight or checkpoint: selection used about 1.8 million target steps per shift, roughly 90 times the labelling budget, which would be unrealistic on hardware.
+
+\begin{figure}[t]
+  \centering
+  \safefig[width=\linewidth]{fig_sim2sim.pdf}
+  \caption{\textbf{Experiment 2, sim-to-sim pilot.} (a) Success of the BC policy under each physics shift (150 selection states, Wilson 95\% intervals); diamonds mark the levels carried forward, the dashed line is the pre-registered gate. (b) Paired difference in target success against zero-shot transfer, pooled over five training seeds and 150 evaluation states, with bootstrap 95\% intervals over seeds and initial states. Missing points were not run for that shift.}
+  \label{fig:sim2sim}
+\end{figure}
+
+\begin{table}[t]
+  \centering
+  \small
+  \caption{\textbf{Experiment 2, success rates} (\%, 200-step limit, five seeds $\times$ 150 initial states) in the target and in the unshifted source environment.}
+  \label{tab:sim2sim}
+  \begin{tabular}{lcccc}
+    \toprule
+    & \multicolumn{2}{c}{Delay, $d=1$} & \multicolumn{2}{c}{Stiffness, $s=0.4$} \\
+    \cmidrule(lr){2-3}\cmidrule(lr){4-5}
+    Method & Target & Source & Target & Source \\
+    \midrule
+    Zero-shot transfer                          & 18.0 & 45.6 & 29.5 & 40.3 \\
+    Imitation, checkpoint selected on target    & --   & --   & 32.7 & 46.8 \\
+    Gap penalty at demonstration states         & 17.6 & 22.7 & 21.7 & 32.3 \\
+    Gap penalty at logged target states         &  2.9 & 14.4 & --   & --   \\
+    Same-budget fine-tune                       & 24.1 & 43.5 & \textbf{38.5} & \textbf{47.7} \\
+    Smoothness penalty                          & \textbf{26.9} & 44.9 & 34.7 & 42.5 \\
+    Action-magnitude penalty                    & --   & --   & 31.1 & 23.7 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+%======================================================================
+\section{Datasets, Environments, and Resources}
+%======================================================================
+
+\begin{itemize}[leftmargin=*, itemsep=2pt]
+  \item \textbf{Simulator and task.} ManiSkill 3.0.1 with SAPIEN 3.0.3~\cite{tao2024maniskill3}, task PickCube-v1, CPU physics (\texttt{physx\_cpu}) with one environment, 20\,Hz control and 100\,Hz simulation. The controller is \texttt{pd\_ee\_delta\_pos}: a 4-D normalised action (end-effector translation and gripper). Observations are the 42-D state vector; the critic uses its 26-D robot part. Episodes are limited to 200 steps, because the 50-step limit stored with the demonstrations is shorter than most demonstrations.
+  \item \textbf{Demonstrations.} The official PickCube-v1 motion-planning set (1{,}000 episodes, first 600 used, 49 to 103 actions each), converted from joint-position to end-effector-delta control with ManiSkill's replay tool (1{,}000 of 1{,}000 converted successfully). On the cloud machine the download was blocked, so the same motion planner generated the episodes locally; their first episodes match the official ones (same seeds, lengths and bit-identical converted actions).
+  \item \textbf{Modifications for Experiment 2.} A wrapper that delays each command by $d$ steps; scaling of the seven arm joints' drive stiffness and damping; and a cube-only friction and mass change, implemented with its own material because the default material is shared with the table and the gripper (this shift was later dropped).
+  \item \textbf{Not yet used.} The LIBERO-Spatial demonstrations and the SmolVLA checkpoint~\cite{liu2023libero,shukor2025smolvla}.
+  \item \textbf{Compute.} All physics ran on CPU with a single environment, and all networks are small MLPs trained on CPU. Experiment~1 took about 4\,h of wall-clock time on a 2-core cloud container; the reproduction and Experiment~2 took roughly 12\,h on a laptop workstation whose GPU (RTX~5070 Laptop) was used only for PyTorch. Experiment~2 used about 25{,}000 target-environment steps for labels and about 1.8 million for weight and checkpoint selection per shift. No cluster resources were used.
+\end{itemize}
+
+%======================================================================
+\section{Updated Plan and Next Steps}
+\label{sec:plan}
+%======================================================================
+
+\textbf{Where we stand.} The premise that BC on action chunks leaves trajectory-level error that a learned critic can remove is not supported for a deterministic state-based policy, and relabelling the critic with the sim-to-sim gap did not rescue it. One case remains untested and is the one our original proposal targeted: generative chunk policies. A flow-matching policy~\cite{lipman2023flow} is trained to predict a velocity field at random noise levels rather than to regress the final chunk, so trajectory-level information may not be redundant there. We will test this cheaply before committing to the expensive VLA stage.
+
+\textbf{Plan for the remaining weeks} (proposed; to be confirmed by the team):
+\begin{enumerate}[leftmargin=*, itemsep=2pt]
+  \item \textbf{Week 1: flow-matching policy on PickCube.} Replace the MLP with a small flow-matching chunk policy on the same data and scheduler, implement few-step differentiable sampling so that $\nabla_A \Ecrit$ reaches the policy, and rerun the Experiment~1 protocol with five seeds. Go/no-go gate: the critic penalty lowers held-out $J$ against BC fine-tuning with a paired interval below zero, without lowering success.
+  \item \textbf{Week 2, if go: LIBERO/SmolVLA.} Replay audit and zero-shot baseline on the LIBERO-Spatial task, a fixed-noise check that our adapter reproduces the reference inference, differentiable sampling, branch labelling and fine-tuning, and a comparison with RTC on the hand-over metrics.
+  \item \textbf{Week 2, if no-go: analysis.} Measure how per-anchor $J$ relates to episode success, locate where in the episode the critic is exploited, and repeat Experiment~1 with five seeds to put intervals on the gap to BC.
+  \item \textbf{Week 3: final experiments and writing.}
+\end{enumerate}
+
+\textbf{Risks and mitigations.}
+\begin{itemize}[leftmargin=*, itemsep=2pt]
+  \item \emph{Differentiable sampling through SmolVLA is expensive.} Integrate with few steps, fine-tune only the action expert, and debug on the PickCube flow policy first.
+  \item \emph{Critic exploitation recurs.} Select $\lambda$ by the simulator-recomputed $J$, include very small weights, and keep the imitation term.
+  \item \emph{Seed variance hides effects.} Use at least five seeds and paired intervals over initial states and seeds.
+  \item \emph{The result is negative again.} Report it as a diagnosed negative result with the controls above; we ask the course staff below whether this is an acceptable final scope.
+\end{itemize}
+
+%======================================================================
+\section{Team Contributions}
+%======================================================================
+
+% TODO: assign each work item to a team member and adjust the list to match what each person did.
+\begin{itemize}[leftmargin=*, itemsep=2pt]
+  \item Project idea, design specification and repository structure: \fillin{name(s)}.
+  \item Pipeline implementation (stages 00 to 08), audits and tests: \fillin{name(s)}.
+  \item Experiment runs and reproduction on the second machine: \fillin{name(s)}.
+  \item Sim-to-sim pilot design and analysis: \fillin{name(s)}.
+  \item Report writing and figures: \fillin{name(s)}.
+\end{itemize}
+Use of AI tools: implementation, experiment execution and drafting of this report were assisted by AI tools (Claude and Claude Code). \fillin{Check this statement against the course policy and adjust.}
+
+%======================================================================
+\section{Reflection and Feedback}
+%======================================================================
+
+\textbf{What we learned.} A surrogate that is accurate and has a locally correct gradient can still be a poor training signal: what matters is whether reducing it moves the policy toward the actual goal, and whether the policy can exploit its errors. Fixing selection rules and gates before looking at results kept us from reading too much into single-run differences that later turned out to be within run-to-run noise. Finally, imitation baselines were strong: plain BC fine-tuning and a one-line smoothness penalty were never beaten by the learned critic.
+
+\textbf{Remaining challenges.} Whether to commit to the VLA stage without any positive signal so far, and the compute and engineering cost of differentiable sampling through a pre-trained flow policy.
+
+\textbf{Feedback we would like from the course staff.}
+\begin{itemize}[leftmargin=*, itemsep=2pt]
+  \item Is a carefully diagnosed negative result, plus the flow-matching test, an acceptable scope for the final project, or should we pivot?
+  \item Pointers to prior work on training-time, trajectory-level losses for chunked imitation policies that we may have missed. The closest work we know, such as ASAP~\cite{he2025asap}, grounded action transformation~\cite{hanna2021gat} and uncertainty-penalised model-based RL~\cite{yu2020mopo}, corrects the simulator or penalises model error in reinforcement learning rather than in imitation.
+  \item GPU access, if we proceed to SmolVLA.
+\end{itemize}
+
+\bibliography{main}
+
+\newpage
+\appendix
+\onecolumn
+\part*{Appendices}
+
+\section{Implementation details}
+\label{app:impl}
+
+\begin{table}[h]
+  \centering
+  \small
+  \caption{Hyperparameters (Experiment 1; Experiment 2 reuses them unless stated).}
+  \begin{tabular}{p{0.36\linewidth}p{0.58\linewidth}}
+    \toprule
+    Item & Value \\
+    \midrule
+    Chunk $H$ / executed $e$ / history $L$ / window $K$ & 20 / 5 / 15 / 10 steps \\
+    Training delay / evaluation delays & $r=0$ / $r\in\{0,2,4\}$ \\
+    Policy & MLP, 2 hidden layers of 256, observation normalised on train split \\
+    BC training of $\pi_0$ & 20{,}000 steps, batch 256, Adam, learning rate $10^{-3}$ \\
+    Fine-tuning (all variants) & 5{,}000 steps from $\pi_0$, batch 256, learning rate $3\times10^{-4}$, identical batches \\
+    Critic & MLP encoders for history, state and action tail (width 128), softplus output; 15{,}000 steps, learning rate $10^{-3}$ \\
+    Anchors per episode & 4 train / 3 validation / 3 test \\
+    Candidates per anchor & expert, $\pi_0$, 4 perturbed $\pi_0$, 2 perturbed expert \\
+    Perturbation & bias + linear ramp on translation, log-uniform amplitude in $[0.01, 0.2]$, gripper untouched \\
+    $\lambda$ grid (Experiment 1) & $\{10^{-3}, 3\times10^{-3}, 0.01, 0.03, 0.1, 0.3, 1\}$ \\
+    $\lambda$ grid (Experiment 2) & $\{10^{-3},\dots,0.1\}$ (delay); $\{10^{-4},\dots,0.01\}$ (stiffness) \\
+    Seeds & 1 per variant (Experiment 1); 5 per method (Experiment 2) \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\section{Replay audit}
+\label{app:audit}
+
+\begin{table}[h]
+  \centering
+  \small
+  \caption{Replay audit on 60 training anchors (run on locally generated demonstrations; $K=10$; tolerance 1\,mm). Each restore mode is compared with an uninterrupted replay of the expert's actions; repeatability compares two restores of the same state with each other.}
+  \begin{tabular}{lccl}
+    \toprule
+    Mode & Max.\ EE error & Mean EE error & Gate \\
+    \midrule
+    Restore saved state, same environment       & 0.54\,mm & 0.048\,mm & pass \\
+    Restore saved state after an unrelated reset & 0.54\,mm & 0.048\,mm & pass \\
+    Restore state stored in the demonstration file & 0.54\,mm & 0.049\,mm & pass \\
+    Replay the action prefix from the first state & 0.0033\,mm & $<$0.001\,mm & pass \\
+    Repeatability of two restores               & 0 & 0 & pass (exact) \\
+    Negative control: one-frame shift           & 13.96\,mm & 3.82\,mm & rejected, as required \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+On the second machine with the official demonstrations the restore error was at most 0.33\,mm and prefix replay at most 0.18\,mm, so prefix replay is not exact either; repeatability was again exactly zero on all 60 anchors.
+
+\section{Experiment 2 details}
+\label{app:sim2sim}
+
+\begin{table}[h]
+  \centering
+  \small
+  \caption{Phase B: critic quality on held-out target episodes ($\sqrt{J}$ target).}
+  \begin{tabular}{lcc}
+    \toprule
+    & Delay, $d=1$ & Stiffness, $s=0.4$ \\
+    \midrule
+    Target steps for labels (train / validation) & 20{,}000 / 5{,}000 & 20{,}000 / 5{,}000 \\
+    Median label $\sqrt{J}$ & 3.4\,mm & 2.4\,mm \\
+    Rank correlation: critic / action roughness / action magnitude & 0.89 / 0.63 / -- & 0.86 / 0.53 / 0.64 \\
+    Rank correlation on demonstration states & 0.82 & 0.90 \\
+    Change in true gap from a gradient step (logged states) & $-10.6\%$ & $-38.5\%$ \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\textbf{Gates.} Gate 1: the shift lowers zero-shot success by at least 15 points with an interval excluding zero. Gate 2: the critic beats a constant predictor and reaches a global rank correlation above 0.5 on validation. Gate 3: a gradient step lowers the true gap, and lowers it more than an equal-norm random step, with episode-clustered 95\% intervals below zero. Gate 4: the gap penalty beats zero-shot transfer in target success without a drop in source success or a slowdown that explains the change. Gate 5: it is at least as good as the same-budget fine-tune. Gates 1 to 3 passed for both shifts; gates 4 and 5 failed for both, except that gate 5 passed by 0.1 points for the delay shift with a point estimate in favour of the fine-tune.
+
+\end{document}

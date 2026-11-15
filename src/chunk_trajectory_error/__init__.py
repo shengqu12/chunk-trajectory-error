@@ -1,0 +1,1 @@
+"""Training-only trajectory error learning for action-chunk policies."""

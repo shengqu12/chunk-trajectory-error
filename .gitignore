@@ -1,0 +1,35 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+build/
+dist/
+
+# Environments
+.venv*/
+venv/
+.env
+
+# External checkouts (e.g. LeRobot for LIBERO)
+external/
+
+# LaTeX build files (stage logs under runs/ are kept)
+report/**/*.aux
+report/**/*.log
+report/**/*.out
+report/**/*.bbl
+report/**/*.blg
+report/**/*.synctex.gz
+report/**/*.fls
+report/**/*.fdb_latexmk
+
+# Editors / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Scratch
+backup_*/
+*.tmp

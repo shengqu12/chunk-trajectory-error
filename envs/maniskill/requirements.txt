@@ -1,0 +1,10 @@
+# Bootstrap requirements only; resolve and freeze exact versions after the first
+# successful Linux installation and replay audit.
+mani_skill
+torch
+h5py# Audited on Linux / Python 3.10.20 (2026-11-12): mani_skill 3.0.1, sapien 3.0.3, torch 2.14.1,
+# gymnasium 1.4.0, h5py 3.16.0.  Full freeze: requirements.lock.linux-py310.txt
+# Only needed when generating demonstrations locally with the motion planner;
+# mplib 0.1.1 segfaults under numpy 2.x, so pin numpy<2 alongside it:
+# mplib==0.1.1
+# numpy<2

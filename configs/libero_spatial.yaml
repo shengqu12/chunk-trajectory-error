@@ -1,0 +1,45 @@
+experiment:
+  name: libero_spatial_smolvla
+  seed: 17
+  output_dir: runs/libero_spatial
+
+environment:
+  backend: libero
+  suite: libero_spatial
+  task_name: pick_up_the_black_bowl_from_table_center_and_place_it_on_the_plate
+  control_mode: relative
+  render_backend: egl
+  hard_reset: true
+
+policy:
+  adapter: smolvla
+  checkpoint: lerobot/smolvla_libero
+  revision: null
+  chunk_size: 50
+  image_size: [256, 256]
+  state_dim: 8
+  action_dim: 7
+  camera_keys: [observation.images.image, observation.images.image2]
+
+error_network:
+  type: history_conditioned_mlp
+  hidden_dim: 128
+
+data:
+  raw_hdf5: data/raw/libero/pick_up_the_black_bowl_from_table_center_and_place_it_on_the_plate_demo.hdf5
+  output_dir: data/processed/libero
+  split_manifest: data/processed/libero/splits.json
+
+chunk:
+  horizon: 50
+  execute_steps: 10
+  history_steps: 30
+  evaluation_steps: 20
+  train_delay: 0
+  evaluation_delays: [0, 2, 4]
+
+audit:
+  replay_position_tolerance_m: 0.001
+  anchors_per_episode: 3
+  num_episodes: 30
+  render_video: true

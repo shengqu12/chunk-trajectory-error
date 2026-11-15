@@ -1,0 +1,4 @@
+# Install LeRobot from its pinned source checkout with its documented LIBERO extra.
+# This overlay contains project-side utilities; freeze all transitive versions only
+# after the checkpoint adapter and baseline pass on the target Linux host.
+huggingface_hub
