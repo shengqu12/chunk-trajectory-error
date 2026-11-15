@@ -1,0 +1,34 @@
+{
+  "aborted": 0,
+  "branches": 4800,
+  "clipped_candidates": 0,
+  "tcp_check_max_m": 1.1920928955078125e-07,
+  "anchors": 1600,
+  "episodes": 400,
+  "by_type": {
+    "expert": {
+      "count": 1600,
+      "J_m2_mean": 0.0,
+      "J_m2_median": 0.0,
+      "J_m2_max": 0.0,
+      "sqrtJ_mm_median": 0.0
+    },
+    "policy": {
+      "count": 1600,
+      "J_m2_mean": 3.9442532465094897e-05,
+      "J_m2_median": 2.5133834617267935e-05,
+      "J_m2_max": 0.0006836087246247554,
+      "sqrtJ_mm_median": 5.013365538107069
+    },
+    "policy_perturbed": {
+      "count": 1600,
+      "J_m2_mean": 0.00038703342471483053,
+      "J_m2_median": 0.0001291203499004395,
+      "J_m2_max": 0.005834390908433171,
+      "sqrtJ_mm_median": 11.363110831341546
+    }
+  },
+  "policy_ckpt": "runs/maniskill_pickcube/checkpoints/pi_error/w0.03.pt",
+  "round": 1,
+  "seed": 1017
+}

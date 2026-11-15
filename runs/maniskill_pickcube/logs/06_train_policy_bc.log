@@ -1,0 +1,6 @@
+[33;1m2026-11-12 10:47:23,656 - mani_skill  - WARNING - Requested to use render device "sapien_cuda", but CUDA device was not found. Falling back to "cpu" device. Rendering might be disabled.[0m
+/home/claude/proj/scripts/06_train_policy.py:66: UserWarning: Converting a tensor with requires_grad=True to a scalar may lead to unexpected behavior.
+Consider using tensor.detach() first. (Triggered internally at /__w/pytorch/pytorch/torch/csrc/autograd/generated/python_variable_methods.cpp:820.)
+  entry = {"step": step, "imitation": float(imitation), "auxiliary": float(auxiliary), "grad_norm_imitation": grad_norm(imitation, parameters)}
+bc weight=0: val true J 2.782e-05 m^2 (sqrtJ 4.228 mm), val BC 0.00771
+selected weight: 0.0

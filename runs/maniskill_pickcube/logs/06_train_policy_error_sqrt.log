@@ -1,0 +1,7 @@
+[33;1m2026-11-12 11:12:04,593 - mani_skill  - WARNING - Requested to use render device "sapien_cuda", but CUDA device was not found. Falling back to "cpu" device. Rendering might be disabled.[0m
+error_sqrt weight=0.003: val true J 2.657e-05 m^2 (sqrtJ 4.219 mm), val BC 0.00777
+error_sqrt weight=0.01: val true J 2.673e-05 m^2 (sqrtJ 4.299 mm), val BC 0.00784
+error_sqrt weight=0.03: val true J 2.958e-05 m^2 (sqrtJ 4.518 mm), val BC 0.00794
+error_sqrt weight=0.1: val true J 3.564e-05 m^2 (sqrtJ 5.007 mm), val BC 0.00805
+error_sqrt weight=0.3: val true J 4.879e-05 m^2 (sqrtJ 6.146 mm), val BC 0.00844
+selected weight: 0.003

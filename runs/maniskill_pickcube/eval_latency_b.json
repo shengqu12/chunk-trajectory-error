@@ -1,0 +1,30 @@
+{
+  "smooth": {
+    "device": "cpu (1 thread)",
+    "batch": 1,
+    "repeats": 2000,
+    "p50_ms": 0.05937449986959109,
+    "p95_ms": 0.11112040006082678
+  },
+  "error_w0.03": {
+    "device": "cpu (1 thread)",
+    "batch": 1,
+    "repeats": 2000,
+    "p50_ms": 0.062499500018020626,
+    "p95_ms": 0.1366986506127432
+  },
+  "error_r1": {
+    "device": "cpu (1 thread)",
+    "batch": 1,
+    "repeats": 2000,
+    "p50_ms": 0.05843600001753657,
+    "p95_ms": 0.10432429999127635
+  },
+  "error_sqrt": {
+    "device": "cpu (1 thread)",
+    "batch": 1,
+    "repeats": 2000,
+    "p50_ms": 0.05790750037704129,
+    "p95_ms": 0.11157150020153495
+  }
+}

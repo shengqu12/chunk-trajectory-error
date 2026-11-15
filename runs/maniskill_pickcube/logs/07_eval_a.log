@@ -1,0 +1,13 @@
+[33;1m2026-11-12 11:14:17,025 - mani_skill  - WARNING - Requested to use render device "sapien_cuda", but CUDA device was not found. Falling back to "cpu" device. Rendering might be disabled.[0m
+pi0 r=0: 21/150 success
+pi0 r=2: 35/150 success
+pi0 r=4: 73/150 success
+bc r=0: 66/150 success
+bc r=2: 72/150 success
+bc r=4: 120/150 success
+error r=0: 57/150 success
+error r=2: 67/150 success
+error r=4: 96/150 success
+nohist r=0: 58/150 success
+nohist r=2: 75/150 success
+nohist r=4: 97/150 success

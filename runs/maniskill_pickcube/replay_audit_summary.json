@@ -1,0 +1,89 @@
+{
+  "split": "train",
+  "anchors_audited": 60,
+  "tolerance_m": 0.001,
+  "branch_repeat_tolerance_m": 1e-06,
+  "control_min_motion_m": 0.002,
+  "chunk": {
+    "horizon": 20,
+    "execute_steps": 5,
+    "history_steps": 15,
+    "evaluation_steps": 10,
+    "train_delay": 0,
+    "evaluation_delays": [
+      0,
+      2,
+      4
+    ]
+  },
+  "modes": {
+    "snapshot_restore_same_env": {
+      "anchors": 60,
+      "max_ee_err_m": 0.0005386134,
+      "mean_ee_err_m": 4.8337201706666664e-05,
+      "max_J_m2": 1.850882e-07,
+      "anchors_within_tolerance": 60,
+      "tolerance_m": 0.001,
+      "expectation": "must be within tolerance of the uninterrupted reference",
+      "gate": "pass"
+    },
+    "snapshot_restore_after_reset": {
+      "anchors": 60,
+      "max_ee_err_m": 0.0005386134,
+      "mean_ee_err_m": 4.8337201706666664e-05,
+      "max_J_m2": 1.850882e-07,
+      "anchors_within_tolerance": 60,
+      "tolerance_m": 0.001,
+      "expectation": "must be within tolerance of the uninterrupted reference",
+      "gate": "pass"
+    },
+    "hdf5_state_restore": {
+      "anchors": 60,
+      "max_ee_err_m": 0.000538575,
+      "mean_ee_err_m": 4.861267286583334e-05,
+      "max_J_m2": 1.8515e-07,
+      "anchors_within_tolerance": 60,
+      "tolerance_m": 0.001,
+      "expectation": "must be within tolerance of the uninterrupted reference",
+      "gate": "pass"
+    },
+    "prefix_replay": {
+      "anchors": 60,
+      "max_ee_err_m": 3.297278e-06,
+      "mean_ee_err_m": 4.277148333333333e-08,
+      "max_J_m2": 7.978223e-12,
+      "anchors_within_tolerance": 60,
+      "tolerance_m": 0.001,
+      "expectation": "must be within tolerance of the uninterrupted reference",
+      "gate": "pass"
+    },
+    "snapshot_branch_repeatability": {
+      "anchors": 60,
+      "max_ee_err_m": 0.0,
+      "mean_ee_err_m": 0.0,
+      "max_J_m2": 0.0,
+      "anchors_within_tolerance": 60,
+      "tolerance_m": 1e-06,
+      "expectation": "two restores of one snapshot must agree within branch_repeat_tolerance_m",
+      "gate": "pass"
+    },
+    "control_shift_one_frame": {
+      "anchors": 60,
+      "max_ee_err_m": 0.01396244,
+      "mean_ee_err_m": 0.003820763673333333,
+      "max_J_m2": 0.0001090437,
+      "anchors_within_tolerance": 0,
+      "tolerance_m": 0.001,
+      "applicable_anchors": 55,
+      "applicable_anchors_rejected": 55,
+      "not_applicable_slow_segment": 5,
+      "min_ee_err_m_on_applicable": 0.002041614,
+      "expectation": "every applicable anchor must fail tolerance (negative control); applicable = reference moves >= control_min_motion_m in one step",
+      "gate": "pass"
+    }
+  },
+  "video": "runs/maniskill_pickcube/replay_audit_ep0000_t0040_r0.mp4",
+  "continuous_vs_recorded_pose_max_abs_diff": 0.0003228218,
+  "continuous_vs_recorded_velocity_max_abs_diff": 0.2953526,
+  "all_gates_passed": true
+}

@@ -1,0 +1,22 @@
+step 1000: train 0.00784  val 0.00998
+step 2000: train 0.00663  val 0.00896
+step 3000: train 0.00403  val 0.00871
+step 4000: train 0.00383  val 0.00837
+step 5000: train 0.00280  val 0.00806
+step 6000: train 0.00350  val 0.00772
+step 7000: train 0.00228  val 0.00791
+step 8000: train 0.00226  val 0.00757
+step 9000: train 0.00343  val 0.00770
+step 10000: train 0.00224  val 0.00750
+step 11000: train 0.00193  val 0.00769
+step 12000: train 0.00229  val 0.00754
+step 13000: train 0.00247  val 0.00790
+step 14000: train 0.00198  val 0.00788
+step 15000: train 0.00189  val 0.00794
+step 16000: train 0.00187  val 0.00799
+step 17000: train 0.00145  val 0.00757
+step 18000: train 0.00140  val 0.00768
+step 19000: train 0.00131  val 0.00777
+step 20000: train 0.00154  val 0.00792
+[33;1m2026-11-12 10:17:36,863 - mani_skill  - WARNING - Requested to use render device "sapien_cuda", but CUDA device was not found. Falling back to "cpu" device. Rendering might be disabled.[0m
+{'checkpoint': 'runs/maniskill_pickcube/checkpoints/pi0.pt', 'train_samples': 30953, 'train_episodes': 400, 'best_val_bc_loss': 0.007500015664845705, 'val_true_J_m2_mean': 2.9360621375449677e-05, 'val_true_sqrtJ_mm_mean': 4.553262011896691, 'val_anchors': 300, 'val_closed_loop_r0': {'episodes': 30, 'successes': 5}}

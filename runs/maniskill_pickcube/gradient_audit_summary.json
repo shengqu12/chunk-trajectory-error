@@ -1,0 +1,643 @@
+{
+  "error_checkpoint": "error_round0_history.pt",
+  "parameter_gradient_check": {
+    "policy_grad_norm": 15.730103492736816,
+    "policy_grads_finite": true,
+    "policy_grads_nonzero": true,
+    "error_params_without_grad": true,
+    "error_params_require_grad": false,
+    "pass": true
+  },
+  "skipped": {
+    "aborted_rollouts": 0,
+    "zero_gradient": 0
+  },
+  "step_sizes_tried_on_val": [
+    0.02,
+    0.05,
+    0.1,
+    0.2,
+    0.4
+  ],
+  "chosen_step_size": {
+    "policy": 0.05,
+    "policy_perturbed": 0.2,
+    "expert_perturbed": 0.2
+  },
+  "val": {
+    "policy": {
+      "0.02": {
+        "candidates": 150,
+        "episodes": 50,
+        "mean_J0_m2": 2.7341946872035706e-05,
+        "delta_J_grad_m2": {
+          "mean": -4.59247018887435e-06,
+          "ci95": [
+            -5.860753367065594e-06,
+            -3.3957615261308553e-06
+          ]
+        },
+        "delta_J_rand_m2": {
+          "mean": 5.445740363315363e-07,
+          "ci95": [
+            2.5710769657257356e-08,
+            1.0940963072681449e-06
+          ]
+        },
+        "paired_grad_minus_rand_m2": {
+          "mean": -5.1370442252058865e-06,
+          "ci95": [
+            -6.774681107797553e-06,
+            -3.631766436458169e-06
+          ]
+        },
+        "relative_change_grad": -0.16796427154100546,
+        "relative_change_rand": 0.01991716386840418,
+        "fraction_grad_lowers_J": 0.7133333333333334,
+        "fraction_rand_lowers_J": 0.46,
+        "fraction_grad_beats_rand": 0.7266666666666667,
+        "mean_effective_norm_grad": 0.01999999930461248,
+        "mean_effective_norm_rand": 0.01999999930461248
+      },
+      "0.05": {
+        "candidates": 150,
+        "episodes": 50,
+        "mean_J0_m2": 2.7341946872035706e-05,
+        "delta_J_grad_m2": {
+          "mean": -4.741840842743124e-06,
+          "ci95": [
+            -7.838739533406459e-06,
+            -1.8162584819775793e-06
+          ]
+        },
+        "delta_J_rand_m2": {
+          "mean": 2.500636194165043e-06,
+          "ci95": [
+            1.2138828138343263e-06,
+            3.8612023106682816e-06
+          ]
+        },
+        "paired_grad_minus_rand_m2": {
+          "mean": -7.242477036908167e-06,
+          "ci95": [
+            -1.1256285291347638e-05,
+            -3.528494751561997e-06
+          ]
+        },
+        "relative_change_grad": -0.17342732998991,
+        "relative_change_rand": 0.09145786896113815,
+        "fraction_grad_lowers_J": 0.5666666666666667,
+        "fraction_rand_lowers_J": 0.36666666666666664,
+        "fraction_grad_beats_rand": 0.6133333333333333,
+        "mean_effective_norm_grad": 0.05000000106791655,
+        "mean_effective_norm_rand": 0.05000000094374021
+      },
+      "0.1": {
+        "candidates": 150,
+        "episodes": 50,
+        "mean_J0_m2": 2.7341946872035706e-05,
+        "delta_J_grad_m2": {
+          "mean": 1.2736661331649004e-05,
+          "ci95": [
+            6.669225718245649e-06,
+            1.860829977787042e-05
+          ]
+        },
+        "delta_J_rand_m2": {
+          "mean": 8.888597957782471e-06,
+          "ci95": [
+            6.311729970306565e-06,
+            1.1671779123815805e-05
+          ]
+        },
+        "paired_grad_minus_rand_m2": {
+          "mean": 3.848063373866533e-06,
+          "ci95": [
+            -4.046803720479623e-06,
+            1.1275178864533036e-05
+          ]
+        },
+        "relative_change_grad": 0.4658286182494039,
+        "relative_change_rand": 0.325090162722589,
+        "fraction_grad_lowers_J": 0.30666666666666664,
+        "fraction_rand_lowers_J": 0.2866666666666667,
+        "fraction_grad_beats_rand": 0.3933333333333333,
+        "mean_effective_norm_grad": 0.10000000188748041,
+        "mean_effective_norm_rand": 0.10000000298023223
+      },
+      "0.2": {
+        "candidates": 150,
+        "episodes": 50,
+        "mean_J0_m2": 2.7341946872035706e-05,
+        "delta_J_grad_m2": {
+          "mean": 0.00011403770948530702,
+          "ci95": [
+            0.00010058988369521002,
+            0.00012692201667501135
+          ]
+        },
+        "delta_J_rand_m2": {
+          "mean": 3.366789502392444e-05,
+          "ci95": [
+            2.7772685917546314e-05,
+            3.9728104713810766e-05
+          ]
+        },
+        "paired_grad_minus_rand_m2": {
+          "mean": 8.036981446138259e-05,
+          "ci95": [
+            6.359288487183758e-05,
+            9.640005961573486e-05
+          ]
+        },
+        "relative_change_grad": 4.170796981612908,
+        "relative_change_rand": 1.2313642178260054,
+        "fraction_grad_lowers_J": 0.09333333333333334,
+        "fraction_rand_lowers_J": 0.11333333333333333,
+        "fraction_grad_beats_rand": 0.14666666666666667,
+        "mean_effective_norm_grad": 0.20000000397364298,
+        "mean_effective_norm_rand": 0.2000000046690305
+      },
+      "0.4": {
+        "candidates": 150,
+        "episodes": 50,
+        "mean_J0_m2": 2.7341946872035706e-05,
+        "delta_J_grad_m2": {
+          "mean": 0.0005748255521435841,
+          "ci95": [
+            0.0005357440442873526,
+            0.0006131590454572367
+          ]
+        },
+        "delta_J_rand_m2": {
+          "mean": 0.0001299943888994845,
+          "ci95": [
+            0.00011366606183698923,
+            0.00014660233138155172
+          ]
+        },
+        "paired_grad_minus_rand_m2": {
+          "mean": 0.0004448311632440995,
+          "ci95": [
+            0.00040075548542677775,
+            0.000487926148453616
+          ]
+        },
+        "relative_change_grad": 21.023577978329467,
+        "relative_change_rand": 4.754394027165556,
+        "fraction_grad_lowers_J": 0.04,
+        "fraction_rand_lowers_J": 0.013333333333333334,
+        "fraction_grad_beats_rand": 0.06666666666666667,
+        "mean_effective_norm_grad": 0.4000000085433324,
+        "mean_effective_norm_rand": 0.4000000085433324
+      }
+    },
+    "policy_perturbed": {
+      "0.02": {
+        "candidates": 150,
+        "episodes": 50,
+        "mean_J0_m2": 0.00031550575063540523,
+        "delta_J_grad_m2": {
+          "mean": -3.3591581270038644e-05,
+          "ci95": [
+            -3.9583370738432924e-05,
+            -2.7849896468256074e-05
+          ]
+        },
+        "delta_J_rand_m2": {
+          "mean": 1.483298057010444e-06,
+          "ci95": [
+            -3.161970304882921e-08,
+            3.1086446651018548e-06
+          ]
+        },
+        "paired_grad_minus_rand_m2": {
+          "mean": -3.5074879327049085e-05,
+          "ci95": [
+            -4.143623582363572e-05,
+            -2.9026284920182516e-05
+          ]
+        },
+        "relative_change_grad": -0.10646899843311156,
+        "relative_change_rand": 0.004701334457527926,
+        "fraction_grad_lowers_J": 0.9333333333333333,
+        "fraction_rand_lowers_J": 0.4866666666666667,
+        "fraction_grad_beats_rand": 0.96,
+        "mean_effective_norm_grad": 0.01999999962747097,
+        "mean_effective_norm_rand": 0.019999999466041724
+      },
+      "0.05": {
+        "candidates": 150,
+        "episodes": 50,
+        "mean_J0_m2": 0.00031550575063540523,
+        "delta_J_grad_m2": {
+          "mean": -7.622272435436835e-05,
+          "ci95": [
+            -9.084228452273759e-05,
+            -6.247153357500907e-05
+          ]
+        },
+        "delta_J_rand_m2": {
+          "mean": 3.958383117297333e-06,
+          "ci95": [
+            2.3902823999066486e-07,
+            8.080398578714959e-06
+          ]
+        },
+        "paired_grad_minus_rand_m2": {
+          "mean": -8.018110747166568e-05,
+          "ci95": [
+            -9.594565284449399e-05,
+            -6.504095693562556e-05
+          ]
+        },
+        "relative_change_grad": -0.24158901763553095,
+        "relative_change_rand": 0.012546152041049783,
+        "fraction_grad_lowers_J": 0.8933333333333333,
+        "fraction_rand_lowers_J": 0.44,
+        "fraction_grad_beats_rand": 0.9066666666666666,
+        "mean_effective_norm_grad": 0.05000000074505806,
+        "mean_effective_norm_rand": 0.050000000769893325
+      },
+      "0.1": {
+        "candidates": 150,
+        "episodes": 50,
+        "mean_J0_m2": 0.00031550575063540523,
+        "delta_J_grad_m2": {
+          "mean": -0.00012599861898481056,
+          "ci95": [
+            -0.00015462490032044872,
+            -9.879069775699469e-05
+          ]
+        },
+        "delta_J_rand_m2": {
+          "mean": 1.2240282178883514e-05,
+          "ci95": [
+            4.8612460850042525e-06,
+            2.0677047709502936e-05
+          ]
+        },
+        "paired_grad_minus_rand_m2": {
+          "mean": -0.00013823890116369407,
+          "ci95": [
+            -0.00016939769796663474,
+            -0.00010854229184837918
+          ]
+        },
+        "relative_change_grad": -0.399354429296641,
+        "relative_change_rand": 0.038795749853156376,
+        "fraction_grad_lowers_J": 0.8066666666666666,
+        "fraction_rand_lowers_J": 0.36,
+        "fraction_grad_beats_rand": 0.8266666666666667,
+        "mean_effective_norm_grad": 0.10000000218550364,
+        "mean_effective_norm_rand": 0.10000000193715096
+      },
+      "0.2": {
+        "candidates": 150,
+        "episodes": 50,
+        "mean_J0_m2": 0.00031550575063540523,
+        "delta_J_grad_m2": {
+          "mean": -0.0001438036955009185,
+          "ci95": [
+            -0.000200848379980254,
+            -8.97402192357171e-05
+          ]
+        },
+        "delta_J_rand_m2": {
+          "mean": 3.997510101270672e-05,
+          "ci95": [
+            2.4904433038215672e-05,
+            5.733908015596213e-05
+          ]
+        },
+        "paired_grad_minus_rand_m2": {
+          "mean": -0.00018377879651362524,
+          "ci95": [
+            -0.0002452229308346895,
+            -0.00012518754425627535
+          ]
+        },
+        "relative_change_grad": -0.4557878745832953,
+        "relative_change_rand": 0.12670165577711284,
+        "fraction_grad_lowers_J": 0.5533333333333333,
+        "fraction_rand_lowers_J": 0.2866666666666667,
+        "fraction_grad_beats_rand": 0.6266666666666667,
+        "mean_effective_norm_grad": 0.20000000397364298,
+        "mean_effective_norm_rand": 0.20000000486771266
+      },
+      "0.4": {
+        "candidates": 150,
+        "episodes": 50,
+        "mean_J0_m2": 0.00031550575063540523,
+        "delta_J_grad_m2": {
+          "mean": 0.00011598222640207116,
+          "ci95": [
+            1.0476691153756793e-05,
+            0.00021702292011642
+          ]
+        },
+        "delta_J_rand_m2": {
+          "mean": 0.0001380968465245613,
+          "ci95": [
+            0.00010535659189309572,
+            0.00017546286369166626
+          ]
+        },
+        "paired_grad_minus_rand_m2": {
+          "mean": -2.2114620122490158e-05,
+          "ci95": [
+            -0.0001382267973880531,
+            8.890871109913988e-05
+          ]
+        },
+        "relative_change_grad": 0.36760732940205226,
+        "relative_change_rand": 0.4376999349344488,
+        "fraction_grad_lowers_J": 0.3333333333333333,
+        "fraction_rand_lowers_J": 0.16666666666666666,
+        "fraction_grad_beats_rand": 0.37333333333333335,
+        "mean_effective_norm_grad": 0.40000000814596814,
+        "mean_effective_norm_rand": 0.4000000091393789
+      }
+    },
+    "expert_perturbed": {
+      "0.02": {
+        "candidates": 150,
+        "episodes": 50,
+        "mean_J0_m2": 0.0003222555995065747,
+        "delta_J_grad_m2": {
+          "mean": -2.869919620217428e-05,
+          "ci95": [
+            -3.834273422414565e-05,
+            -1.5991486643983364e-05
+          ]
+        },
+        "delta_J_rand_m2": {
+          "mean": 3.889747851157232e-06,
+          "ci95": [
+            -2.386235748814987e-06,
+            1.4704166542060242e-05
+          ]
+        },
+        "paired_grad_minus_rand_m2": {
+          "mean": -3.258894405333151e-05,
+          "ci95": [
+            -3.88417977935311e-05,
+            -2.6767095055611687e-05
+          ]
+        },
+        "relative_change_grad": -0.08905724600632968,
+        "relative_change_rand": 0.012070380955716711,
+        "fraction_grad_lowers_J": 0.9266666666666666,
+        "fraction_rand_lowers_J": 0.5466666666666666,
+        "fraction_grad_beats_rand": 0.9333333333333333,
+        "mean_effective_norm_grad": 0.01999999942878882,
+        "mean_effective_norm_rand": 0.01999999936670065
+      },
+      "0.05": {
+        "candidates": 150,
+        "episodes": 50,
+        "mean_J0_m2": 0.0003222555995065747,
+        "delta_J_grad_m2": {
+          "mean": -7.105476837320118e-05,
+          "ci95": [
+            -8.804402591558786e-05,
+            -5.363701136609856e-05
+          ]
+        },
+        "delta_J_rand_m2": {
+          "mean": 3.5933069099513048e-06,
+          "ci95": [
+            -4.448637099032184e-06,
+            1.5429174252147736e-05
+          ]
+        },
+        "paired_grad_minus_rand_m2": {
+          "mean": -7.464807528315251e-05,
+          "ci95": [
+            -9.012453838339031e-05,
+            -6.019472054784015e-05
+          ]
+        },
+        "relative_change_grad": -0.22049195881156908,
+        "relative_change_rand": 0.011150487114741332,
+        "fraction_grad_lowers_J": 0.8733333333333333,
+        "fraction_rand_lowers_J": 0.4866666666666667,
+        "fraction_grad_beats_rand": 0.8666666666666667,
+        "mean_effective_norm_grad": 0.0500000007947286,
+        "mean_effective_norm_rand": 0.05000000151495139
+      },
+      "0.1": {
+        "candidates": 150,
+        "episodes": 50,
+        "mean_J0_m2": 0.0003222555995065747,
+        "delta_J_grad_m2": {
+          "mean": -0.00012055134395849811,
+          "ci95": [
+            -0.00015165796764498205,
+            -9.105883670131669e-05
+          ]
+        },
+        "delta_J_rand_m2": {
+          "mean": 6.3885299056496474e-06,
+          "ci95": [
+            -4.706351302121634e-06,
+            1.9383777698070748e-05
+          ]
+        },
+        "paired_grad_minus_rand_m2": {
+          "mean": -0.00012693987386414775,
+          "ci95": [
+            -0.00015756896183669443,
+            -9.867878874044487e-05
+          ]
+        },
+        "relative_change_grad": -0.37408611097241334,
+        "relative_change_rand": 0.01982441861501093,
+        "fraction_grad_lowers_J": 0.7333333333333333,
+        "fraction_rand_lowers_J": 0.4066666666666667,
+        "fraction_grad_beats_rand": 0.74,
+        "mean_effective_norm_grad": 0.10000000258286794,
+        "mean_effective_norm_rand": 0.10000000238418578
+      },
+      "0.2": {
+        "candidates": 150,
+        "episodes": 50,
+        "mean_J0_m2": 0.0003222555995065747,
+        "delta_J_grad_m2": {
+          "mean": -0.00014225104646015764,
+          "ci95": [
+            -0.00020141990039781763,
+            -8.642991293549406e-05
+          ]
+        },
+        "delta_J_rand_m2": {
+          "mean": 2.443362198912417e-05,
+          "ci95": [
+            6.410649496960107e-06,
+            4.304465557631427e-05
+          ]
+        },
+        "paired_grad_minus_rand_m2": {
+          "mean": -0.0001666846684492818,
+          "ci95": [
+            -0.00022584737931222483,
+            -0.00011176254454510176
+          ]
+        },
+        "relative_change_grad": -0.44142304021393863,
+        "relative_change_rand": 0.07582062818004089,
+        "fraction_grad_lowers_J": 0.52,
+        "fraction_rand_lowers_J": 0.32666666666666666,
+        "fraction_grad_beats_rand": 0.58,
+        "mean_effective_norm_grad": 0.20000000536441803,
+        "mean_effective_norm_rand": 0.20000000417232514
+      },
+      "0.4": {
+        "candidates": 150,
+        "episodes": 50,
+        "mean_J0_m2": 0.0003222555995065747,
+        "delta_J_grad_m2": {
+          "mean": 0.00012038387310571529,
+          "ci95": [
+            6.539135292241163e-06,
+            0.00022918052347971202
+          ]
+        },
+        "delta_J_rand_m2": {
+          "mean": 0.00010901903425776914,
+          "ci95": [
+            7.432601379065604e-05,
+            0.00014371573991273716
+          ]
+        },
+        "paired_grad_minus_rand_m2": {
+          "mean": 1.1364838847946178e-05,
+          "ci95": [
+            -0.00010507174742377593,
+            0.0001187881665985353
+          ]
+        },
+        "relative_change_grad": 0.3735664276743132,
+        "relative_change_rand": 0.3382998912189419,
+        "fraction_grad_lowers_J": 0.32666666666666666,
+        "fraction_rand_lowers_J": 0.18666666666666668,
+        "fraction_grad_beats_rand": 0.41333333333333333,
+        "mean_effective_norm_grad": 0.40000000774860384,
+        "mean_effective_norm_rand": 0.40000000735123953
+      }
+    }
+  },
+  "test": {
+    "policy": {
+      "candidates": 300,
+      "episodes": 100,
+      "mean_J0_m2": 2.0897269895312825e-05,
+      "delta_J_grad_m2": {
+        "mean": -3.925484246416023e-06,
+        "ci95": [
+          -5.594444472131087e-06,
+          -2.312580033838946e-06
+        ]
+      },
+      "delta_J_rand_m2": {
+        "mean": 1.9253958168066188e-06,
+        "ci95": [
+          1.2422252192853606e-06,
+          2.625379279482519e-06
+        ]
+      },
+      "paired_grad_minus_rand_m2": {
+        "mean": -5.850880063222642e-06,
+        "ci95": [
+          -7.795128994233857e-06,
+          -4.0401629157389585e-06
+        ]
+      },
+      "relative_change_grad": -0.18784675060814973,
+      "relative_change_rand": 0.09213623724305141,
+      "fraction_grad_lowers_J": 0.5933333333333334,
+      "fraction_rand_lowers_J": 0.37333333333333335,
+      "fraction_grad_beats_rand": 0.63,
+      "mean_effective_norm_grad": 0.05000000096857548,
+      "mean_effective_norm_rand": 0.05000000119209289,
+      "step_size": 0.05
+    },
+    "policy_perturbed": {
+      "candidates": 300,
+      "episodes": 100,
+      "mean_J0_m2": 0.00036623361520389893,
+      "delta_J_grad_m2": {
+        "mean": -0.00017894264132119146,
+        "ci95": [
+          -0.00022223483496524,
+          -0.00013839543672611082
+        ]
+      },
+      "delta_J_rand_m2": {
+        "mean": 3.3576321900272075e-05,
+        "ci95": [
+          1.7507623229267263e-05,
+          4.798894049257757e-05
+        ]
+      },
+      "paired_grad_minus_rand_m2": {
+        "mean": -0.00021251896322146353,
+        "ci95": [
+          -0.00025371289454961457,
+          -0.00017230668978504075
+        ]
+      },
+      "relative_change_grad": -0.48860244907220207,
+      "relative_change_rand": 0.0916800656913446,
+      "fraction_grad_lowers_J": 0.5933333333333334,
+      "fraction_rand_lowers_J": 0.30666666666666664,
+      "fraction_grad_beats_rand": 0.6266666666666667,
+      "mean_effective_norm_grad": 0.2000000062584877,
+      "mean_effective_norm_rand": 0.20000000496705372,
+      "step_size": 0.2
+    },
+    "expert_perturbed": {
+      "candidates": 300,
+      "episodes": 100,
+      "mean_J0_m2": 0.0003757591046133425,
+      "delta_J_grad_m2": {
+        "mean": -0.00016773721092198755,
+        "ci95": [
+          -0.00021254188914265583,
+          -0.00012443692035033589
+        ]
+      },
+      "delta_J_rand_m2": {
+        "mean": 2.6796638635377226e-05,
+        "ci95": [
+          1.3195702694901068e-05,
+          3.9682457427166156e-05
+        ]
+      },
+      "paired_grad_minus_rand_m2": {
+        "mean": -0.0001945338495573648,
+        "ci95": [
+          -0.00024034038827589808,
+          -0.00015088925537041516
+        ]
+      },
+      "relative_change_grad": -0.44639559990060595,
+      "relative_change_rand": 0.07131334492334143,
+      "fraction_grad_lowers_J": 0.57,
+      "fraction_rand_lowers_J": 0.2966666666666667,
+      "fraction_grad_beats_rand": 0.6233333333333333,
+      "mean_effective_norm_grad": 0.20000000496705372,
+      "mean_effective_norm_rand": 0.20000000541408858,
+      "step_size": 0.2
+    }
+  },
+  "direction_gate": {
+    "rule": "on test, at the step size chosen on val for that candidate type: 95% CI of delta_J_grad below 0 AND 95% CI of (grad - rand) below 0; the policy-sample row decides the gate",
+    "by_candidate_type": {
+      "policy": true,
+      "policy_perturbed": true,
+      "expert_perturbed": true
+    },
+    "pass": true
+  }
+}
