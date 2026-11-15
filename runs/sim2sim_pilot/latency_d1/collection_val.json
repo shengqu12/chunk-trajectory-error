@@ -1,0 +1,110 @@
+{
+  "shift": "latency_d1",
+  "split": "val",
+  "seed": 1017,
+  "budget_steps": 5000,
+  "target_steps_used": 5000,
+  "episodes": 28,
+  "episodes_perturbed": 14,
+  "episodes_success": 4,
+  "success_unperturbed": [
+    4,
+    14
+  ],
+  "success_perturbed": [
+    0,
+    14
+  ],
+  "episodes_truncated_by_budget": 1,
+  "episode_ids": [
+    14,
+    38,
+    39,
+    43,
+    47,
+    54,
+    82,
+    86,
+    88,
+    91,
+    98,
+    111,
+    113,
+    115,
+    117,
+    118,
+    123,
+    135,
+    151,
+    155,
+    156,
+    159,
+    160,
+    161,
+    162,
+    168,
+    182,
+    186
+  ],
+  "label_samples": 4345,
+  "label_samples_ok": 4345,
+  "label_samples_aborted": 0,
+  "steps_without_label": 655,
+  "source_steps_for_labels": 43450,
+  "target_restores": 0,
+  "J_gap_m2": {
+    "n": 4345,
+    "mean": 3.126200664498953e-05,
+    "p10": 1.0231723579645636e-06,
+    "median": 1.273778327839925e-05,
+    "p90": 7.892036545742387e-05,
+    "max": 0.0005898846955725908,
+    "exact_zeros": 0
+  },
+  "J_gap_cube_m2": {
+    "n": 4345,
+    "mean": 5.873471028029193e-06,
+    "p10": 9.396095013158857e-14,
+    "median": 2.732956222439853e-13,
+    "p90": 1.119675113956971e-05,
+    "max": 0.0026475170143199526,
+    "exact_zeros": 7
+  },
+  "sqrtJ_gap_mm": {
+    "n": 4345,
+    "mean": 4.4125326448466895,
+    "p10": 1.0115198245728112,
+    "median": 3.5690031210968773,
+    "p90": 8.883713474265049,
+    "max": 24.28754198293007,
+    "exact_zeros": 0
+  },
+  "J_gap_m2_unperturbed": {
+    "n": 2057,
+    "mean": 1.3591860236511777e-05,
+    "p10": 2.4643699251668266e-07,
+    "median": 4.287281940673626e-06,
+    "p90": 3.205742580229099e-05,
+    "max": 0.00030431920621712264,
+    "exact_zeros": 0
+  },
+  "J_gap_m2_perturbed": {
+    "n": 2288,
+    "mean": 4.714814788722674e-05,
+    "p10": 5.292085393088817e-06,
+    "median": 2.539916463394857e-05,
+    "p90": 0.00010799665592926388,
+    "max": 0.0005898846955725908,
+    "exact_zeros": 0
+  },
+  "pending_logged": {
+    "shape_per_step": [
+      1,
+      4
+    ],
+    "note": "commands sent but not yet applied, before the step"
+  },
+  "controller_state_keys": [],
+  "seconds_collection": 32.541804790496826,
+  "seconds_labels": 38.121317625045776
+}

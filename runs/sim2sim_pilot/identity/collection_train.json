@@ -1,0 +1,99 @@
+{
+  "shift": "nominal",
+  "split": "train",
+  "seed": 17,
+  "budget_steps": 2000,
+  "target_steps_used": 2000,
+  "episodes": 17,
+  "episodes_perturbed": 8,
+  "episodes_success": 9,
+  "success_unperturbed": [
+    7,
+    9
+  ],
+  "success_perturbed": [
+    2,
+    8
+  ],
+  "episodes_truncated_by_budget": 1,
+  "episode_ids": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    6,
+    7,
+    8,
+    10,
+    11,
+    12,
+    13,
+    15,
+    16,
+    17,
+    20,
+    22
+  ],
+  "label_samples": 1638,
+  "label_samples_ok": 1638,
+  "label_samples_aborted": 0,
+  "steps_without_label": 362,
+  "source_steps_for_labels": 16380,
+  "target_restores": 0,
+  "J_gap_m2": {
+    "n": 1638,
+    "mean": 9.361984778181806e-09,
+    "p10": 2.2479379468975934e-14,
+    "median": 8.307474987871016e-14,
+    "p90": 3.4771730074434344e-09,
+    "max": 2.532169904874426e-06,
+    "exact_zeros": 1
+  },
+  "J_gap_cube_m2": {
+    "n": 1638,
+    "mean": 4.296659513687198e-08,
+    "p10": 1.0372688764772462e-13,
+    "median": 2.859880301325779e-13,
+    "p90": 1.821043110513065e-08,
+    "max": 1.0877489909214693e-05,
+    "exact_zeros": 1
+  },
+  "sqrtJ_gap_mm": {
+    "n": 1638,
+    "mean": 0.02414455273529541,
+    "p10": 0.0001499312213911051,
+    "median": 0.00028822686134613086,
+    "p90": 0.05896755226383129,
+    "max": 1.5912793296195442,
+    "exact_zeros": 1
+  },
+  "J_gap_m2_unperturbed": {
+    "n": 481,
+    "mean": 6.631844607950978e-09,
+    "p10": 3.534611839328683e-14,
+    "median": 4.085384487304e-11,
+    "p90": 1.8567527444723898e-08,
+    "max": 2.3718010731046958e-07,
+    "exact_zeros": 0
+  },
+  "J_gap_m2_perturbed": {
+    "n": 1157,
+    "mean": 1.0496986871423835e-08,
+    "p10": 1.96653804351854e-14,
+    "median": 6.474820679613913e-14,
+    "p90": 1.3067477100392663e-11,
+    "max": 2.532169904874426e-06,
+    "exact_zeros": 1
+  },
+  "pending_logged": {
+    "shape_per_step": [
+      0,
+      4
+    ],
+    "note": "commands sent but not yet applied, before the step"
+  },
+  "controller_state_keys": [],
+  "seconds_collection": 13.105472564697266,
+  "seconds_labels": 23.84764266014099
+}

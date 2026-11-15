@@ -1,0 +1,11 @@
+{
+  "note": "fresh environment, only these 50 seeds; Phase A ran 100 test-episode resets (with init states) before them",
+  "success_200cap": 13,
+  "success_400cap_within_200": 13,
+  "success_200cap_repeat": 13,
+  "phase_a": 12,
+  "cap200_equals_cap400_per_episode": true,
+  "repeat_bit_identical": true,
+  "equals_phase_a_per_episode": false,
+  "episodes_differing_from_phase_a": 1
+}

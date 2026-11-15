@@ -1,0 +1,8 @@
+nohist weight=0.001: val true J 2.727e-05 m^2 (sqrtJ 4.240 mm), val BC 0.00760
+nohist weight=0.003: val true J 2.989e-05 m^2 (sqrtJ 4.431 mm), val BC 0.00762
+nohist weight=0.01: val true J 3.729e-05 m^2 (sqrtJ 5.065 mm), val BC 0.00778
+nohist weight=0.03: val true J 5.834e-05 m^2 (sqrtJ 6.500 mm), val BC 0.00808
+nohist weight=0.1: val true J 1.478e-04 m^2 (sqrtJ 10.364 mm), val BC 0.00883
+nohist weight=0.3: val true J 3.223e-04 m^2 (sqrtJ 15.598 mm), val BC 0.01019
+nohist weight=1: val true J 7.382e-04 m^2 (sqrtJ 25.193 mm), val BC 0.01224
+selected weight: 0.001

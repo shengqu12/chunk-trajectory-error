@@ -1,0 +1,470 @@
+{
+  "seed": 20,
+  "config": "runs/sim2sim_pilot/actuation_s0.4/phase_c/seed_20/base_config.yaml",
+  "pi0": "runs/sim2sim_pilot/actuation_s0.4/phase_c/seed_20/checkpoints/pi0.pt",
+  "pi0_baseline": {
+    "checkpoint": "runs/sim2sim_pilot/actuation_s0.4/phase_c/seed_20/checkpoints/pi0.pt",
+    "train_samples": 30953,
+    "train_episodes": 400,
+    "best_val_bc_loss": 0.007251371629536152,
+    "curve": null,
+    "val_true_J_m2_mean": 2.8448367400113502e-05,
+    "val_true_sqrtJ_mm_mean": 4.239230494679459,
+    "val_anchors": 300,
+    "val_closed_loop_r0": {
+      "episodes": 30,
+      "successes": 8
+    }
+  },
+  "finetune_data": {
+    "episodes": 32,
+    "samples": 2703,
+    "perturbed_episodes": 4,
+    "by_episode": [
+      {
+        "episode_id": 0,
+        "steps": 81,
+        "perturbed": false
+      },
+      {
+        "episode_id": 4,
+        "steps": 66,
+        "perturbed": false
+      },
+      {
+        "episode_id": 8,
+        "steps": 1,
+        "perturbed": true
+      },
+      {
+        "episode_id": 12,
+        "steps": 75,
+        "perturbed": false
+      },
+      {
+        "episode_id": 15,
+        "steps": 83,
+        "perturbed": false
+      },
+      {
+        "episode_id": 22,
+        "steps": 67,
+        "perturbed": false
+      },
+      {
+        "episode_id": 29,
+        "steps": 98,
+        "perturbed": true
+      },
+      {
+        "episode_id": 30,
+        "steps": 71,
+        "perturbed": false
+      },
+      {
+        "episode_id": 33,
+        "steps": 138,
+        "perturbed": true
+      },
+      {
+        "episode_id": 36,
+        "steps": 92,
+        "perturbed": false
+      },
+      {
+        "episode_id": 45,
+        "steps": 59,
+        "perturbed": false
+      },
+      {
+        "episode_id": 48,
+        "steps": 105,
+        "perturbed": false
+      },
+      {
+        "episode_id": 57,
+        "steps": 1,
+        "perturbed": false
+      },
+      {
+        "episode_id": 62,
+        "steps": 85,
+        "perturbed": false
+      },
+      {
+        "episode_id": 68,
+        "steps": 65,
+        "perturbed": false
+      },
+      {
+        "episode_id": 73,
+        "steps": 80,
+        "perturbed": false
+      },
+      {
+        "episode_id": 74,
+        "steps": 178,
+        "perturbed": true
+      },
+      {
+        "episode_id": 81,
+        "steps": 97,
+        "perturbed": false
+      },
+      {
+        "episode_id": 101,
+        "steps": 93,
+        "perturbed": false
+      },
+      {
+        "episode_id": 103,
+        "steps": 126,
+        "perturbed": false
+      },
+      {
+        "episode_id": 105,
+        "steps": 138,
+        "perturbed": false
+      },
+      {
+        "episode_id": 107,
+        "steps": 89,
+        "perturbed": false
+      },
+      {
+        "episode_id": 110,
+        "steps": 93,
+        "perturbed": false
+      },
+      {
+        "episode_id": 124,
+        "steps": 75,
+        "perturbed": false
+      },
+      {
+        "episode_id": 130,
+        "steps": 96,
+        "perturbed": false
+      },
+      {
+        "episode_id": 136,
+        "steps": 71,
+        "perturbed": false
+      },
+      {
+        "episode_id": 138,
+        "steps": 90,
+        "perturbed": false
+      },
+      {
+        "episode_id": 142,
+        "steps": 108,
+        "perturbed": false
+      },
+      {
+        "episode_id": 158,
+        "steps": 64,
+        "perturbed": false
+      },
+      {
+        "episode_id": 164,
+        "steps": 65,
+        "perturbed": false
+      },
+      {
+        "episode_id": 171,
+        "steps": 73,
+        "perturbed": false
+      },
+      {
+        "episode_id": 173,
+        "steps": 80,
+        "perturbed": false
+      }
+    ]
+  },
+  "logged_states_for_gap_logged": 17190,
+  "candidates": [
+    {
+      "method": "zero_shot",
+      "tag": "w0",
+      "checkpoint": "runs/sim2sim_pilot/actuation_s0.4/phase_c/seed_20/checkpoints/zero_shot/w0.pt",
+      "weight": 0.0,
+      "val_bc_loss": 0.007282712962478399,
+      "val_chunk_roughness": 0.00014299513713922352,
+      "last_log": {
+        "step": 5000,
+        "imitation": 0.0018933231476694345,
+        "auxiliary": -0.0,
+        "grad_norm_imitation": 0.015738053247332573,
+        "grad_norm_weighted_auxiliary": 0.0
+      }
+    },
+    {
+      "method": "imitation_selected",
+      "tag": "step1000",
+      "weight": 1000,
+      "step": 1000,
+      "train_loss": 0.0025659482926130295,
+      "val_bc_loss": 0.007289569824934006,
+      "checkpoint": "runs/sim2sim_pilot/actuation_s0.4/phase_c/seed_20/checkpoints/imitation_selected/step1000.pt"
+    },
+    {
+      "method": "imitation_selected",
+      "tag": "step2000",
+      "weight": 2000,
+      "step": 2000,
+      "train_loss": 0.0020900561939924955,
+      "val_bc_loss": 0.007232707925140858,
+      "checkpoint": "runs/sim2sim_pilot/actuation_s0.4/phase_c/seed_20/checkpoints/imitation_selected/step2000.pt"
+    },
+    {
+      "method": "imitation_selected",
+      "tag": "step3000",
+      "weight": 3000,
+      "step": 3000,
+      "train_loss": 0.0022182203829288483,
+      "val_bc_loss": 0.007339671719819307,
+      "checkpoint": "runs/sim2sim_pilot/actuation_s0.4/phase_c/seed_20/checkpoints/imitation_selected/step3000.pt"
+    },
+    {
+      "method": "imitation_selected",
+      "tag": "step4000",
+      "weight": 4000,
+      "step": 4000,
+      "train_loss": 0.0018143836641684175,
+      "val_bc_loss": 0.007211755961179733,
+      "checkpoint": "runs/sim2sim_pilot/actuation_s0.4/phase_c/seed_20/checkpoints/imitation_selected/step4000.pt"
+    },
+    {
+      "method": "imitation_selected",
+      "tag": "step5000",
+      "weight": 5000,
+      "step": 5000,
+      "train_loss": 0.0018933231476694345,
+      "val_bc_loss": 0.007282712962478399,
+      "checkpoint": "runs/sim2sim_pilot/actuation_s0.4/phase_c/seed_20/checkpoints/zero_shot/w0.pt"
+    },
+    {
+      "method": "gap_demo",
+      "tag": "w0.0001",
+      "checkpoint": "runs/sim2sim_pilot/actuation_s0.4/phase_c/seed_20/checkpoints/gap_demo/w0.0001.pt",
+      "weight": 0.0001,
+      "val_bc_loss": 0.007296048570424318,
+      "val_chunk_roughness": 0.00014050104073248804,
+      "last_log": {
+        "step": 5000,
+        "imitation": 0.0018891062354668975,
+        "auxiliary": 0.5714758634567261,
+        "grad_norm_imitation": 0.01564295031130314,
+        "grad_norm_weighted_auxiliary": 0.0016033367719501257
+      }
+    },
+    {
+      "method": "gap_demo",
+      "tag": "w0.0003",
+      "checkpoint": "runs/sim2sim_pilot/actuation_s0.4/phase_c/seed_20/checkpoints/gap_demo/w0.0003.pt",
+      "weight": 0.0003,
+      "val_bc_loss": 0.00730858463793993,
+      "val_chunk_roughness": 0.0001411738048773259,
+      "last_log": {
+        "step": 5000,
+        "imitation": 0.0019043112406507134,
+        "auxiliary": 0.45974719524383545,
+        "grad_norm_imitation": 0.016090387478470802,
+        "grad_norm_weighted_auxiliary": 0.004028063267469406
+      }
+    },
+    {
+      "method": "gap_demo",
+      "tag": "w0.001",
+      "checkpoint": "runs/sim2sim_pilot/actuation_s0.4/phase_c/seed_20/checkpoints/gap_demo/w0.001.pt",
+      "weight": 0.001,
+      "val_bc_loss": 0.007401041220873594,
+      "val_chunk_roughness": 0.00016148366557899863,
+      "last_log": {
+        "step": 5000,
+        "imitation": 0.0019999498035758734,
+        "auxiliary": 0.2893621027469635,
+        "grad_norm_imitation": 0.017937542870640755,
+        "grad_norm_weighted_auxiliary": 0.008467246778309345
+      }
+    },
+    {
+      "method": "gap_demo",
+      "tag": "w0.003",
+      "checkpoint": "runs/sim2sim_pilot/actuation_s0.4/phase_c/seed_20/checkpoints/gap_demo/w0.003.pt",
+      "weight": 0.003,
+      "val_bc_loss": 0.007588702719658613,
+      "val_chunk_roughness": 0.0002346377877984196,
+      "last_log": {
+        "step": 5000,
+        "imitation": 0.002197831403464079,
+        "auxiliary": 0.17410695552825928,
+        "grad_norm_imitation": 0.021100550889968872,
+        "grad_norm_weighted_auxiliary": 0.012505501508712769
+      }
+    },
+    {
+      "method": "gap_demo",
+      "tag": "w0.01",
+      "checkpoint": "runs/sim2sim_pilot/actuation_s0.4/phase_c/seed_20/checkpoints/gap_demo/w0.01.pt",
+      "weight": 0.01,
+      "val_bc_loss": 0.0079429866746068,
+      "val_chunk_roughness": 0.0004599720996338874,
+      "last_log": {
+        "step": 5000,
+        "imitation": 0.0025234934873878956,
+        "auxiliary": 0.11208903789520264,
+        "grad_norm_imitation": 0.024790436029434204,
+        "grad_norm_weighted_auxiliary": 0.01851574145257473
+      }
+    },
+    {
+      "method": "smooth",
+      "tag": "w0.1",
+      "checkpoint": "runs/sim2sim_pilot/actuation_s0.4/phase_c/seed_20/checkpoints/smooth/w0.1.pt",
+      "weight": 0.1,
+      "val_bc_loss": 0.007285026367753744,
+      "val_chunk_roughness": 0.0001388780801789835,
+      "last_log": {
+        "step": 5000,
+        "imitation": 0.0018859595293179154,
+        "auxiliary": 0.00012979919847566634,
+        "grad_norm_imitation": 0.01590772159397602,
+        "grad_norm_weighted_auxiliary": 0.0007301385048776865
+      }
+    },
+    {
+      "method": "smooth",
+      "tag": "w0.3",
+      "checkpoint": "runs/sim2sim_pilot/actuation_s0.4/phase_c/seed_20/checkpoints/smooth/w0.3.pt",
+      "weight": 0.3,
+      "val_bc_loss": 0.007277186028659344,
+      "val_chunk_roughness": 0.00012704735854640603,
+      "last_log": {
+        "step": 5000,
+        "imitation": 0.0018937090644612908,
+        "auxiliary": 0.0001202918283524923,
+        "grad_norm_imitation": 0.01584566943347454,
+        "grad_norm_weighted_auxiliary": 0.0020843124948441982
+      }
+    },
+    {
+      "method": "smooth",
+      "tag": "w1",
+      "checkpoint": "runs/sim2sim_pilot/actuation_s0.4/phase_c/seed_20/checkpoints/smooth/w1.pt",
+      "weight": 1.0,
+      "val_bc_loss": 0.0072808535769581795,
+      "val_chunk_roughness": 0.00010726327309384942,
+      "last_log": {
+        "step": 5000,
+        "imitation": 0.001908264821395278,
+        "auxiliary": 9.700390364741907e-05,
+        "grad_norm_imitation": 0.015756284818053246,
+        "grad_norm_weighted_auxiliary": 0.004878407344222069
+      }
+    },
+    {
+      "method": "magnitude",
+      "tag": "w0.1",
+      "checkpoint": "runs/sim2sim_pilot/actuation_s0.4/phase_c/seed_20/checkpoints/magnitude/w0.1.pt",
+      "weight": 0.1,
+      "val_bc_loss": 0.0073465402238070965,
+      "val_chunk_roughness": 0.00011337611795170233,
+      "val_chunk_magnitude": 0.006250279024243355,
+      "last_log": {
+        "step": 5000,
+        "imitation": 0.0019814507104456425,
+        "auxiliary": 0.00603149551898241,
+        "grad_norm_imitation": 0.017482886090874672,
+        "grad_norm_weighted_auxiliary": 0.007805192843079567
+      }
+    },
+    {
+      "method": "magnitude",
+      "tag": "w0.3",
+      "checkpoint": "runs/sim2sim_pilot/actuation_s0.4/phase_c/seed_20/checkpoints/magnitude/w0.3.pt",
+      "weight": 0.3,
+      "val_bc_loss": 0.007691617589443922,
+      "val_chunk_roughness": 7.701337017351761e-05,
+      "val_chunk_magnitude": 0.004140496253967285,
+      "last_log": {
+        "step": 5000,
+        "imitation": 0.002363834995776415,
+        "auxiliary": 0.003999902401119471,
+        "grad_norm_imitation": 0.02318994514644146,
+        "grad_norm_weighted_auxiliary": 0.01863132044672966
+      }
+    },
+    {
+      "method": "magnitude",
+      "tag": "w1",
+      "checkpoint": "runs/sim2sim_pilot/actuation_s0.4/phase_c/seed_20/checkpoints/magnitude/w1.pt",
+      "weight": 1.0,
+      "val_bc_loss": 0.009102946147322655,
+      "val_chunk_roughness": 3.0429398975684308e-05,
+      "val_chunk_magnitude": 0.0014785529347136617,
+      "last_log": {
+        "step": 5000,
+        "imitation": 0.003770670387893915,
+        "auxiliary": 0.0014726336812600493,
+        "grad_norm_imitation": 0.036455340683460236,
+        "grad_norm_weighted_auxiliary": 0.0364089272916317
+      }
+    },
+    {
+      "method": "finetune",
+      "tag": "step1000",
+      "weight": 1000,
+      "step": 1000,
+      "train_loss": 0.0036460659466683865,
+      "val_bc_loss": 0.007113667670637369,
+      "checkpoint": "runs/sim2sim_pilot/actuation_s0.4/phase_c/seed_20/checkpoints/finetune/step1000.pt"
+    },
+    {
+      "method": "finetune",
+      "tag": "step2000",
+      "weight": 2000,
+      "step": 2000,
+      "train_loss": 0.0027249183040112257,
+      "val_bc_loss": 0.0070673441514372826,
+      "checkpoint": "runs/sim2sim_pilot/actuation_s0.4/phase_c/seed_20/checkpoints/finetune/step2000.pt"
+    },
+    {
+      "method": "finetune",
+      "tag": "step3000",
+      "weight": 3000,
+      "step": 3000,
+      "train_loss": 0.002605936024338007,
+      "val_bc_loss": 0.007161684334278107,
+      "checkpoint": "runs/sim2sim_pilot/actuation_s0.4/phase_c/seed_20/checkpoints/finetune/step3000.pt"
+    },
+    {
+      "method": "finetune",
+      "tag": "step4000",
+      "weight": 4000,
+      "step": 4000,
+      "train_loss": 0.0022097162436693907,
+      "val_bc_loss": 0.0072406684048473835,
+      "checkpoint": "runs/sim2sim_pilot/actuation_s0.4/phase_c/seed_20/checkpoints/finetune/step4000.pt"
+    },
+    {
+      "method": "finetune",
+      "tag": "step5000",
+      "weight": 5000,
+      "step": 5000,
+      "train_loss": 0.0025061406195163727,
+      "val_bc_loss": 0.007361671421676874,
+      "checkpoint": "runs/sim2sim_pilot/actuation_s0.4/phase_c/seed_20/checkpoints/finetune/step5000.pt"
+    }
+  ],
+  "checks": {
+    "imitation_last_checkpoint_equals_zero_shot": true,
+    "train_aux_reproduces_train_one_smooth": {
+      "beta": 0.1,
+      "bitwise_equal": true
+    }
+  },
+  "seconds": 356.2390937805176
+}

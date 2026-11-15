@@ -1,0 +1,4 @@
+smooth weight=0.1: val true J 2.673e-05 m^2 (sqrtJ 4.194 mm), val BC 0.00756
+smooth weight=0.3: val true J 2.719e-05 m^2 (sqrtJ 4.227 mm), val BC 0.00757
+smooth weight=1: val true J 2.753e-05 m^2 (sqrtJ 4.152 mm), val BC 0.00755
+selected weight: 0.1

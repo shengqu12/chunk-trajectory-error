@@ -1,0 +1,14 @@
+condition,family,s,d,f,m,contact_mode,role,n,successes,success_rate,wilson_low,wilson_high,mean_episode_steps,mean_episode_steps_success,mean_ee_step_mm,aborted,paired_diff_pp,paired_ci_low_pp,paired_ci_high_pp,only_shift_succeeds,only_nominal_succeeds,meets_gate1,chosen_gate1
+nominal,nominal,,,,,,reference,150,85,0.566667,0.486678,0.643325,135.44,86.0706,4.09939,0,0,0,0,0,0,False,False
+actuation_s0.8,actuation,0.8,,,,,scan,150,80,0.533333,0.453661,0.611341,136.64,81.2,4.26705,0,-3.33333,-10,3.33333,10,15,False,False
+actuation_s0.6,actuation,0.6,,,,,scan,150,74,0.493333,0.414495,0.572504,142.913,84.2838,4.44079,0,-7.33333,-14.6667,0.666667,12,23,False,False
+actuation_s0.4,actuation,0.4,,,,,scan,150,51,0.34,0.269032,0.418959,162.667,90.1961,4.00762,0,-22.6667,-32,-13.3333,13,47,True,True
+actuation_s0.3,actuation,0.3,,,,,scan,150,24,0.16,0.109939,0.227041,181.873,86.7083,4.06719,0,-40.6667,-50,-31.3333,7,68,True,False
+latency_d1,latency,,1,,,,scan,150,30,0.2,0.14384,0.271143,177.107,85.5333,4.7312,0,-36.6667,-45.3333,-28,5,60,True,True
+latency_d2,latency,,2,,,,scan,150,20,0.133333,0.0879973,0.196982,187.74,108.05,4.12652,0,-43.3333,-53.3333,-34,9,74,True,False
+contact_f0.5_m2,contact,,,0.5,2,cube_only,scan,150,85,0.566667,0.486678,0.643325,137.087,88.9765,4.14043,0,0,-4.66667,4.66667,6,6,False,False
+contact_f0.3_m3,contact,,,0.3,3,cube_only,scan,150,74,0.493333,0.414495,0.572504,144.873,88.2568,4.10735,0,-7.33333,-14,-1.33333,6,17,False,False
+contact_f0.2_m4,contact,,,0.2,4,cube_only,scan,150,72,0.48,0.40155,0.559449,145.153,85.7361,3.95024,0,-8.66667,-15.3333,-2.66667,5,18,False,False
+contact_shared_f0.5_m2,contact,,,0.5,2,shared_in_place,diagnostic,150,80,0.533333,0.453661,0.611341,140.42,88.2875,3.99455,0,-3.33333,-8.66667,1.33333,5,10,False,False
+contact_shared_f0.3_m3,contact,,,0.3,3,shared_in_place,diagnostic,150,74,0.493333,0.414495,0.572504,145.34,89.2027,3.95139,0,-7.33333,-13.3333,-1.33333,6,17,False,False
+contact_shared_f0.2_m4,contact,,,0.2,4,shared_in_place,diagnostic,150,69,0.46,0.382234,0.539763,147.853,86.6377,3.92441,0,-10.6667,-17.3333,-4,6,22,False,False

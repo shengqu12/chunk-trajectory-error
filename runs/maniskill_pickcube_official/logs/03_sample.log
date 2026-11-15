@@ -1,0 +1,4 @@
+      anchor_id  candidate_id   candidate_type     J_m2  sqrtJ_mm  max_abs_action_delta rollout_status
+ep0000_t0015_r0             0           expert 0.000000  0.000000              0.000000             ok
+ep0000_t0015_r0             6 expert_perturbed 0.000064  7.985066              0.033374             ok
+LABEL GATE (expert J = 0, perturbed J > 0): PASS

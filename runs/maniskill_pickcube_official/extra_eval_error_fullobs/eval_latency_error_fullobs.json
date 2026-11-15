@@ -1,0 +1,9 @@
+{
+  "error_fullobs": {
+    "device": "cpu (1 thread)",
+    "batch": 1,
+    "repeats": 2000,
+    "p50_ms": 0.04484900273382664,
+    "p95_ms": 0.04990735906176269
+  }
+}

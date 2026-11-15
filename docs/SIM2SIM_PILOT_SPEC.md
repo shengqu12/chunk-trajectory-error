@@ -1,5 +1,7 @@
 # Sim-to-sim pilot: implementation spec
 
+> **Path note (2026-11-15).** This spec was written on the GPU workstation, where `runs/maniskill_pickcube/` held the run with the official demonstrations. In this repository that run is `runs/maniskill_pickcube_official/` (config `configs/maniskill_pickcube_official.yaml`), `runs/maniskill_pickcube/` is the container run, and the pilot scripts live in `scripts/sim2sim/`. The text below is unchanged otherwise.
+
 Status: proposal to be implemented. Nothing below has been run except the small shift check in section 2.
 Place this file at `docs/SIM2SIM_PILOT_SPEC.md` in the Chunk Trajectory Error repository.
 
@@ -57,7 +59,7 @@ Stop for review after each phase. A failed gate is a result: report it and stop.
 
 ### Phase A — find shifts that create a gap (gate 1)
 
-Script: `scripts/10_shift_scan.py`.
+Script: `scripts/sim2sim/10_shift_scan.py`.
 
 - Policy: existing `runs/maniskill_pickcube/checkpoints/pi_bc/pi.pt`. No training.
 - Initial states: the same 150 used by `07_eval_closed_loop.py` (100 test episodes + 50 fresh seeds).
@@ -154,3 +156,64 @@ planner under shifted physics (`mplib==0.1.1` with `numpy<2`). Do not start with
 - Add unit tests for: shift applied once and persisting across resets; the latency wrapper's command
   ordering; label alignment (a zero shift must give J_gap = 0 exactly on every sample).
 - Run with `PYTHONPATH` and `LD_LIBRARY_PATH` unset.
+
+## Amendments (2026-11-13)
+
+Recorded after review of Phase A (`runs/sim2sim_pilot/shift_scan.csv`, `manifest.json`).
+
+1. **Shifts carried forward.** The contact family is dropped: no level passed gate 1 (strongest
+   level f = 0.2, m = 4: -8.7 pp [-15.3, -2.7]). Shifts carried forward: latency d = 1 (first),
+   actuation s = 0.4 (second, only after review).
+2. **Latency hold rule.** For the first d steps of an episode, apply zero translation with the
+   gripper value of the episode's first command.
+3. **Initial states.** The 150 initial states used in Phase A (100 test episodes + 50 fresh seeds)
+   are now "selection states". Phase C final evaluation uses 150 new seeds, 200000-200149, never
+   used before. Lambda selection stays on val-split seeds.
+4. **Success metric.** Phase C reports success with the 200-step cap as the primary metric and with
+   a 400-step cap as a secondary diagnostic.
+5. **Fourth method in Phase C.** Source demonstrations with imitation + beta * action-smoothness
+   penalty (the existing "smooth" variant), beta from the config grid (`policy_finetune.smooth_betas`),
+   selected like lambda. It uses no target data.
+
+Recorded after review of Phase B (`runs/sim2sim_pilot/latency_d1/gap_report.json`, `gap_audit_sim2sim_only.json`).
+
+6. **Gap network for Phase C.** Phase C uses the sqrtJ gap network
+   (`runs/sim2sim_pilot/latency_d1/checkpoints/gap_sqrtJ.pt`), trained from pi_bc's rollouts and reused
+   for all seeds.
+7. **Label test and checkpoint selection.** The exact-zero label test is replaced by the split in
+   `tests/test_sim2sim_labels.py`: exact zero on a deterministic fake simulator; residual below
+   (1 mm)^2 on ManiSkill (PhysX restores are not bit-exact). Selecting the gap network's checkpoint on
+   held-out train episodes (every 10th) instead of validation is accepted.
+8. **Selection states.** Lambda / beta / checkpoint selection uses all 100 val-split initial states,
+   not 30.
+9. **Two pre-registered gap-penalty variants**, both reported whatever the outcome:
+   (a) "gap-demo": imitation on source demonstrations + lambda * G evaluated on the same demonstration
+       samples (history and robot state from the demonstration), as in section 3;
+   (b) "gap-logged": imitation on source demonstrations + lambda * G evaluated on the logged target
+       train states: the policy is run on the logged observation, G gets the logged history and robot
+       state and the policy's chunk. No imitation target is used on logged states. Each batch has the
+       same number of demonstration and logged samples.
+   Gates 4 and 5 are evaluated for each variant separately.
+10. **Same-budget fine-tune data.** It uses exactly the successful logged train episodes (17); the
+    count is reported. No data is added to it.
+
+Recorded after review of Phase C for latency d = 1 (`runs/sim2sim_pilot/latency_d1/results.md`), before any
+actuation result exists.
+
+11. **Actuation run.** Actuation s = 0.4 runs Phase B and Phase C back to back. Stop early only if gate 2
+    or gate 3 fails; then report that as the result.
+12. **Gap-penalty variant.** gap-demo only. gap-logged is dropped because it exploited G at the action
+    limits in the latency run.
+13. **Lambda grid for actuation:** {0.0001, 0.0003, 0.001, 0.003, 0.01}. (Latency selected the lower edge
+    of the old grid on all five seeds.)
+14. **New row "imitation-selected":** the imitation-only fine-tune with its checkpoint selected on the 100
+    target val seeds, exactly as the same-budget fine-tune selects its checkpoint. Plain zero-shot is kept.
+    Gate 4 is reported against both.
+15. **New baseline "magnitude":** imitation + beta * mean squared translation command of the chunk, beta
+    from the smoothness grid, selected like the other weights. The smoothness baseline is kept.
+16. **Final evaluation seeds for actuation:** 300000-300149. Selection stays on the val-split seeds.
+17. **Gate 3 for actuation** is reported on logged val states (as before) and on demonstration states (the
+    `scripts/sim2sim/13_audit_gap_demo.py` diagnostic); the gate verdict uses the logged-state test, the
+    demonstration-state test is reported next to it.
+18. **Gap network for actuation:** the sqrtJ network, trained on pi_bc's rollouts in the actuation target
+    and reused for all seeds.

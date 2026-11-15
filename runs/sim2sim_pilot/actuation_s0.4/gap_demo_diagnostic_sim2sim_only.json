@@ -1,0 +1,141 @@
+{
+  "sim_to_sim_only": true,
+  "gating": false,
+  "banner": "SIM-TO-SIM ONLY, NON-GATING: target restores are used below",
+  "samples": 300,
+  "episodes": 189,
+  "held_out_train_episodes": 281,
+  "policy": "runs/maniskill_pickcube/checkpoints/pi_bc/pi.pt",
+  "gap_checkpoint": "runs/sim2sim_pilot/actuation_s0.4/checkpoints/gap_sqrtJ.pt",
+  "true_gap_demo_states_m2": {
+    "p10": 1.7649576795133061e-06,
+    "median": 7.309056767262033e-06,
+    "p90": 2.312015065956981e-05,
+    "mean": 1.0671854392337848e-05
+  },
+  "G_pred_demo_states_m2": {
+    "p10": 2.2523799316331863e-06,
+    "median": 7.434495046254597e-06,
+    "p90": 2.391013731539718e-05,
+    "mean": 1.1398736418849846e-05
+  },
+  "labels_logged_val_m2": {
+    "p10": 3.6630104368312775e-07,
+    "median": 5.893316119821032e-06,
+    "p90": 4.382799334820859e-05,
+    "mean": 1.7102904748254316e-05
+  },
+  "prediction_vs_truth": {
+    "spearman": 0.8966730741452682,
+    "pearson": 0.9489375035549463,
+    "MAE_m2": 2.6892093193371196e-06,
+    "constant_fit_mean_MAE_m2": 1.0456951273253333e-05,
+    "constant_demo_mean_MAE_m2": 7.651895003996034e-06,
+    "mean_pred_over_mean_true": 1.0681120637322303,
+    "median_pred_over_true": 1.0491821577731124
+  },
+  "step_test": {
+    "0.02": {
+      "samples": 300,
+      "episodes": 189,
+      "mean_J0_m2": 1.0671854392337848e-05,
+      "delta_J_grad_m2": {
+        "mean": -1.0603302115628407e-06,
+        "ci95": [
+          -1.1542929321178535e-06,
+          -9.722593440748418e-07
+        ]
+      },
+      "delta_J_rand_m2": {
+        "mean": 2.1945920289815093e-08,
+        "ci95": [
+          -3.326729860397153e-08,
+          7.628995054821177e-08
+        ]
+      },
+      "paired_grad_minus_rand_m2": {
+        "mean": -1.0822761318526557e-06,
+        "ci95": [
+          -1.1776323619922027e-06,
+          -9.872510592739661e-07
+        ]
+      },
+      "relative_change_grad": -0.09935763481969301,
+      "relative_change_rand": 0.0020564298839732833,
+      "fraction_grad_lowers_J": 0.9733333333333334,
+      "fraction_grad_beats_rand": 0.9666666666666667,
+      "mean_effective_norm_grad": 0.019999999379118283,
+      "mean_effective_norm_rand": 0.0199999993853271
+    },
+    "0.05": {
+      "samples": 300,
+      "episodes": 189,
+      "mean_J0_m2": 1.0671854392337848e-05,
+      "delta_J_grad_m2": {
+        "mean": -2.4422994056066778e-06,
+        "ci95": [
+          -2.6479456060957297e-06,
+          -2.2472091686152856e-06
+        ]
+      },
+      "delta_J_rand_m2": {
+        "mean": 7.463163976489594e-08,
+        "ci95": [
+          -7.232587344520601e-09,
+          1.5594883375902008e-07
+        ]
+      },
+      "paired_grad_minus_rand_m2": {
+        "mean": -2.5169310453715733e-06,
+        "ci95": [
+          -2.7335418469330095e-06,
+          -2.3101665665171094e-06
+        ]
+      },
+      "relative_change_grad": -0.22885426616766752,
+      "relative_change_rand": 0.006993315034215589,
+      "fraction_grad_lowers_J": 0.9733333333333334,
+      "fraction_grad_beats_rand": 0.97,
+      "mean_effective_norm_grad": 0.050000001303851606,
+      "mean_effective_norm_rand": 0.05000000095615784
+    },
+    "0.1": {
+      "samples": 300,
+      "episodes": 189,
+      "mean_J0_m2": 1.0671854392337848e-05,
+      "delta_J_grad_m2": {
+        "mean": -4.444338587547206e-06,
+        "ci95": [
+          -4.848931405329635e-06,
+          -4.062140649943745e-06
+        ]
+      },
+      "delta_J_rand_m2": {
+        "mean": 2.1524945201670857e-07,
+        "ci95": [
+          6.709277476295266e-08,
+          3.660977744223379e-07
+        ]
+      },
+      "paired_grad_minus_rand_m2": {
+        "mean": -4.659588039563913e-06,
+        "ci95": [
+          -5.083228138926239e-06,
+          -4.264205116053844e-06
+        ]
+      },
+      "relative_change_grad": -0.4164542003813453,
+      "relative_change_rand": 0.02016982654591435,
+      "fraction_grad_lowers_J": 0.9633333333333334,
+      "fraction_grad_beats_rand": 0.9666666666666667,
+      "mean_effective_norm_grad": 0.10000000203649204,
+      "mean_effective_norm_rand": 0.10000000216066837
+    }
+  },
+  "skipped": {
+    "zero_gradient": 0,
+    "aborted_comparisons": 0
+  },
+  "target_restores": 2100,
+  "seconds": 29.326133012771606
+}

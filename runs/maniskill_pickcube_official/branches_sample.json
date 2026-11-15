@@ -1,0 +1,20 @@
+[
+  {
+    "anchor_id": "ep0000_t0015_r0",
+    "candidate_id": 0,
+    "candidate_type": "expert",
+    "J_m2": 0.0,
+    "sqrtJ_mm": 0.0,
+    "max_abs_action_delta": 0.0,
+    "rollout_status": "ok"
+  },
+  {
+    "anchor_id": "ep0000_t0015_r0",
+    "candidate_id": 6,
+    "candidate_type": "expert_perturbed",
+    "J_m2": 6.37612764877127e-05,
+    "sqrtJ_mm": 7.985065841163284,
+    "max_abs_action_delta": 0.03337433934211731,
+    "rollout_status": "ok"
+  }
+]

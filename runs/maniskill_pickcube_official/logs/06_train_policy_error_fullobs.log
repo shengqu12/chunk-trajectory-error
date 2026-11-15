@@ -1,0 +1,8 @@
+error_fullobs weight=0.001: val true J 2.945e-05 m^2 (sqrtJ 4.353 mm), val BC 0.00757
+error_fullobs weight=0.003: val true J 3.416e-05 m^2 (sqrtJ 4.616 mm), val BC 0.00760
+error_fullobs weight=0.01: val true J 4.473e-05 m^2 (sqrtJ 5.174 mm), val BC 0.00771
+error_fullobs weight=0.03: val true J 7.082e-05 m^2 (sqrtJ 6.631 mm), val BC 0.00806
+error_fullobs weight=0.1: val true J 1.190e-04 m^2 (sqrtJ 8.784 mm), val BC 0.00899
+error_fullobs weight=0.3: val true J 2.122e-04 m^2 (sqrtJ 12.157 mm), val BC 0.01089
+error_fullobs weight=1: val true J 3.961e-04 m^2 (sqrtJ 17.242 mm), val BC 0.01470
+selected weight: 0.001

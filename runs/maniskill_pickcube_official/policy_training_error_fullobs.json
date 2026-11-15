@@ -1,0 +1,623 @@
+{
+  "name": "error_fullobs",
+  "variant": "error_fullobs",
+  "round": 0,
+  "start_checkpoint": "runs/maniskill_pickcube/checkpoints/pi0.pt",
+  "steps": 5000,
+  "lr": 0.0003,
+  "batch_size": 256,
+  "selection_rule": "minimum simulator-recomputed J of the policy chunk on val anchors",
+  "selected_weight": 0.001,
+  "selected_checkpoint": "runs/maniskill_pickcube/checkpoints/pi_error_fullobs/pi.pt",
+  "candidates": [
+    {
+      "weight": 0.001,
+      "val_bc_loss": 0.007574896793812513,
+      "val_chunk_roughness": 0.00014915689826011658,
+      "log": [
+        {
+          "step": 1,
+          "imitation": 0.0023901890963315964,
+          "auxiliary": 0.15789052844047546,
+          "grad_norm_imitation": 0.026224061846733093,
+          "grad_norm_weighted_auxiliary": 0.007066026329994202
+        },
+        {
+          "step": 500,
+          "imitation": 0.002144136233255267,
+          "auxiliary": 0.11072859168052673,
+          "grad_norm_imitation": 0.022565586492419243,
+          "grad_norm_weighted_auxiliary": 0.005874905735254288
+        },
+        {
+          "step": 1000,
+          "imitation": 0.0019179834052920341,
+          "auxiliary": 0.10334788262844086,
+          "grad_norm_imitation": 0.016323817893862724,
+          "grad_norm_weighted_auxiliary": 0.0033483959268778563
+        },
+        {
+          "step": 1500,
+          "imitation": 0.0023084559943526983,
+          "auxiliary": 0.11429548263549805,
+          "grad_norm_imitation": 0.022553693503141403,
+          "grad_norm_weighted_auxiliary": 0.0031336103565990925
+        },
+        {
+          "step": 2000,
+          "imitation": 0.0016632057959213853,
+          "auxiliary": 0.10928186029195786,
+          "grad_norm_imitation": 0.01665320061147213,
+          "grad_norm_weighted_auxiliary": 0.003631826024502516
+        },
+        {
+          "step": 2500,
+          "imitation": 0.0013722656294703484,
+          "auxiliary": 0.10601048916578293,
+          "grad_norm_imitation": 0.01410607434809208,
+          "grad_norm_weighted_auxiliary": 0.004001372493803501
+        },
+        {
+          "step": 3000,
+          "imitation": 0.0020529881585389376,
+          "auxiliary": 0.10409192740917206,
+          "grad_norm_imitation": 0.0206900667399168,
+          "grad_norm_weighted_auxiliary": 0.004045343957841396
+        },
+        {
+          "step": 3500,
+          "imitation": 0.0022947737015783787,
+          "auxiliary": 0.10056626796722412,
+          "grad_norm_imitation": 0.019146807491779327,
+          "grad_norm_weighted_auxiliary": 0.0028909840621054173
+        },
+        {
+          "step": 4000,
+          "imitation": 0.002128555905073881,
+          "auxiliary": 0.1132449135184288,
+          "grad_norm_imitation": 0.019219327718019485,
+          "grad_norm_weighted_auxiliary": 0.004187100101262331
+        },
+        {
+          "step": 4500,
+          "imitation": 0.0016441534971818328,
+          "auxiliary": 0.10025492310523987,
+          "grad_norm_imitation": 0.018622539937496185,
+          "grad_norm_weighted_auxiliary": 0.004104036837816238
+        },
+        {
+          "step": 5000,
+          "imitation": 0.0016330769285559654,
+          "auxiliary": 0.09152685850858688,
+          "grad_norm_imitation": 0.013772862032055855,
+          "grad_norm_weighted_auxiliary": 0.003519334364682436
+        }
+      ],
+      "val_true_J_m2_mean": 2.945495908330334e-05,
+      "val_true_sqrtJ_mm_mean": 4.353206758710035,
+      "checkpoint": "runs/maniskill_pickcube/checkpoints/pi_error_fullobs/w0.001.pt"
+    },
+    {
+      "weight": 0.003,
+      "val_bc_loss": 0.0075981635600328445,
+      "val_chunk_roughness": 0.00018961832392960787,
+      "log": [
+        {
+          "step": 1,
+          "imitation": 0.0023901890963315964,
+          "auxiliary": 0.15789052844047546,
+          "grad_norm_imitation": 0.026224061846733093,
+          "grad_norm_weighted_auxiliary": 0.021198078989982605
+        },
+        {
+          "step": 500,
+          "imitation": 0.0021856590174138546,
+          "auxiliary": 0.08721549063920975,
+          "grad_norm_imitation": 0.02312513068318367,
+          "grad_norm_weighted_auxiliary": 0.012133507058024406
+        },
+        {
+          "step": 1000,
+          "imitation": 0.001954749459400773,
+          "auxiliary": 0.08439482003450394,
+          "grad_norm_imitation": 0.01667431741952896,
+          "grad_norm_weighted_auxiliary": 0.00790211372077465
+        },
+        {
+          "step": 1500,
+          "imitation": 0.002350373426452279,
+          "auxiliary": 0.09178923070430756,
+          "grad_norm_imitation": 0.023187562823295593,
+          "grad_norm_weighted_auxiliary": 0.00740450294688344
+        },
+        {
+          "step": 2000,
+          "imitation": 0.0016988471616059542,
+          "auxiliary": 0.08772902190685272,
+          "grad_norm_imitation": 0.017730336636304855,
+          "grad_norm_weighted_auxiliary": 0.0072471932508051395
+        },
+        {
+          "step": 2500,
+          "imitation": 0.0014047243166714907,
+          "auxiliary": 0.08708063513040543,
+          "grad_norm_imitation": 0.01511543057858944,
+          "grad_norm_weighted_auxiliary": 0.00933696236461401
+        },
+        {
+          "step": 3000,
+          "imitation": 0.0020725885406136513,
+          "auxiliary": 0.08378629386425018,
+          "grad_norm_imitation": 0.021066542714834213,
+          "grad_norm_weighted_auxiliary": 0.00830859411507845
+        },
+        {
+          "step": 3500,
+          "imitation": 0.00234579318203032,
+          "auxiliary": 0.08231516182422638,
+          "grad_norm_imitation": 0.019894050434231758,
+          "grad_norm_weighted_auxiliary": 0.006081460975110531
+        },
+        {
+          "step": 4000,
+          "imitation": 0.002176810521632433,
+          "auxiliary": 0.0900435745716095,
+          "grad_norm_imitation": 0.01986471749842167,
+          "grad_norm_weighted_auxiliary": 0.008622418157756329
+        },
+        {
+          "step": 4500,
+          "imitation": 0.0016741694416850805,
+          "auxiliary": 0.08036691695451736,
+          "grad_norm_imitation": 0.019328666850924492,
+          "grad_norm_weighted_auxiliary": 0.008909644559025764
+        },
+        {
+          "step": 5000,
+          "imitation": 0.0016647565644234419,
+          "auxiliary": 0.07493621855974197,
+          "grad_norm_imitation": 0.0146130146458745,
+          "grad_norm_weighted_auxiliary": 0.006534264888614416
+        }
+      ],
+      "val_true_J_m2_mean": 3.41563664733764e-05,
+      "val_true_sqrtJ_mm_mean": 4.616146282276803,
+      "checkpoint": "runs/maniskill_pickcube/checkpoints/pi_error_fullobs/w0.003.pt"
+    },
+    {
+      "weight": 0.01,
+      "val_bc_loss": 0.007713577710092068,
+      "val_chunk_roughness": 0.0003885101177729666,
+      "log": [
+        {
+          "step": 1,
+          "imitation": 0.0023901890963315964,
+          "auxiliary": 0.15789052844047546,
+          "grad_norm_imitation": 0.026224061846733093,
+          "grad_norm_weighted_auxiliary": 0.07066026329994202
+        },
+        {
+          "step": 500,
+          "imitation": 0.0023378904443234205,
+          "auxiliary": 0.06405801326036453,
+          "grad_norm_imitation": 0.02749401330947876,
+          "grad_norm_weighted_auxiliary": 0.0321647971868515
+        },
+        {
+          "step": 1000,
+          "imitation": 0.0020962399430572987,
+          "auxiliary": 0.06094089522957802,
+          "grad_norm_imitation": 0.02102755941450596,
+          "grad_norm_weighted_auxiliary": 0.018556443974375725
+        },
+        {
+          "step": 1500,
+          "imitation": 0.002470077248290181,
+          "auxiliary": 0.06611412018537521,
+          "grad_norm_imitation": 0.026280082762241364,
+          "grad_norm_weighted_auxiliary": 0.017742758616805077
+        },
+        {
+          "step": 2000,
+          "imitation": 0.0018406091257929802,
+          "auxiliary": 0.06337892264127731,
+          "grad_norm_imitation": 0.022136738523840904,
+          "grad_norm_weighted_auxiliary": 0.01803155243396759
+        },
+        {
+          "step": 2500,
+          "imitation": 0.0015240289503708482,
+          "auxiliary": 0.06468847393989563,
+          "grad_norm_imitation": 0.01871163584291935,
+          "grad_norm_weighted_auxiliary": 0.017403973266482353
+        },
+        {
+          "step": 3000,
+          "imitation": 0.0022112075239419937,
+          "auxiliary": 0.061407726258039474,
+          "grad_norm_imitation": 0.023527953773736954,
+          "grad_norm_weighted_auxiliary": 0.018153352662920952
+        },
+        {
+          "step": 3500,
+          "imitation": 0.0025014332495629787,
+          "auxiliary": 0.061601195484399796,
+          "grad_norm_imitation": 0.022967999801039696,
+          "grad_norm_weighted_auxiliary": 0.017103666439652443
+        },
+        {
+          "step": 4000,
+          "imitation": 0.0023244605399668217,
+          "auxiliary": 0.06397535651922226,
+          "grad_norm_imitation": 0.02326549030840397,
+          "grad_norm_weighted_auxiliary": 0.021195389330387115
+        },
+        {
+          "step": 4500,
+          "imitation": 0.0018113877158612013,
+          "auxiliary": 0.058588556945323944,
+          "grad_norm_imitation": 0.022751642391085625,
+          "grad_norm_weighted_auxiliary": 0.022728463634848595
+        },
+        {
+          "step": 5000,
+          "imitation": 0.0017926376312971115,
+          "auxiliary": 0.05545298010110855,
+          "grad_norm_imitation": 0.018442993983626366,
+          "grad_norm_weighted_auxiliary": 0.015896718949079514
+        }
+      ],
+      "val_true_J_m2_mean": 4.47316035164026e-05,
+      "val_true_sqrtJ_mm_mean": 5.173644757822969,
+      "checkpoint": "runs/maniskill_pickcube/checkpoints/pi_error_fullobs/w0.01.pt"
+    },
+    {
+      "weight": 0.03,
+      "val_bc_loss": 0.00805904995650053,
+      "val_chunk_roughness": 0.0010336972773075104,
+      "log": [
+        {
+          "step": 1,
+          "imitation": 0.0023901890963315964,
+          "auxiliary": 0.15789052844047546,
+          "grad_norm_imitation": 0.026224061846733093,
+          "grad_norm_weighted_auxiliary": 0.21198076009750366
+        },
+        {
+          "step": 500,
+          "imitation": 0.002734370529651642,
+          "auxiliary": 0.041941601783037186,
+          "grad_norm_imitation": 0.03660165145993233,
+          "grad_norm_weighted_auxiliary": 0.0590142197906971
+        },
+        {
+          "step": 1000,
+          "imitation": 0.0024674844462424517,
+          "auxiliary": 0.04131340980529785,
+          "grad_norm_imitation": 0.029343178495764732,
+          "grad_norm_weighted_auxiliary": 0.03537851199507713
+        },
+        {
+          "step": 1500,
+          "imitation": 0.002834978047758341,
+          "auxiliary": 0.04421768710017204,
+          "grad_norm_imitation": 0.033584944903850555,
+          "grad_norm_weighted_auxiliary": 0.03337413817644119
+        },
+        {
+          "step": 2000,
+          "imitation": 0.0022072289139032364,
+          "auxiliary": 0.04275861382484436,
+          "grad_norm_imitation": 0.030885955318808556,
+          "grad_norm_weighted_auxiliary": 0.03493153303861618
+        },
+        {
+          "step": 2500,
+          "imitation": 0.0018449159106239676,
+          "auxiliary": 0.044484805315732956,
+          "grad_norm_imitation": 0.027555717155337334,
+          "grad_norm_weighted_auxiliary": 0.03031736984848976
+        },
+        {
+          "step": 3000,
+          "imitation": 0.0025502287317067385,
+          "auxiliary": 0.04193322733044624,
+          "grad_norm_imitation": 0.030115608125925064,
+          "grad_norm_weighted_auxiliary": 0.03978247940540314
+        },
+        {
+          "step": 3500,
+          "imitation": 0.0028861956670880318,
+          "auxiliary": 0.04183113947510719,
+          "grad_norm_imitation": 0.030257994309067726,
+          "grad_norm_weighted_auxiliary": 0.03534889966249466
+        },
+        {
+          "step": 4000,
+          "imitation": 0.002730520209297538,
+          "auxiliary": 0.04194812476634979,
+          "grad_norm_imitation": 0.03194887191057205,
+          "grad_norm_weighted_auxiliary": 0.03332217037677765
+        },
+        {
+          "step": 4500,
+          "imitation": 0.002152455970644951,
+          "auxiliary": 0.03919478505849838,
+          "grad_norm_imitation": 0.028994305059313774,
+          "grad_norm_weighted_auxiliary": 0.03741423040628433
+        },
+        {
+          "step": 5000,
+          "imitation": 0.002141870092600584,
+          "auxiliary": 0.036616209894418716,
+          "grad_norm_imitation": 0.027728000655770302,
+          "grad_norm_weighted_auxiliary": 0.023213261738419533
+        }
+      ],
+      "val_true_J_m2_mean": 7.082393807916747e-05,
+      "val_true_sqrtJ_mm_mean": 6.630635758338208,
+      "checkpoint": "runs/maniskill_pickcube/checkpoints/pi_error_fullobs/w0.03.pt"
+    },
+    {
+      "weight": 0.1,
+      "val_bc_loss": 0.008986402302980423,
+      "val_chunk_roughness": 0.002799251349642873,
+      "log": [
+        {
+          "step": 1,
+          "imitation": 0.0023901890963315964,
+          "auxiliary": 0.15789052844047546,
+          "grad_norm_imitation": 0.026224061846733093,
+          "grad_norm_weighted_auxiliary": 0.7066026329994202
+        },
+        {
+          "step": 500,
+          "imitation": 0.003737251041457057,
+          "auxiliary": 0.02346540428698063,
+          "grad_norm_imitation": 0.053713519126176834,
+          "grad_norm_weighted_auxiliary": 0.06741449236869812
+        },
+        {
+          "step": 1000,
+          "imitation": 0.0034555308520793915,
+          "auxiliary": 0.024258354678750038,
+          "grad_norm_imitation": 0.0451786108314991,
+          "grad_norm_weighted_auxiliary": 0.06373323500156403
+        },
+        {
+          "step": 1500,
+          "imitation": 0.0037957809399813414,
+          "auxiliary": 0.025386378169059753,
+          "grad_norm_imitation": 0.048941172659397125,
+          "grad_norm_weighted_auxiliary": 0.07326878607273102
+        },
+        {
+          "step": 2000,
+          "imitation": 0.0031902161426842213,
+          "auxiliary": 0.024858247488737106,
+          "grad_norm_imitation": 0.04772534221410751,
+          "grad_norm_weighted_auxiliary": 0.060548312962055206
+        },
+        {
+          "step": 2500,
+          "imitation": 0.002789856866002083,
+          "auxiliary": 0.02584899216890335,
+          "grad_norm_imitation": 0.045305285602808,
+          "grad_norm_weighted_auxiliary": 0.060491133481264114
+        },
+        {
+          "step": 3000,
+          "imitation": 0.0034946310333907604,
+          "auxiliary": 0.024964895099401474,
+          "grad_norm_imitation": 0.044171467423439026,
+          "grad_norm_weighted_auxiliary": 0.0903904065489769
+        },
+        {
+          "step": 3500,
+          "imitation": 0.0038868896663188934,
+          "auxiliary": 0.023921435698866844,
+          "grad_norm_imitation": 0.04488437995314598,
+          "grad_norm_weighted_auxiliary": 0.05468731001019478
+        },
+        {
+          "step": 4000,
+          "imitation": 0.0037706666626036167,
+          "auxiliary": 0.024305228143930435,
+          "grad_norm_imitation": 0.04843922331929207,
+          "grad_norm_weighted_auxiliary": 0.07894392311573029
+        },
+        {
+          "step": 4500,
+          "imitation": 0.0030768257565796375,
+          "auxiliary": 0.02301519364118576,
+          "grad_norm_imitation": 0.042686909437179565,
+          "grad_norm_weighted_auxiliary": 0.08247916400432587
+        },
+        {
+          "step": 5000,
+          "imitation": 0.0030424422584474087,
+          "auxiliary": 0.02178221009671688,
+          "grad_norm_imitation": 0.043066658079624176,
+          "grad_norm_weighted_auxiliary": 0.052338019013404846
+        }
+      ],
+      "val_true_J_m2_mean": 0.00011902697612639257,
+      "val_true_sqrtJ_mm_mean": 8.78386343065712,
+      "checkpoint": "runs/maniskill_pickcube/checkpoints/pi_error_fullobs/w0.1.pt"
+    },
+    {
+      "weight": 0.3,
+      "val_bc_loss": 0.0108855701982975,
+      "val_chunk_roughness": 0.006559799890965223,
+      "log": [
+        {
+          "step": 1,
+          "imitation": 0.0023901890963315964,
+          "auxiliary": 0.15789052844047546,
+          "grad_norm_imitation": 0.026224061846733093,
+          "grad_norm_weighted_auxiliary": 2.119807720184326
+        },
+        {
+          "step": 500,
+          "imitation": 0.0056514739990234375,
+          "auxiliary": 0.013643207028508186,
+          "grad_norm_imitation": 0.0795077234506607,
+          "grad_norm_weighted_auxiliary": 0.09939257800579071
+        },
+        {
+          "step": 1000,
+          "imitation": 0.005341674201190472,
+          "auxiliary": 0.013921625912189484,
+          "grad_norm_imitation": 0.06854193657636642,
+          "grad_norm_weighted_auxiliary": 0.09175926446914673
+        },
+        {
+          "step": 1500,
+          "imitation": 0.00558435870334506,
+          "auxiliary": 0.014279944822192192,
+          "grad_norm_imitation": 0.07119471579790115,
+          "grad_norm_weighted_auxiliary": 0.08127669990062714
+        },
+        {
+          "step": 2000,
+          "imitation": 0.005109442863613367,
+          "auxiliary": 0.013925570994615555,
+          "grad_norm_imitation": 0.07172296196222305,
+          "grad_norm_weighted_auxiliary": 0.08069682121276855
+        },
+        {
+          "step": 2500,
+          "imitation": 0.004582358058542013,
+          "auxiliary": 0.014772395603358746,
+          "grad_norm_imitation": 0.06890233606100082,
+          "grad_norm_weighted_auxiliary": 0.13550540804862976
+        },
+        {
+          "step": 3000,
+          "imitation": 0.0053312452509999275,
+          "auxiliary": 0.013979041017591953,
+          "grad_norm_imitation": 0.06517685949802399,
+          "grad_norm_weighted_auxiliary": 0.11698460578918457
+        },
+        {
+          "step": 3500,
+          "imitation": 0.0057380786165595055,
+          "auxiliary": 0.01348648127168417,
+          "grad_norm_imitation": 0.06458624452352524,
+          "grad_norm_weighted_auxiliary": 0.10541034489870071
+        },
+        {
+          "step": 4000,
+          "imitation": 0.005794304423034191,
+          "auxiliary": 0.013299571350216866,
+          "grad_norm_imitation": 0.07136636972427368,
+          "grad_norm_weighted_auxiliary": 0.11702228337526321
+        },
+        {
+          "step": 4500,
+          "imitation": 0.004898194223642349,
+          "auxiliary": 0.012411100789904594,
+          "grad_norm_imitation": 0.06322018057107925,
+          "grad_norm_weighted_auxiliary": 0.13211804628372192
+        },
+        {
+          "step": 5000,
+          "imitation": 0.004879480693489313,
+          "auxiliary": 0.011881020851433277,
+          "grad_norm_imitation": 0.06512358039617538,
+          "grad_norm_weighted_auxiliary": 0.07582501322031021
+        }
+      ],
+      "val_true_J_m2_mean": 0.00021217167709717812,
+      "val_true_sqrtJ_mm_mean": 12.157365698646926,
+      "checkpoint": "runs/maniskill_pickcube/checkpoints/pi_error_fullobs/w0.3.pt"
+    },
+    {
+      "weight": 1.0,
+      "val_bc_loss": 0.014699249528348446,
+      "val_chunk_roughness": 0.014529732055962086,
+      "log": [
+        {
+          "step": 1,
+          "imitation": 0.0023901890963315964,
+          "auxiliary": 0.15789052844047546,
+          "grad_norm_imitation": 0.026224061846733093,
+          "grad_norm_weighted_auxiliary": 7.06602668762207
+        },
+        {
+          "step": 500,
+          "imitation": 0.00987323559820652,
+          "auxiliary": 0.007122633047401905,
+          "grad_norm_imitation": 0.12343931943178177,
+          "grad_norm_weighted_auxiliary": 0.16411438584327698
+        },
+        {
+          "step": 1000,
+          "imitation": 0.009259393438696861,
+          "auxiliary": 0.007251809351146221,
+          "grad_norm_imitation": 0.10698796808719635,
+          "grad_norm_weighted_auxiliary": 0.12224636971950531
+        },
+        {
+          "step": 1500,
+          "imitation": 0.009362228214740753,
+          "auxiliary": 0.007294976152479649,
+          "grad_norm_imitation": 0.10943557322025299,
+          "grad_norm_weighted_auxiliary": 0.16123121976852417
+        },
+        {
+          "step": 2000,
+          "imitation": 0.008928969502449036,
+          "auxiliary": 0.007093640509992838,
+          "grad_norm_imitation": 0.10810641199350357,
+          "grad_norm_weighted_auxiliary": 0.1361737698316574
+        },
+        {
+          "step": 2500,
+          "imitation": 0.008338304236531258,
+          "auxiliary": 0.007284808903932571,
+          "grad_norm_imitation": 0.1069188266992569,
+          "grad_norm_weighted_auxiliary": 0.1769920289516449
+        },
+        {
+          "step": 3000,
+          "imitation": 0.009051289409399033,
+          "auxiliary": 0.00678040599450469,
+          "grad_norm_imitation": 0.09772492945194244,
+          "grad_norm_weighted_auxiliary": 0.1945631355047226
+        },
+        {
+          "step": 3500,
+          "imitation": 0.009567777626216412,
+          "auxiliary": 0.00638586888089776,
+          "grad_norm_imitation": 0.09771835058927536,
+          "grad_norm_weighted_auxiliary": 0.1298169642686844
+        },
+        {
+          "step": 4000,
+          "imitation": 0.009728988632559776,
+          "auxiliary": 0.006274305749684572,
+          "grad_norm_imitation": 0.10710260272026062,
+          "grad_norm_weighted_auxiliary": 0.12165797501802444
+        },
+        {
+          "step": 4500,
+          "imitation": 0.008452029898762703,
+          "auxiliary": 0.0058581652119755745,
+          "grad_norm_imitation": 0.09444403648376465,
+          "grad_norm_weighted_auxiliary": 0.12463612109422684
+        },
+        {
+          "step": 5000,
+          "imitation": 0.008490084670484066,
+          "auxiliary": 0.005956258159130812,
+          "grad_norm_imitation": 0.09775438904762268,
+          "grad_norm_weighted_auxiliary": 0.13517534732818604
+        }
+      ],
+      "val_true_J_m2_mean": 0.0003960790969091033,
+      "val_true_sqrtJ_mm_mean": 17.242254895557583,
+      "checkpoint": "runs/maniskill_pickcube/checkpoints/pi_error_fullobs/w1.pt"
+    }
+  ]
+}

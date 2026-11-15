@@ -1,0 +1,166 @@
+{
+  "round": 0,
+  "train_rounds": [
+    0
+  ],
+  "checkpoint": "runs/maniskill_pickcube/checkpoints/error_round0_history_sqrt.pt",
+  "tag": "history_sqrt",
+  "target": "sqrtJ",
+  "label_scale": 0.011142866685986519,
+  "train_samples": 12800,
+  "curve": [
+    {
+      "step": 1000,
+      "train_loss": 0.12137138843536377,
+      "val_loss": 0.19402587413787842
+    },
+    {
+      "step": 2000,
+      "train_loss": 0.0674995556473732,
+      "val_loss": 0.12786811590194702
+    },
+    {
+      "step": 3000,
+      "train_loss": 0.053282730281353,
+      "val_loss": 0.11783162504434586
+    },
+    {
+      "step": 4000,
+      "train_loss": 0.032569628208875656,
+      "val_loss": 0.09932763874530792
+    },
+    {
+      "step": 5000,
+      "train_loss": 0.027403563261032104,
+      "val_loss": 0.08884883671998978
+    },
+    {
+      "step": 6000,
+      "train_loss": 0.027686430141329765,
+      "val_loss": 0.0865798220038414
+    },
+    {
+      "step": 7000,
+      "train_loss": 0.027302782982587814,
+      "val_loss": 0.08808627724647522
+    },
+    {
+      "step": 8000,
+      "train_loss": 0.023448647931218147,
+      "val_loss": 0.08719489723443985
+    },
+    {
+      "step": 9000,
+      "train_loss": 0.022998856380581856,
+      "val_loss": 0.08808241039514542
+    },
+    {
+      "step": 10000,
+      "train_loss": 0.021319448947906494,
+      "val_loss": 0.09082312881946564
+    },
+    {
+      "step": 11000,
+      "train_loss": 0.014552736654877663,
+      "val_loss": 0.08669967949390411
+    },
+    {
+      "step": 12000,
+      "train_loss": 0.014895156025886536,
+      "val_loss": 0.08997559547424316
+    },
+    {
+      "step": 13000,
+      "train_loss": 0.017577212303876877,
+      "val_loss": 0.08931276947259903
+    },
+    {
+      "step": 14000,
+      "train_loss": 0.015615487471222878,
+      "val_loss": 0.09521982073783875
+    },
+    {
+      "step": 15000,
+      "train_loss": 0.015003002248704433,
+      "val_loss": 0.08911807835102081
+    }
+  ],
+  "val": {
+    "samples": 2400,
+    "MAE_m2": 6.931513053132221e-05,
+    "RMSE_mm2": 154.63664021808654,
+    "MAE_sqrtJ_mm": 2.3677898570895195,
+    "constant_baseline_MAE_m2": 0.0003271021996624768,
+    "constant_median_baseline_MAE_m2": 0.00025361127336509526,
+    "pearson": 0.9597146956337598,
+    "spearman_global": 0.9086049375058224,
+    "within_anchor_spearman_mean": 0.8994444444444446,
+    "within_anchor_best_candidate_match": 0.7,
+    "anchors_ranked": 300,
+    "by_candidate_type": {
+      "expert": {
+        "count": 300,
+        "MAE_m2": 1.1434199223003816e-05,
+        "mean_true_J_m2": 0.0,
+        "mean_pred_J_m2": 1.1434199223003816e-05
+      },
+      "expert_perturbed": {
+        "count": 600,
+        "MAE_m2": 8.46348048071377e-05,
+        "mean_true_J_m2": 0.00033434401848353446,
+        "mean_pred_J_m2": 0.0003081577888224274
+      },
+      "policy": {
+        "count": 300,
+        "MAE_m2": 1.6503507140441798e-05,
+        "mean_true_J_m2": 2.5813731554080732e-05,
+        "mean_pred_J_m2": 2.203820076829288e-05
+      },
+      "policy_perturbed": {
+        "count": 1200,
+        "MAE_m2": 8.932843775255606e-05,
+        "mean_true_J_m2": 0.00036213488783687353,
+        "mean_pred_J_m2": 0.00034120233613066375
+      }
+    }
+  },
+  "test": {
+    "samples": 2400,
+    "MAE_m2": 6.934781413292512e-05,
+    "RMSE_mm2": 147.22641208209097,
+    "MAE_sqrtJ_mm": 2.314681652933359,
+    "constant_baseline_MAE_m2": 0.00034402403980493546,
+    "constant_median_baseline_MAE_m2": 0.0002763586235232651,
+    "pearson": 0.9673394088401899,
+    "spearman_global": 0.9191855851013903,
+    "within_anchor_spearman_mean": 0.9217460317460318,
+    "within_anchor_best_candidate_match": 0.7066666666666667,
+    "anchors_ranked": 300,
+    "by_candidate_type": {
+      "expert": {
+        "count": 300,
+        "MAE_m2": 1.0167707841901574e-05,
+        "mean_true_J_m2": 0.0,
+        "mean_pred_J_m2": 1.0167707841901574e-05
+      },
+      "expert_perturbed": {
+        "count": 600,
+        "MAE_m2": 8.866647112881765e-05,
+        "mean_true_J_m2": 0.00041041706572286785,
+        "mean_pred_J_m2": 0.0003740482497960329
+      },
+      "policy": {
+        "count": 300,
+        "MAE_m2": 1.1845037079183385e-05,
+        "mean_true_J_m2": 1.9778290152316913e-05,
+        "mean_pred_J_m2": 2.1184116121730767e-05
+      },
+      "policy_perturbed": {
+        "count": 1200,
+        "MAE_m2": 8.885920397005975e-05,
+        "mean_true_J_m2": 0.00037113489815965295,
+        "mean_pred_J_m2": 0.0003533761773724109
+      }
+    }
+  }
+}

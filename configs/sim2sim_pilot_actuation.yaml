@@ -1,0 +1,115 @@
+# Sim-to-sim pilot, actuation run (docs/SIM2SIM_PILOT_SPEC.md, amendments 11-18).
+# Written 2026-11-13 before any actuation Phase B or Phase C result existed.  Source environment = base_config, unchanged.
+# phase_a / gate1 are copied from configs/sim2sim_pilot.yaml (Phase A is not rerun).
+base_config: configs/maniskill_pickcube_official.yaml   # official demonstrations, as in the GPU run
+output_dir: runs/sim2sim_pilot
+
+phase_a:
+  policy_checkpoint: runs/maniskill_pickcube_official/checkpoints/pi_bc/pi.pt
+  delay: 0                      # scheduler delay r
+  first_reset_seed: 0           # seed of the reset that precedes the one-time shift application
+  bootstrap: {n_boot: 5000, seed: 0}
+  # Mildest level first within each family (gate 1 picks the first level that passes).
+  conditions:
+    - {family: nominal}
+    - {family: actuation, s: 0.8}
+    - {family: actuation, s: 0.6}
+    - {family: actuation, s: 0.4}
+    - {family: actuation, s: 0.3}
+    - {family: latency, d: 1}
+    - {family: latency, d: 2}
+    - {family: contact, f: 0.5, m: 2}
+    - {family: contact, f: 0.3, m: 3}
+    - {family: contact, f: 0.2, m: 4}
+  # Diagnostic only, not used by gate 1: the spec's literal friction recipe, which scales the shared
+  # default material in place (also changes table, ground and arm-link friction).
+  diagnostic_conditions:
+    - {family: contact, f: 0.5, m: 2, contact_mode: shared_in_place}
+    - {family: contact, f: 0.3, m: 3, contact_mode: shared_in_place}
+    - {family: contact, f: 0.2, m: 4, contact_mode: shared_in_place}
+
+gate1:
+  min_drop_pp: 15.0             # paired success drop vs nominal, percentage points
+  families: [actuation, latency, contact]
+
+phase_b:
+  shift: {family: actuation, s: 0.4}      # Phase A gate-1 choice, carried forward second (amendments 1, 11)
+  policy_checkpoint: runs/maniskill_pickcube_official/checkpoints/pi_bc/pi.pt
+  first_reset_seed: 0
+  seed: 17                                # perturbation RNG seed (+1000 for val)
+  budgets: {train_steps: 20000, val_steps: 5000}
+  noise_floor: {steps: 2000}              # identity "target" (no shift), diagnostic only, not a budget
+  # perturbation amplitude: base_config branches.perturbation_amplitude; every second episode perturbed
+  gap_training:
+    checkpoint_holdout_every: 10          # every 10th train episode selects the best checkpoint; val stays untouched
+  audit:
+    samples: 300
+    step_sizes: [0.02, 0.05, 0.1, 0.2]
+    seed: 13
+
+gate2: {rank_corr_min: 0.5}
+
+manifest_section_c: phase_c_actuation_s0.4      # manifest key for this run's Phase C records (latency keeps "phase_c")
+phase_b_gating_network: sqrtJ                     # amendments 11, 18: early stop if gate 2 or gate 3 fails for the network Phase C uses
+
+# ---------------------------------------------------------------------------
+# Phase C, actuation s = 0.4 (pre-registered 2026-11-13, before any actuation result was computed)
+phase_c:
+  shift: {family: actuation, s: 0.4}
+  gap_checkpoint: runs/sim2sim_pilot/actuation_s0.4/checkpoints/gap_sqrtJ.pt   # amendment 18
+  seeds: [17, 18, 19, 20, 21]
+  methods: [zero_shot, imitation_selected, gap_demo, finetune, smooth, magnitude]   # amendments 12, 14, 15
+  base_recipe: scripts/02_prepare_policy.py      # run unchanged with a per-seed config (experiment.seed, output_dir)
+  finetune_recipe: scripts/06_train_policy.py    # train_one(): same steps, lr, batch size and batch sequence
+  lambdas: [0.0001, 0.0003, 0.001, 0.003, 0.01]  # amendment 13, gap-demo
+  smooth_betas: [0.1, 0.3, 1.0]                  # base config policy_finetune.smooth_betas (amendment 5)
+  magnitude_betas: [0.1, 0.3, 1.0]               # amendment 15: the smoothness grid
+  # magnitude penalty: mean over the H chunk steps and the 3 translation dims of the squared (unclipped) policy
+  # command, i.e. ((chunk[:, :, xyz]) ** 2).mean() -- same scope and reduction as the 06 smoothness penalty
+  finetune_checkpoint_every: 1000                # same-budget fine-tune candidates at steps 1000..5000
+  imitation_checkpoint_every: 1000               # amendment 14: imitation-selected candidates at steps 1000..5000;
+                                                 # step 5000 is the zero-shot policy itself (checked bitwise) and
+                                                 # shares its selection rollouts
+  selection:                                     # amendment 8
+    initial_states: val_split_seeds              # the 100 val-split demonstration seeds, reset by seed only
+    env: target
+    max_steps: 200
+    rule: most target successes; ties -> smaller weight / earlier checkpoint
+  final_eval:
+    seeds: {start: 300000, count: 150}           # amendment 16, never used before
+    envs: [target, source]
+    max_steps: 400                               # one run; success@200 = success within 200 steps (amendment 4)
+    primary_cap: 200
+    secondary_cap: 400
+    delay: 0
+  true_gap:                                      # sim-to-sim only
+    source: labels_val                           # held-out logged target states (Phase B val logs)
+    samples: 500
+    seed: 23
+  bootstrap: {n_boot: 5000, seed: 0, clusters: "two-way: seeds and initial states resampled independently"}
+  demo_diagnostic:                               # amendment 17: reported next to gate 3, not the verdict
+    samples: 300
+    seed: 31
+    step_sizes: [0.02, 0.05, 0.1]
+  comparisons:                                   # rows of the paired-difference table (A - B)
+    - [gap_demo, zero_shot]
+    - [gap_demo, imitation_selected]
+    - [gap_demo, finetune]
+    - [gap_demo, smooth]
+    - [gap_demo, magnitude]
+    - [imitation_selected, zero_shot]
+    - [finetune, zero_shot]
+    - [smooth, zero_shot]
+    - [magnitude, zero_shot]
+    - [finetune, imitation_selected]
+    - [smooth, imitation_selected]
+    - [magnitude, imitation_selected]
+
+gate4:
+  references: [zero_shot, imitation_selected]    # amendment 14: one verdict per reference, reported side by side
+  rule: >-
+    gap-demo vs the reference: paired target success@200 difference with 95% CI above 0; AND no drop
+    in source success@200 (CI of the paired difference not entirely below 0); AND no slowdown (CI of the
+    paired difference in target mean end-effector step per control step not entirely below 0)
+gate5:
+  rule: gap-demo vs same-budget fine-tune - CI of the paired target success@200 difference not entirely below 0

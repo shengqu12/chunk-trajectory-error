@@ -1,0 +1,152 @@
+wrote split data/processed/maniskill/splits.json
+ep0000_t0015_r0: snapshot_restore_same_env=0.000460mm  snapshot_restore_after_reset=0.000460mm  hdf5_state_restore=0.000460mm  prefix_replay=0.000000mm  snapshot_branch_repeatability=0.000000mm
+ep0000_t0040_r0: snapshot_restore_same_env=0.113314mm  snapshot_restore_after_reset=0.113314mm  hdf5_state_restore=0.113314mm  prefix_replay=0.000000mm  snapshot_branch_repeatability=0.000000mm
+ep0000_t0064_r0: snapshot_restore_same_env=0.136352mm  snapshot_restore_after_reset=0.136352mm  hdf5_state_restore=0.136435mm  prefix_replay=0.000000mm  snapshot_branch_repeatability=0.000000mm
+ep0001_t0015_r0: snapshot_restore_same_env=0.000393mm  snapshot_restore_after_reset=0.000393mm  hdf5_state_restore=0.000393mm  prefix_replay=0.000000mm  snapshot_branch_repeatability=0.000000mm
+ep0001_t0040_r0: snapshot_restore_same_env=0.000815mm  snapshot_restore_after_reset=0.000815mm  hdf5_state_restore=0.000439mm  prefix_replay=0.000000mm  snapshot_branch_repeatability=0.000000mm
+ep0001_t0064_r0: snapshot_restore_same_env=0.049598mm  snapshot_restore_after_reset=0.049598mm  hdf5_state_restore=0.049553mm  prefix_replay=0.000000mm  snapshot_branch_repeatability=0.000000mm
+ep0002_t0015_r0: snapshot_restore_same_env=0.000223mm  snapshot_restore_after_reset=0.000223mm  hdf5_state_restore=0.000223mm  prefix_replay=0.000000mm  snapshot_branch_repeatability=0.000000mm
+ep0002_t0028_r0: snapshot_restore_same_env=0.000419mm  snapshot_restore_after_reset=0.000419mm  hdf5_state_restore=0.000419mm  prefix_replay=0.000000mm  snapshot_branch_repeatability=0.000000mm
+ep0002_t0040_r0: snapshot_restore_same_env=0.234432mm  snapshot_restore_after_reset=0.234432mm  hdf5_state_restore=0.234446mm  prefix_replay=0.000000mm  snapshot_branch_repeatability=0.000000mm
+ep0003_t0015_r0: snapshot_restore_same_env=0.000517mm  snapshot_restore_after_reset=0.000517mm  hdf5_state_restore=0.000517mm  prefix_replay=0.000000mm  snapshot_branch_repeatability=0.000000mm
+ep0003_t0046_r0: snapshot_restore_same_env=0.177652mm  snapshot_restore_after_reset=0.177652mm  hdf5_state_restore=0.177435mm  prefix_replay=0.000000mm  snapshot_branch_repeatability=0.000000mm
+ep0003_t0076_r0: snapshot_restore_same_env=0.013301mm  snapshot_restore_after_reset=0.013301mm  hdf5_state_restore=0.013553mm  prefix_replay=0.000000mm  snapshot_branch_repeatability=0.000000mm
+ep0004_t0015_r0: snapshot_restore_same_env=0.000273mm  snapshot_restore_after_reset=0.000273mm  hdf5_state_restore=0.000273mm  prefix_replay=0.000000mm  snapshot_branch_repeatability=0.000000mm
+ep0004_t0040_r0: snapshot_restore_same_env=0.066985mm  snapshot_restore_after_reset=0.066985mm  hdf5_state_restore=0.067030mm  prefix_replay=0.000000mm  snapshot_branch_repeatability=0.000000mm
+ep0004_t0066_r0: snapshot_restore_same_env=0.078753mm  snapshot_restore_after_reset=0.078753mm  hdf5_state_restore=0.079413mm  prefix_replay=0.000000mm  snapshot_branch_repeatability=0.000000mm
+ep0006_t0015_r0: snapshot_restore_same_env=0.004182mm  snapshot_restore_after_reset=0.004182mm  hdf5_state_restore=0.004182mm  prefix_replay=0.000000mm  snapshot_branch_repeatability=0.000000mm
+ep0006_t0038_r0: snapshot_restore_same_env=0.074700mm  snapshot_restore_after_reset=0.074700mm  hdf5_state_restore=0.074507mm  prefix_replay=0.000000mm  snapshot_branch_repeatability=0.000000mm
+ep0006_t0061_r0: snapshot_restore_same_env=0.099102mm  snapshot_restore_after_reset=0.099102mm  hdf5_state_restore=0.099396mm  prefix_replay=0.000000mm  snapshot_branch_repeatability=0.000000mm
+ep0007_t0015_r0: snapshot_restore_same_env=0.000452mm  snapshot_restore_after_reset=0.000452mm  hdf5_state_restore=0.000452mm  prefix_replay=0.000000mm  snapshot_branch_repeatability=0.000000mm
+ep0007_t0040_r0: snapshot_restore_same_env=0.043236mm  snapshot_restore_after_reset=0.043236mm  hdf5_state_restore=0.043195mm  prefix_replay=0.000000mm  snapshot_branch_repeatability=0.000000mm
+ep0007_t0064_r0: snapshot_restore_same_env=0.128798mm  snapshot_restore_after_reset=0.128798mm  hdf5_state_restore=0.128811mm  prefix_replay=0.000000mm  snapshot_branch_repeatability=0.000000mm
+ep0008_t0015_r0: snapshot_restore_same_env=0.000531mm  snapshot_restore_after_reset=0.000531mm  hdf5_state_restore=0.000531mm  prefix_replay=0.000000mm  snapshot_branch_repeatability=0.000000mm
+ep0008_t0027_r0: snapshot_restore_same_env=0.000766mm  snapshot_restore_after_reset=0.000766mm  hdf5_state_restore=0.000314mm  prefix_replay=0.000000mm  snapshot_branch_repeatability=0.000000mm
+ep0008_t0039_r0: snapshot_restore_same_env=0.538613mm  snapshot_restore_after_reset=0.538613mm  hdf5_state_restore=0.538575mm  prefix_replay=0.000000mm  snapshot_branch_repeatability=0.000000mm
+ep0010_t0015_r0: snapshot_restore_same_env=0.000249mm  snapshot_restore_after_reset=0.000249mm  hdf5_state_restore=0.000249mm  prefix_replay=0.000000mm  snapshot_branch_repeatability=0.000000mm
+ep0010_t0042_r0: snapshot_restore_same_env=0.192846mm  snapshot_restore_after_reset=0.192846mm  hdf5_state_restore=0.193299mm  prefix_replay=0.000000mm  snapshot_branch_repeatability=0.000000mm
+ep0010_t0069_r0: snapshot_restore_same_env=0.052719mm  snapshot_restore_after_reset=0.052719mm  hdf5_state_restore=0.051885mm  prefix_replay=0.000000mm  snapshot_branch_repeatability=0.000000mm
+ep0011_t0015_r0: snapshot_restore_same_env=0.000467mm  snapshot_restore_after_reset=0.000467mm  hdf5_state_restore=0.000467mm  prefix_replay=0.000000mm  snapshot_branch_repeatability=0.000000mm
+ep0011_t0044_r0: snapshot_restore_same_env=0.000400mm  snapshot_restore_after_reset=0.000400mm  hdf5_state_restore=0.000665mm  prefix_replay=0.000000mm  snapshot_branch_repeatability=0.000000mm
+ep0011_t0072_r0: snapshot_restore_same_env=0.058612mm  snapshot_restore_after_reset=0.058612mm  hdf5_state_restore=0.058473mm  prefix_replay=0.000000mm  snapshot_branch_repeatability=0.000000mm
+ep0012_t0015_r0: snapshot_restore_same_env=0.000231mm  snapshot_restore_after_reset=0.000231mm  hdf5_state_restore=0.000231mm  prefix_replay=0.000000mm  snapshot_branch_repeatability=0.000000mm
+ep0012_t0038_r0: snapshot_restore_same_env=0.000886mm  snapshot_restore_after_reset=0.000886mm  hdf5_state_restore=0.000330mm  prefix_replay=0.000000mm  snapshot_branch_repeatability=0.000000mm
+ep0012_t0061_r0: snapshot_restore_same_env=0.014519mm  snapshot_restore_after_reset=0.014519mm  hdf5_state_restore=0.018038mm  prefix_replay=0.000000mm  snapshot_branch_repeatability=0.000000mm
+ep0013_t0015_r0: snapshot_restore_same_env=0.000444mm  snapshot_restore_after_reset=0.000444mm  hdf5_state_restore=0.000444mm  prefix_replay=0.000000mm  snapshot_branch_repeatability=0.000000mm
+ep0013_t0042_r0: snapshot_restore_same_env=0.200350mm  snapshot_restore_after_reset=0.200350mm  hdf5_state_restore=0.200000mm  prefix_replay=0.000000mm  snapshot_branch_repeatability=0.000000mm
+ep0013_t0070_r0: snapshot_restore_same_env=0.108658mm  snapshot_restore_after_reset=0.108658mm  hdf5_state_restore=0.109188mm  prefix_replay=0.000000mm  snapshot_branch_repeatability=0.000000mm
+ep0015_t0015_r0: snapshot_restore_same_env=0.000381mm  snapshot_restore_after_reset=0.000381mm  hdf5_state_restore=0.000381mm  prefix_replay=0.000000mm  snapshot_branch_repeatability=0.000000mm
+ep0015_t0041_r0: snapshot_restore_same_env=0.001978mm  snapshot_restore_after_reset=0.001978mm  hdf5_state_restore=0.002237mm  prefix_replay=0.000000mm  snapshot_branch_repeatability=0.000000mm
+ep0015_t0067_r0: snapshot_restore_same_env=0.007870mm  snapshot_restore_after_reset=0.007870mm  hdf5_state_restore=0.008389mm  prefix_replay=0.000000mm  snapshot_branch_repeatability=0.000000mm
+ep0016_t0015_r0: snapshot_restore_same_env=0.000565mm  snapshot_restore_after_reset=0.000565mm  hdf5_state_restore=0.000565mm  prefix_replay=0.000000mm  snapshot_branch_repeatability=0.000000mm
+ep0016_t0040_r0: snapshot_restore_same_env=0.145255mm  snapshot_restore_after_reset=0.145255mm  hdf5_state_restore=0.145744mm  prefix_replay=0.000000mm  snapshot_branch_repeatability=0.000000mm
+ep0016_t0066_r0: snapshot_restore_same_env=0.109321mm  snapshot_restore_after_reset=0.109321mm  hdf5_state_restore=0.108923mm  prefix_replay=0.000000mm  snapshot_branch_repeatability=0.000000mm
+ep0017_t0015_r0: snapshot_restore_same_env=0.000322mm  snapshot_restore_after_reset=0.000322mm  hdf5_state_restore=0.000322mm  prefix_replay=0.000000mm  snapshot_branch_repeatability=0.000000mm
+ep0017_t0036_r0: snapshot_restore_same_env=0.000569mm  snapshot_restore_after_reset=0.000569mm  hdf5_state_restore=0.000393mm  prefix_replay=0.000000mm  snapshot_branch_repeatability=0.000000mm
+ep0017_t0057_r0: snapshot_restore_same_env=0.119758mm  snapshot_restore_after_reset=0.119758mm  hdf5_state_restore=0.119935mm  prefix_replay=0.000000mm  snapshot_branch_repeatability=0.000000mm
+ep0020_t0015_r0: snapshot_restore_same_env=0.000480mm  snapshot_restore_after_reset=0.000480mm  hdf5_state_restore=0.000480mm  prefix_replay=0.000000mm  snapshot_branch_repeatability=0.000000mm
+ep0020_t0034_r0: snapshot_restore_same_env=0.000235mm  snapshot_restore_after_reset=0.000235mm  hdf5_state_restore=0.000420mm  prefix_replay=0.000000mm  snapshot_branch_repeatability=0.000000mm
+ep0020_t0054_r0: snapshot_restore_same_env=0.108995mm  snapshot_restore_after_reset=0.108995mm  hdf5_state_restore=0.108970mm  prefix_replay=0.000000mm  snapshot_branch_repeatability=0.000000mm
+ep0022_t0015_r0: snapshot_restore_same_env=0.000596mm  snapshot_restore_after_reset=0.000596mm  hdf5_state_restore=0.000596mm  prefix_replay=0.000000mm  snapshot_branch_repeatability=0.000000mm
+ep0022_t0036_r0: snapshot_restore_same_env=0.114865mm  snapshot_restore_after_reset=0.114865mm  hdf5_state_restore=0.115022mm  prefix_replay=0.000000mm  snapshot_branch_repeatability=0.000000mm
+ep0022_t0058_r0: snapshot_restore_same_env=0.008402mm  snapshot_restore_after_reset=0.008402mm  hdf5_state_restore=0.008097mm  prefix_replay=0.000000mm  snapshot_branch_repeatability=0.000000mm
+ep0023_t0015_r0: snapshot_restore_same_env=0.000587mm  snapshot_restore_after_reset=0.000587mm  hdf5_state_restore=0.000587mm  prefix_replay=0.000000mm  snapshot_branch_repeatability=0.000000mm
+ep0023_t0040_r0: snapshot_restore_same_env=0.327684mm  snapshot_restore_after_reset=0.327684mm  hdf5_state_restore=0.327783mm  prefix_replay=0.003297mm  snapshot_branch_repeatability=0.000000mm
+ep0023_t0066_r0: snapshot_restore_same_env=0.166923mm  snapshot_restore_after_reset=0.166923mm  hdf5_state_restore=0.166955mm  prefix_replay=0.000000mm  snapshot_branch_repeatability=0.000000mm
+ep0024_t0015_r0: snapshot_restore_same_env=0.000113mm  snapshot_restore_after_reset=0.000113mm  hdf5_state_restore=0.000113mm  prefix_replay=0.000000mm  snapshot_branch_repeatability=0.000000mm
+ep0024_t0042_r0: snapshot_restore_same_env=0.239536mm  snapshot_restore_after_reset=0.239536mm  hdf5_state_restore=0.239752mm  prefix_replay=0.000000mm  snapshot_branch_repeatability=0.000000mm
+ep0024_t0069_r0: snapshot_restore_same_env=0.191341mm  snapshot_restore_after_reset=0.191341mm  hdf5_state_restore=0.191400mm  prefix_replay=0.000000mm  snapshot_branch_repeatability=0.000000mm
+ep0026_t0015_r0: snapshot_restore_same_env=0.000267mm  snapshot_restore_after_reset=0.000267mm  hdf5_state_restore=0.000267mm  prefix_replay=0.000000mm  snapshot_branch_repeatability=0.000000mm
+ep0026_t0044_r0: snapshot_restore_same_env=0.489093mm  snapshot_restore_after_reset=0.489093mm  hdf5_state_restore=0.491239mm  prefix_replay=0.000000mm  snapshot_branch_repeatability=0.000000mm
+ep0026_t0074_r0: snapshot_restore_same_env=0.013785mm  snapshot_restore_after_reset=0.013785mm  hdf5_state_restore=0.022494mm  prefix_replay=0.000000mm  snapshot_branch_repeatability=0.000000mm
+{
+  "split": "train",
+  "anchors_audited": 60,
+  "tolerance_m": 0.001,
+  "branch_repeat_tolerance_m": 1e-06,
+  "control_min_motion_m": 0.002,
+  "chunk": {
+    "horizon": 20,
+    "execute_steps": 5,
+    "history_steps": 15,
+    "evaluation_steps": 10,
+    "train_delay": 0,
+    "evaluation_delays": [
+      0,
+      2,
+      4
+    ]
+  },
+  "modes": {
+    "snapshot_restore_same_env": {
+      "anchors": 60,
+      "max_ee_err_m": 0.0005386134,
+      "mean_ee_err_m": 4.8337201706666664e-05,
+      "max_J_m2": 1.850882e-07,
+      "anchors_within_tolerance": 60,
+      "tolerance_m": 0.001,
+      "expectation": "must be within tolerance of the uninterrupted reference",
+      "gate": "pass"
+    },
+    "snapshot_restore_after_reset": {
+      "anchors": 60,
+      "max_ee_err_m": 0.0005386134,
+      "mean_ee_err_m": 4.8337201706666664e-05,
+      "max_J_m2": 1.850882e-07,
+      "anchors_within_tolerance": 60,
+      "tolerance_m": 0.001,
+      "expectation": "must be within tolerance of the uninterrupted reference",
+      "gate": "pass"
+    },
+    "hdf5_state_restore": {
+      "anchors": 60,
+      "max_ee_err_m": 0.000538575,
+      "mean_ee_err_m": 4.861267286583334e-05,
+      "max_J_m2": 1.8515e-07,
+      "anchors_within_tolerance": 60,
+      "tolerance_m": 0.001,
+      "expectation": "must be within tolerance of the uninterrupted reference",
+      "gate": "pass"
+    },
+    "prefix_replay": {
+      "anchors": 60,
+      "max_ee_err_m": 3.297278e-06,
+      "mean_ee_err_m": 4.277148333333333e-08,
+      "max_J_m2": 7.978223e-12,
+      "anchors_within_tolerance": 60,
+      "tolerance_m": 0.001,
+      "expectation": "must be within tolerance of the uninterrupted reference",
+      "gate": "pass"
+    },
+    "snapshot_branch_repeatability": {
+      "anchors": 60,
+      "max_ee_err_m": 0.0,
+      "mean_ee_err_m": 0.0,
+      "max_J_m2": 0.0,
+      "anchors_within_tolerance": 60,
+      "tolerance_m": 1e-06,
+      "expectation": "two restores of one snapshot must agree within branch_repeat_tolerance_m",
+      "gate": "pass"
+    },
+    "control_shift_one_frame": {
+      "anchors": 60,
+      "max_ee_err_m": 0.01396244,
+      "mean_ee_err_m": 0.003820763673333333,
+      "max_J_m2": 0.0001090437,
+      "anchors_within_tolerance": 0,
+      "tolerance_m": 0.001,
+      "applicable_anchors": 55,
+      "applicable_anchors_rejected": 55,
+      "not_applicable_slow_segment": 5,
+      "min_ee_err_m_on_applicable": 0.002041614,
+      "expectation": "every applicable anchor must fail tolerance (negative control); applicable = reference moves >= control_min_motion_m in one step",
+      "gate": "pass"
+    }
+  },
+  "video": "runs/maniskill_pickcube/replay_audit_ep0000_t0040_r0.mp4",
+  "continuous_vs_recorded_pose_max_abs_diff": 0.0003228218,
+  "continuous_vs_recorded_velocity_max_abs_diff": 0.2953526,
+  "all_gates_passed": true
+}
+csv -> runs/maniskill_pickcube/replay_audit.csv
+REPLAY AUDIT: PASS

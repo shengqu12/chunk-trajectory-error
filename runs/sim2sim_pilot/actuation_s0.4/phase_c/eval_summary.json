@@ -1,0 +1,30 @@
+{
+  "final_seeds": [
+    300000,
+    300149
+  ],
+  "envs": [
+    "target",
+    "source"
+  ],
+  "max_steps": 400,
+  "episodes": 9000,
+  "aborted_episodes": 0,
+  "target_steps_final_eval": 1350492,
+  "source_steps_final_eval": 1231494,
+  "consistency_check": {
+    "episodes": 50,
+    "phase_a_success": 17,
+    "rerun_success_200": 17,
+    "same_outcome_per_episode": true,
+    "same_steps_where_success": true
+  },
+  "true_gap": {
+    "sim_to_sim_only": true,
+    "samples": 500,
+    "episodes": 28,
+    "aborted": 0,
+    "target_restores": 15000
+  },
+  "seconds": 1421.2204287052155
+}

@@ -1,0 +1,374 @@
+{
+  "rule": "most target successes; ties -> smaller weight / earlier checkpoint",
+  "initial_states": "100 val-split seeds (reset by seed)",
+  "env": "target",
+  "max_steps": 200,
+  "target_steps_used": 1843901,
+  "episodes": 10500,
+  "distinct_checkpoints": 105,
+  "candidates": 110,
+  "aborted": 0,
+  "seeds": {
+    "17": {
+      "zero_shot": {
+        "selected": "w0",
+        "selected_weight": 0.0,
+        "val_successes": 34,
+        "candidates": {
+          "w0": 34
+        },
+        "checkpoint": "runs/sim2sim_pilot/actuation_s0.4/phase_c/seed_17/checkpoints/zero_shot/w0.pt"
+      },
+      "imitation_selected": {
+        "selected": "step5000",
+        "selected_weight": 5000.0,
+        "val_successes": 34,
+        "candidates": {
+          "step1000": 22,
+          "step2000": 21,
+          "step3000": 25,
+          "step4000": 30,
+          "step5000": 34
+        },
+        "checkpoint": "runs/sim2sim_pilot/actuation_s0.4/phase_c/seed_17/checkpoints/zero_shot/w0.pt"
+      },
+      "gap_demo": {
+        "selected": "w0.0001",
+        "selected_weight": 0.0001,
+        "val_successes": 32,
+        "candidates": {
+          "w0.0001": 32,
+          "w0.0003": 27,
+          "w0.001": 19,
+          "w0.003": 16,
+          "w0.01": 3
+        },
+        "checkpoint": "runs/sim2sim_pilot/actuation_s0.4/phase_c/seed_17/checkpoints/gap_demo/w0.0001.pt"
+      },
+      "finetune": {
+        "selected": "step4000",
+        "selected_weight": 4000.0,
+        "val_successes": 31,
+        "candidates": {
+          "step1000": 24,
+          "step2000": 26,
+          "step3000": 17,
+          "step4000": 31,
+          "step5000": 30
+        },
+        "checkpoint": "runs/sim2sim_pilot/actuation_s0.4/phase_c/seed_17/checkpoints/finetune/step4000.pt"
+      },
+      "smooth": {
+        "selected": "w1",
+        "selected_weight": 1.0,
+        "val_successes": 44,
+        "candidates": {
+          "w0.1": 32,
+          "w0.3": 38,
+          "w1": 44
+        },
+        "checkpoint": "runs/sim2sim_pilot/actuation_s0.4/phase_c/seed_17/checkpoints/smooth/w1.pt"
+      },
+      "magnitude": {
+        "selected": "w0.1",
+        "selected_weight": 0.1,
+        "val_successes": 37,
+        "candidates": {
+          "w0.1": 37,
+          "w0.3": 2,
+          "w1": 0
+        },
+        "checkpoint": "runs/sim2sim_pilot/actuation_s0.4/phase_c/seed_17/checkpoints/magnitude/w0.1.pt"
+      }
+    },
+    "18": {
+      "zero_shot": {
+        "selected": "w0",
+        "selected_weight": 0.0,
+        "val_successes": 37,
+        "candidates": {
+          "w0": 37
+        },
+        "checkpoint": "runs/sim2sim_pilot/actuation_s0.4/phase_c/seed_18/checkpoints/zero_shot/w0.pt"
+      },
+      "imitation_selected": {
+        "selected": "step2000",
+        "selected_weight": 2000.0,
+        "val_successes": 46,
+        "candidates": {
+          "step1000": 43,
+          "step2000": 46,
+          "step3000": 40,
+          "step4000": 33,
+          "step5000": 37
+        },
+        "checkpoint": "runs/sim2sim_pilot/actuation_s0.4/phase_c/seed_18/checkpoints/imitation_selected/step2000.pt"
+      },
+      "gap_demo": {
+        "selected": "w0.0001",
+        "selected_weight": 0.0001,
+        "val_successes": 34,
+        "candidates": {
+          "w0.0001": 34,
+          "w0.0003": 19,
+          "w0.001": 6,
+          "w0.003": 6,
+          "w0.01": 6
+        },
+        "checkpoint": "runs/sim2sim_pilot/actuation_s0.4/phase_c/seed_18/checkpoints/gap_demo/w0.0001.pt"
+      },
+      "finetune": {
+        "selected": "step3000",
+        "selected_weight": 3000.0,
+        "val_successes": 50,
+        "candidates": {
+          "step1000": 36,
+          "step2000": 37,
+          "step3000": 50,
+          "step4000": 37,
+          "step5000": 50
+        },
+        "checkpoint": "runs/sim2sim_pilot/actuation_s0.4/phase_c/seed_18/checkpoints/finetune/step3000.pt"
+      },
+      "smooth": {
+        "selected": "w1",
+        "selected_weight": 1.0,
+        "val_successes": 50,
+        "candidates": {
+          "w0.1": 41,
+          "w0.3": 44,
+          "w1": 50
+        },
+        "checkpoint": "runs/sim2sim_pilot/actuation_s0.4/phase_c/seed_18/checkpoints/smooth/w1.pt"
+      },
+      "magnitude": {
+        "selected": "w0.1",
+        "selected_weight": 0.1,
+        "val_successes": 35,
+        "candidates": {
+          "w0.1": 35,
+          "w0.3": 8,
+          "w1": 0
+        },
+        "checkpoint": "runs/sim2sim_pilot/actuation_s0.4/phase_c/seed_18/checkpoints/magnitude/w0.1.pt"
+      }
+    },
+    "19": {
+      "zero_shot": {
+        "selected": "w0",
+        "selected_weight": 0.0,
+        "val_successes": 14,
+        "candidates": {
+          "w0": 14
+        },
+        "checkpoint": "runs/sim2sim_pilot/actuation_s0.4/phase_c/seed_19/checkpoints/zero_shot/w0.pt"
+      },
+      "imitation_selected": {
+        "selected": "step4000",
+        "selected_weight": 4000.0,
+        "val_successes": 27,
+        "candidates": {
+          "step1000": 25,
+          "step2000": 4,
+          "step3000": 15,
+          "step4000": 27,
+          "step5000": 14
+        },
+        "checkpoint": "runs/sim2sim_pilot/actuation_s0.4/phase_c/seed_19/checkpoints/imitation_selected/step4000.pt"
+      },
+      "gap_demo": {
+        "selected": "w0.003",
+        "selected_weight": 0.003,
+        "val_successes": 13,
+        "candidates": {
+          "w0.0001": 10,
+          "w0.0003": 9,
+          "w0.001": 8,
+          "w0.003": 13,
+          "w0.01": 5
+        },
+        "checkpoint": "runs/sim2sim_pilot/actuation_s0.4/phase_c/seed_19/checkpoints/gap_demo/w0.003.pt"
+      },
+      "finetune": {
+        "selected": "step5000",
+        "selected_weight": 5000.0,
+        "val_successes": 39,
+        "candidates": {
+          "step1000": 12,
+          "step2000": 17,
+          "step3000": 19,
+          "step4000": 13,
+          "step5000": 39
+        },
+        "checkpoint": "runs/sim2sim_pilot/actuation_s0.4/phase_c/seed_19/checkpoints/finetune/step5000.pt"
+      },
+      "smooth": {
+        "selected": "w0.3",
+        "selected_weight": 0.3,
+        "val_successes": 23,
+        "candidates": {
+          "w0.1": 16,
+          "w0.3": 23,
+          "w1": 20
+        },
+        "checkpoint": "runs/sim2sim_pilot/actuation_s0.4/phase_c/seed_19/checkpoints/smooth/w0.3.pt"
+      },
+      "magnitude": {
+        "selected": "w0.1",
+        "selected_weight": 0.1,
+        "val_successes": 24,
+        "candidates": {
+          "w0.1": 24,
+          "w0.3": 6,
+          "w1": 0
+        },
+        "checkpoint": "runs/sim2sim_pilot/actuation_s0.4/phase_c/seed_19/checkpoints/magnitude/w0.1.pt"
+      }
+    },
+    "20": {
+      "zero_shot": {
+        "selected": "w0",
+        "selected_weight": 0.0,
+        "val_successes": 21,
+        "candidates": {
+          "w0": 21
+        },
+        "checkpoint": "runs/sim2sim_pilot/actuation_s0.4/phase_c/seed_20/checkpoints/zero_shot/w0.pt"
+      },
+      "imitation_selected": {
+        "selected": "step3000",
+        "selected_weight": 3000.0,
+        "val_successes": 31,
+        "candidates": {
+          "step1000": 23,
+          "step2000": 20,
+          "step3000": 31,
+          "step4000": 29,
+          "step5000": 21
+        },
+        "checkpoint": "runs/sim2sim_pilot/actuation_s0.4/phase_c/seed_20/checkpoints/imitation_selected/step3000.pt"
+      },
+      "gap_demo": {
+        "selected": "w0.0001",
+        "selected_weight": 0.0001,
+        "val_successes": 17,
+        "candidates": {
+          "w0.0001": 17,
+          "w0.0003": 14,
+          "w0.001": 7,
+          "w0.003": 5,
+          "w0.01": 4
+        },
+        "checkpoint": "runs/sim2sim_pilot/actuation_s0.4/phase_c/seed_20/checkpoints/gap_demo/w0.0001.pt"
+      },
+      "finetune": {
+        "selected": "step2000",
+        "selected_weight": 2000.0,
+        "val_successes": 41,
+        "candidates": {
+          "step1000": 17,
+          "step2000": 41,
+          "step3000": 40,
+          "step4000": 27,
+          "step5000": 25
+        },
+        "checkpoint": "runs/sim2sim_pilot/actuation_s0.4/phase_c/seed_20/checkpoints/finetune/step2000.pt"
+      },
+      "smooth": {
+        "selected": "w0.3",
+        "selected_weight": 0.3,
+        "val_successes": 28,
+        "candidates": {
+          "w0.1": 22,
+          "w0.3": 28,
+          "w1": 27
+        },
+        "checkpoint": "runs/sim2sim_pilot/actuation_s0.4/phase_c/seed_20/checkpoints/smooth/w0.3.pt"
+      },
+      "magnitude": {
+        "selected": "w0.1",
+        "selected_weight": 0.1,
+        "val_successes": 21,
+        "candidates": {
+          "w0.1": 21,
+          "w0.3": 2,
+          "w1": 0
+        },
+        "checkpoint": "runs/sim2sim_pilot/actuation_s0.4/phase_c/seed_20/checkpoints/magnitude/w0.1.pt"
+      }
+    },
+    "21": {
+      "zero_shot": {
+        "selected": "w0",
+        "selected_weight": 0.0,
+        "val_successes": 34,
+        "candidates": {
+          "w0": 34
+        },
+        "checkpoint": "runs/sim2sim_pilot/actuation_s0.4/phase_c/seed_21/checkpoints/zero_shot/w0.pt"
+      },
+      "imitation_selected": {
+        "selected": "step5000",
+        "selected_weight": 5000.0,
+        "val_successes": 34,
+        "candidates": {
+          "step1000": 26,
+          "step2000": 29,
+          "step3000": 32,
+          "step4000": 31,
+          "step5000": 34
+        },
+        "checkpoint": "runs/sim2sim_pilot/actuation_s0.4/phase_c/seed_21/checkpoints/zero_shot/w0.pt"
+      },
+      "gap_demo": {
+        "selected": "w0.0001",
+        "selected_weight": 0.0001,
+        "val_successes": 29,
+        "candidates": {
+          "w0.0001": 29,
+          "w0.0003": 21,
+          "w0.001": 16,
+          "w0.003": 11,
+          "w0.01": 11
+        },
+        "checkpoint": "runs/sim2sim_pilot/actuation_s0.4/phase_c/seed_21/checkpoints/gap_demo/w0.0001.pt"
+      },
+      "finetune": {
+        "selected": "step5000",
+        "selected_weight": 5000.0,
+        "val_successes": 50,
+        "candidates": {
+          "step1000": 27,
+          "step2000": 47,
+          "step3000": 38,
+          "step4000": 24,
+          "step5000": 50
+        },
+        "checkpoint": "runs/sim2sim_pilot/actuation_s0.4/phase_c/seed_21/checkpoints/finetune/step5000.pt"
+      },
+      "smooth": {
+        "selected": "w0.3",
+        "selected_weight": 0.3,
+        "val_successes": 39,
+        "candidates": {
+          "w0.1": 36,
+          "w0.3": 39,
+          "w1": 33
+        },
+        "checkpoint": "runs/sim2sim_pilot/actuation_s0.4/phase_c/seed_21/checkpoints/smooth/w0.3.pt"
+      },
+      "magnitude": {
+        "selected": "w0.1",
+        "selected_weight": 0.1,
+        "val_successes": 37,
+        "candidates": {
+          "w0.1": 37,
+          "w0.3": 8,
+          "w1": 0
+        },
+        "checkpoint": "runs/sim2sim_pilot/actuation_s0.4/phase_c/seed_21/checkpoints/magnitude/w0.1.pt"
+      }
+    }
+  },
+  "seconds": 920.4037890434265
+}

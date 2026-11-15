@@ -1,0 +1,3 @@
+error_fullobs r=0: 61/150 success
+error_fullobs r=2: 86/150 success
+error_fullobs r=4: 125/150 success

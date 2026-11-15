@@ -1,0 +1,365 @@
+{
+  "seed": 17,
+  "config": "runs/sim2sim_pilot/latency_d1/phase_c/seed_17/base_config.yaml",
+  "pi0": "runs/sim2sim_pilot/latency_d1/phase_c/seed_17/checkpoints/pi0.pt",
+  "pi0_baseline": {
+    "checkpoint": "runs/sim2sim_pilot/latency_d1/phase_c/seed_17/checkpoints/pi0.pt",
+    "train_samples": 30953,
+    "train_episodes": 400,
+    "best_val_bc_loss": 0.007433377671986818,
+    "curve": null,
+    "val_true_J_m2_mean": 2.5829640360765332e-05,
+    "val_true_sqrtJ_mm_mean": 4.253762107260728,
+    "val_anchors": 300,
+    "val_closed_loop_r0": {
+      "episodes": 30,
+      "successes": 5
+    }
+  },
+  "finetune_data": {
+    "episodes": 17,
+    "samples": 1238,
+    "perturbed_episodes": 4,
+    "by_episode": [
+      {
+        "episode_id": 2,
+        "steps": 43,
+        "perturbed": false
+      },
+      {
+        "episode_id": 8,
+        "steps": 1,
+        "perturbed": true
+      },
+      {
+        "episode_id": 29,
+        "steps": 119,
+        "perturbed": true
+      },
+      {
+        "episode_id": 33,
+        "steps": 128,
+        "perturbed": true
+      },
+      {
+        "episode_id": 36,
+        "steps": 93,
+        "perturbed": false
+      },
+      {
+        "episode_id": 45,
+        "steps": 72,
+        "perturbed": false
+      },
+      {
+        "episode_id": 57,
+        "steps": 1,
+        "perturbed": false
+      },
+      {
+        "episode_id": 67,
+        "steps": 91,
+        "perturbed": true
+      },
+      {
+        "episode_id": 73,
+        "steps": 77,
+        "perturbed": false
+      },
+      {
+        "episode_id": 79,
+        "steps": 61,
+        "perturbed": false
+      },
+      {
+        "episode_id": 81,
+        "steps": 85,
+        "perturbed": false
+      },
+      {
+        "episode_id": 85,
+        "steps": 67,
+        "perturbed": false
+      },
+      {
+        "episode_id": 103,
+        "steps": 95,
+        "perturbed": false
+      },
+      {
+        "episode_id": 110,
+        "steps": 77,
+        "perturbed": false
+      },
+      {
+        "episode_id": 130,
+        "steps": 85,
+        "perturbed": false
+      },
+      {
+        "episode_id": 136,
+        "steps": 66,
+        "perturbed": false
+      },
+      {
+        "episode_id": 138,
+        "steps": 77,
+        "perturbed": false
+      }
+    ]
+  },
+  "logged_states_for_gap_logged": 17382,
+  "candidates": [
+    {
+      "method": "zero_shot",
+      "tag": "w0",
+      "checkpoint": "runs/sim2sim_pilot/latency_d1/phase_c/seed_17/checkpoints/zero_shot/w0.pt",
+      "weight": 0.0,
+      "val_bc_loss": 0.0075778840109705925,
+      "val_chunk_roughness": 0.00013679455150850117,
+      "last_log": {
+        "step": 5000,
+        "imitation": 0.0016223816201090813,
+        "auxiliary": -0.0,
+        "grad_norm_imitation": 0.013857575133442879,
+        "grad_norm_weighted_auxiliary": 0.0
+      }
+    },
+    {
+      "method": "gap_demo",
+      "tag": "w0.001",
+      "checkpoint": "runs/sim2sim_pilot/latency_d1/phase_c/seed_17/checkpoints/gap_demo/w0.001.pt",
+      "weight": 0.001,
+      "val_bc_loss": 0.007625085301697254,
+      "val_chunk_roughness": 0.00019927094399463385,
+      "last_log": {
+        "step": 5000,
+        "imitation": 0.0016834735870361328,
+        "auxiliary": 0.1805422604084015,
+        "grad_norm_imitation": 0.015050307847559452,
+        "grad_norm_weighted_auxiliary": 0.006115193944424391
+      }
+    },
+    {
+      "method": "gap_demo",
+      "tag": "w0.003",
+      "checkpoint": "runs/sim2sim_pilot/latency_d1/phase_c/seed_17/checkpoints/gap_demo/w0.003.pt",
+      "weight": 0.003,
+      "val_bc_loss": 0.007727481424808502,
+      "val_chunk_roughness": 0.00035079437657259405,
+      "last_log": {
+        "step": 5000,
+        "imitation": 0.0017858631908893585,
+        "auxiliary": 0.1182459220290184,
+        "grad_norm_imitation": 0.017090022563934326,
+        "grad_norm_weighted_auxiliary": 0.011812093667685986
+      }
+    },
+    {
+      "method": "gap_demo",
+      "tag": "w0.01",
+      "checkpoint": "runs/sim2sim_pilot/latency_d1/phase_c/seed_17/checkpoints/gap_demo/w0.01.pt",
+      "weight": 0.01,
+      "val_bc_loss": 0.007930741645395756,
+      "val_chunk_roughness": 0.0007331926608458161,
+      "last_log": {
+        "step": 5000,
+        "imitation": 0.0020095868967473507,
+        "auxiliary": 0.07638866454362869,
+        "grad_norm_imitation": 0.022677145898342133,
+        "grad_norm_weighted_auxiliary": 0.02645695209503174
+      }
+    },
+    {
+      "method": "gap_demo",
+      "tag": "w0.03",
+      "checkpoint": "runs/sim2sim_pilot/latency_d1/phase_c/seed_17/checkpoints/gap_demo/w0.03.pt",
+      "weight": 0.03,
+      "val_bc_loss": 0.00836846511811018,
+      "val_chunk_roughness": 0.0015845098532736301,
+      "last_log": {
+        "step": 5000,
+        "imitation": 0.0024742328096181154,
+        "auxiliary": 0.046450670808553696,
+        "grad_norm_imitation": 0.03265675902366638,
+        "grad_norm_weighted_auxiliary": 0.038266200572252274
+      }
+    },
+    {
+      "method": "gap_demo",
+      "tag": "w0.1",
+      "checkpoint": "runs/sim2sim_pilot/latency_d1/phase_c/seed_17/checkpoints/gap_demo/w0.1.pt",
+      "weight": 0.1,
+      "val_bc_loss": 0.009515159763395786,
+      "val_chunk_roughness": 0.0038954326882958412,
+      "last_log": {
+        "step": 5000,
+        "imitation": 0.00362052908167243,
+        "auxiliary": 0.024592312052845955,
+        "grad_norm_imitation": 0.04889863356947899,
+        "grad_norm_weighted_auxiliary": 0.06130047142505646
+      }
+    },
+    {
+      "method": "gap_logged",
+      "tag": "w0.001",
+      "checkpoint": "runs/sim2sim_pilot/latency_d1/phase_c/seed_17/checkpoints/gap_logged/w0.001.pt",
+      "weight": 0.001,
+      "val_bc_loss": 0.007597479969263077,
+      "last_log": {
+        "step": 5000,
+        "imitation": 0.0016265582526102662,
+        "auxiliary": 0.011110521852970123,
+        "grad_norm_imitation": 0.013736214488744736,
+        "grad_norm_weighted_auxiliary": 0.0004900645581074059
+      }
+    },
+    {
+      "method": "gap_logged",
+      "tag": "w0.003",
+      "checkpoint": "runs/sim2sim_pilot/latency_d1/phase_c/seed_17/checkpoints/gap_logged/w0.003.pt",
+      "weight": 0.003,
+      "val_bc_loss": 0.007642227225005627,
+      "last_log": {
+        "step": 5000,
+        "imitation": 0.001642187824472785,
+        "auxiliary": 0.004522062372416258,
+        "grad_norm_imitation": 0.013849698938429356,
+        "grad_norm_weighted_auxiliary": 0.0005315149901434779
+      }
+    },
+    {
+      "method": "gap_logged",
+      "tag": "w0.01",
+      "checkpoint": "runs/sim2sim_pilot/latency_d1/phase_c/seed_17/checkpoints/gap_logged/w0.01.pt",
+      "weight": 0.01,
+      "val_bc_loss": 0.007638550363481045,
+      "last_log": {
+        "step": 5000,
+        "imitation": 0.0016873199492692947,
+        "auxiliary": 0.0032146130688488483,
+        "grad_norm_imitation": 0.014121540822088718,
+        "grad_norm_weighted_auxiliary": 0.0011984126176685095
+      }
+    },
+    {
+      "method": "gap_logged",
+      "tag": "w0.03",
+      "checkpoint": "runs/sim2sim_pilot/latency_d1/phase_c/seed_17/checkpoints/gap_logged/w0.03.pt",
+      "weight": 0.03,
+      "val_bc_loss": 0.007666774094104767,
+      "last_log": {
+        "step": 5000,
+        "imitation": 0.0017320464830845594,
+        "auxiliary": 0.002212781459093094,
+        "grad_norm_imitation": 0.015337549149990082,
+        "grad_norm_weighted_auxiliary": 0.002050137845799327
+      }
+    },
+    {
+      "method": "gap_logged",
+      "tag": "w0.1",
+      "checkpoint": "runs/sim2sim_pilot/latency_d1/phase_c/seed_17/checkpoints/gap_logged/w0.1.pt",
+      "weight": 0.1,
+      "val_bc_loss": 0.007834815420210361,
+      "last_log": {
+        "step": 5000,
+        "imitation": 0.0019047412788495421,
+        "auxiliary": 0.0013983228709548712,
+        "grad_norm_imitation": 0.017773842439055443,
+        "grad_norm_weighted_auxiliary": 0.006723181344568729
+      }
+    },
+    {
+      "method": "smooth",
+      "tag": "w0.1",
+      "checkpoint": "runs/sim2sim_pilot/latency_d1/phase_c/seed_17/checkpoints/smooth/w0.1.pt",
+      "weight": 0.1,
+      "val_bc_loss": 0.007556447759270668,
+      "val_chunk_roughness": 0.00013324899191502482,
+      "last_log": {
+        "step": 5000,
+        "imitation": 0.001620629453100264,
+        "auxiliary": 0.00013139336078893393,
+        "grad_norm_imitation": 0.013838068582117558,
+        "grad_norm_weighted_auxiliary": 0.0009839582489803433
+      }
+    },
+    {
+      "method": "smooth",
+      "tag": "w0.3",
+      "checkpoint": "runs/sim2sim_pilot/latency_d1/phase_c/seed_17/checkpoints/smooth/w0.3.pt",
+      "weight": 0.3,
+      "val_bc_loss": 0.007569481153041124,
+      "val_chunk_roughness": 0.00012200799392303452,
+      "last_log": {
+        "step": 5000,
+        "imitation": 0.0016202807892113924,
+        "auxiliary": 0.00011919487587874755,
+        "grad_norm_imitation": 0.013850510120391846,
+        "grad_norm_weighted_auxiliary": 0.0020106136798858643
+      }
+    },
+    {
+      "method": "smooth",
+      "tag": "w1",
+      "checkpoint": "runs/sim2sim_pilot/latency_d1/phase_c/seed_17/checkpoints/smooth/w1.pt",
+      "weight": 1.0,
+      "val_bc_loss": 0.007551188580691814,
+      "val_chunk_roughness": 0.00013690840569324791,
+      "last_log": {
+        "step": 5000,
+        "imitation": 0.001630048849619925,
+        "auxiliary": 0.00010143794497707859,
+        "grad_norm_imitation": 0.013750945217907429,
+        "grad_norm_weighted_auxiliary": 0.008946719579398632
+      }
+    },
+    {
+      "method": "finetune",
+      "tag": "step1000",
+      "weight": 1000,
+      "step": 1000,
+      "train_loss": 0.0019336171681061387,
+      "val_bc_loss": 0.007413967978209257,
+      "checkpoint": "runs/sim2sim_pilot/latency_d1/phase_c/seed_17/checkpoints/finetune/step1000.pt"
+    },
+    {
+      "method": "finetune",
+      "tag": "step2000",
+      "weight": 2000,
+      "step": 2000,
+      "train_loss": 0.0018493995303288102,
+      "val_bc_loss": 0.007443998474627733,
+      "checkpoint": "runs/sim2sim_pilot/latency_d1/phase_c/seed_17/checkpoints/finetune/step2000.pt"
+    },
+    {
+      "method": "finetune",
+      "tag": "step3000",
+      "weight": 3000,
+      "step": 3000,
+      "train_loss": 0.0023927786387503147,
+      "val_bc_loss": 0.007384474854916334,
+      "checkpoint": "runs/sim2sim_pilot/latency_d1/phase_c/seed_17/checkpoints/finetune/step3000.pt"
+    },
+    {
+      "method": "finetune",
+      "tag": "step4000",
+      "weight": 4000,
+      "step": 4000,
+      "train_loss": 0.0017444394761696458,
+      "val_bc_loss": 0.007544147316366434,
+      "checkpoint": "runs/sim2sim_pilot/latency_d1/phase_c/seed_17/checkpoints/finetune/step4000.pt"
+    },
+    {
+      "method": "finetune",
+      "tag": "step5000",
+      "weight": 5000,
+      "step": 5000,
+      "train_loss": 0.002012530341744423,
+      "val_bc_loss": 0.007493253331631422,
+      "checkpoint": "runs/sim2sim_pilot/latency_d1/phase_c/seed_17/checkpoints/finetune/step5000.pt"
+    }
+  ],
+  "seconds": 403.09318447113037
+}

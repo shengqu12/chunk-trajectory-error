@@ -1,0 +1,110 @@
+{
+  "shift": "actuation_s0.4",
+  "split": "val",
+  "seed": 1017,
+  "budget_steps": 5000,
+  "target_steps_used": 5000,
+  "episodes": 28,
+  "episodes_perturbed": 14,
+  "episodes_success": 5,
+  "success_unperturbed": [
+    5,
+    14
+  ],
+  "success_perturbed": [
+    0,
+    14
+  ],
+  "episodes_truncated_by_budget": 1,
+  "episode_ids": [
+    14,
+    38,
+    39,
+    43,
+    47,
+    54,
+    82,
+    86,
+    88,
+    91,
+    98,
+    111,
+    113,
+    115,
+    117,
+    118,
+    123,
+    135,
+    151,
+    155,
+    156,
+    159,
+    160,
+    161,
+    162,
+    168,
+    182,
+    186
+  ],
+  "label_samples": 4328,
+  "label_samples_ok": 4328,
+  "label_samples_aborted": 0,
+  "steps_without_label": 672,
+  "source_steps_for_labels": 43280,
+  "target_restores": 0,
+  "J_gap_m2": {
+    "n": 4328,
+    "mean": 1.7102904748254316e-05,
+    "p10": 3.6630104368312775e-07,
+    "median": 5.893316119821032e-06,
+    "p90": 4.382799334820859e-05,
+    "max": 0.0004682974886914437,
+    "exact_zeros": 0
+  },
+  "J_gap_cube_m2": {
+    "n": 4328,
+    "mean": 1.7594438726788357e-06,
+    "p10": 4.848899060050371e-14,
+    "median": 2.686719645759062e-13,
+    "p90": 3.0209920150896228e-06,
+    "max": 0.00019386088661581155,
+    "exact_zeros": 0
+  },
+  "sqrtJ_gap_mm": {
+    "n": 4328,
+    "mean": 3.1495586481990694,
+    "p10": 0.6052280146603919,
+    "median": 2.4276152566389193,
+    "p90": 6.620271320758547,
+    "max": 21.64018227029162,
+    "exact_zeros": 0
+  },
+  "J_gap_m2_unperturbed": {
+    "n": 1985,
+    "mean": 8.464601907269758e-06,
+    "p10": 1.0712289560690923e-07,
+    "median": 2.054185048874085e-06,
+    "p90": 2.068963595250549e-05,
+    "max": 0.00018493769985115571,
+    "exact_zeros": 0
+  },
+  "J_gap_m2_perturbed": {
+    "n": 2343,
+    "mean": 2.442131325843543e-05,
+    "p10": 1.853357234087276e-06,
+    "median": 1.108349098122713e-05,
+    "p90": 5.7359116219803134e-05,
+    "max": 0.0004682974886914437,
+    "exact_zeros": 0
+  },
+  "pending_logged": {
+    "shape_per_step": [
+      0,
+      4
+    ],
+    "note": "commands sent but not yet applied, before the step"
+  },
+  "controller_state_keys": [],
+  "seconds_collection": 16.68905782699585,
+  "seconds_labels": 28.06728506088257
+}

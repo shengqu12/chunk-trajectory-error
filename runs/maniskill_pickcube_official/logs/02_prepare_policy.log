@@ -1,0 +1,21 @@
+step 1000: train 0.00786  val 0.00996
+step 2000: train 0.00660  val 0.00896
+step 3000: train 0.00394  val 0.00862
+step 4000: train 0.00373  val 0.00819
+step 5000: train 0.00268  val 0.00801
+step 6000: train 0.00326  val 0.00756
+step 7000: train 0.00229  val 0.00778
+step 8000: train 0.00214  val 0.00752
+step 9000: train 0.00337  val 0.00753
+step 10000: train 0.00230  val 0.00743
+step 11000: train 0.00210  val 0.00750
+step 12000: train 0.00246  val 0.00747
+step 13000: train 0.00239  val 0.00757
+step 14000: train 0.00203  val 0.00769
+step 15000: train 0.00193  val 0.00777
+step 16000: train 0.00196  val 0.00799
+step 17000: train 0.00162  val 0.00755
+step 18000: train 0.00146  val 0.00764
+step 19000: train 0.00146  val 0.00785
+step 20000: train 0.00165  val 0.00796
+{'checkpoint': 'runs/maniskill_pickcube/checkpoints/pi0.pt', 'train_samples': 30953, 'train_episodes': 400, 'best_val_bc_loss': 0.007433377671986818, 'val_true_J_m2_mean': 2.5829640360765332e-05, 'val_true_sqrtJ_mm_mean': 4.253762107260728, 'val_anchors': 300, 'val_closed_loop_r0': {'episodes': 30, 'successes': 5}}

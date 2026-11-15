@@ -1,0 +1,50 @@
+2026-11-12 15:08:10 START 00_audit_setup: python scripts/00_audit_setup.py --config configs/maniskill_pickcube.yaml
+2026-11-12 15:08:14 DONE  00_audit_setup
+2026-11-12 15:08:14 START 01_replay_expert_train: python scripts/01_replay_expert.py --config configs/maniskill_pickcube.yaml --split train --max-anchors 60 --video-anchor-index 1
+2026-11-12 15:08:34 DONE  01_replay_expert_train
+2026-11-12 15:08:34 START 02_prepare_policy: python scripts/02_prepare_policy.py --config configs/maniskill_pickcube.yaml
+2026-11-12 15:09:40 DONE  02_prepare_policy
+2026-11-12 15:09:40 START 03_sample: python scripts/03_collect_branches.py --config configs/maniskill_pickcube.yaml --split train --sample
+2026-11-12 15:09:44 DONE  03_sample
+2026-11-12 15:09:44 START 03_collect_train: python scripts/03_collect_branches.py --config configs/maniskill_pickcube.yaml --split train
+2026-11-12 15:14:51 DONE  03_collect_train
+2026-11-12 15:14:51 START 03_collect_val: python scripts/03_collect_branches.py --config configs/maniskill_pickcube.yaml --split val
+2026-11-12 15:15:52 DONE  03_collect_val
+2026-11-12 15:15:52 START 03_collect_test: python scripts/03_collect_branches.py --config configs/maniskill_pickcube.yaml --split test
+2026-11-12 15:16:54 DONE  03_collect_test
+2026-11-12 15:16:54 START 04_train_error_history: python scripts/04_train_error.py --config configs/maniskill_pickcube.yaml
+2026-11-12 15:17:25 DONE  04_train_error_history
+2026-11-12 15:17:25 START 04_train_error_nohist: python scripts/04_train_error.py --config configs/maniskill_pickcube.yaml --no-history
+2026-11-12 15:17:57 DONE  04_train_error_nohist
+2026-11-12 15:17:57 START 04_train_error_fullobs: python scripts/04_train_error.py --config configs/maniskill_pickcube.yaml --state-source full_obs
+2026-11-12 15:18:29 DONE  04_train_error_fullobs
+2026-11-12 15:18:29 START 04_train_error_history_sqrt: python scripts/04_train_error.py --config configs/maniskill_pickcube.yaml --target sqrtJ
+2026-11-12 15:19:00 DONE  04_train_error_history_sqrt
+2026-11-12 15:19:00 START 05_audit_gradient: python scripts/05_audit_gradient.py --config configs/maniskill_pickcube.yaml
+2026-11-12 15:22:18 DONE  05_audit_gradient
+2026-11-12 15:22:18 START 06_train_policy_bc: python scripts/06_train_policy.py --config configs/maniskill_pickcube.yaml --variant bc
+2026-11-12 15:22:42 DONE  06_train_policy_bc
+2026-11-12 15:22:42 START 06_train_policy_error: python scripts/06_train_policy.py --config configs/maniskill_pickcube.yaml --variant error
+2026-11-12 15:25:35 DONE  06_train_policy_error
+2026-11-12 15:25:35 START 06_train_policy_nohist: python scripts/06_train_policy.py --config configs/maniskill_pickcube.yaml --variant nohist
+2026-11-12 15:28:24 DONE  06_train_policy_nohist
+2026-11-12 15:28:24 START 06_train_policy_smooth: python scripts/06_train_policy.py --config configs/maniskill_pickcube.yaml --variant smooth
+2026-11-12 15:29:32 DONE  06_train_policy_smooth
+2026-11-12 15:29:32 START 06_train_policy_error_fullobs: python scripts/06_train_policy.py --config configs/maniskill_pickcube.yaml --variant error_fullobs
+2026-11-12 15:32:21 DONE  06_train_policy_error_fullobs
+2026-11-12 15:32:21 START 06_train_policy_error_sqrt: python scripts/06_train_policy.py --config configs/maniskill_pickcube.yaml --variant error_sqrt
+2026-11-12 15:35:12 DONE  06_train_policy_error_sqrt
+2026-11-12 15:35:12 START 06_train_policy_error_w0.03: python scripts/06_train_policy.py --config configs/maniskill_pickcube.yaml --variant error --weights 0.03
+2026-11-12 15:35:39 DONE  06_train_policy_error_w0.03
+2026-11-12 15:35:39 START 03_collect_train_r1: python scripts/03_collect_branches.py --config configs/maniskill_pickcube.yaml --split train --round 1 --checkpoint runs/maniskill_pickcube/checkpoints/pi_error/w0.03.pt --policy-perturbed 1 --expert-perturbed 0
+2026-11-12 15:38:03 DONE  03_collect_train_r1
+2026-11-12 15:38:03 START 03_collect_val_r1: python scripts/03_collect_branches.py --config configs/maniskill_pickcube.yaml --split val --round 1 --checkpoint runs/maniskill_pickcube/checkpoints/pi_error/w0.03.pt --policy-perturbed 1 --expert-perturbed 0
+2026-11-12 15:38:32 DONE  03_collect_val_r1
+2026-11-12 15:38:32 START 04_train_error_history_r1: python scripts/04_train_error.py --config configs/maniskill_pickcube.yaml --round 1
+2026-11-12 15:39:03 DONE  04_train_error_history_r1
+2026-11-12 15:39:03 START 06_train_policy_error_r1: python scripts/06_train_policy.py --config configs/maniskill_pickcube.yaml --variant error --round 1
+2026-11-12 15:41:57 DONE  06_train_policy_error_r1
+2026-11-12 15:41:57 START 07 shards: pi0 bc error nohist smooth error_fullobs error_w0.03 error_r1 error_sqrt
+2026-11-12 15:48:31 DONE  07 shards
+2026-11-12 15:48:31 START 08_report: python scripts/08_report.py --config configs/maniskill_pickcube.yaml
+2026-11-12 15:48:33 STOP  08_report: exit code 1

@@ -1,0 +1,91 @@
+# Sim-to-sim pilot (docs/SIM2SIM_PILOT_SPEC.md).  Source environment = base_config, unchanged.
+base_config: configs/maniskill_pickcube_official.yaml   # official demonstrations, as in the GPU run
+output_dir: runs/sim2sim_pilot
+
+phase_a:
+  policy_checkpoint: runs/maniskill_pickcube_official/checkpoints/pi_bc/pi.pt
+  delay: 0                      # scheduler delay r
+  first_reset_seed: 0           # seed of the reset that precedes the one-time shift application
+  bootstrap: {n_boot: 5000, seed: 0}
+  # Mildest level first within each family (gate 1 picks the first level that passes).
+  conditions:
+    - {family: nominal}
+    - {family: actuation, s: 0.8}
+    - {family: actuation, s: 0.6}
+    - {family: actuation, s: 0.4}
+    - {family: actuation, s: 0.3}
+    - {family: latency, d: 1}
+    - {family: latency, d: 2}
+    - {family: contact, f: 0.5, m: 2}
+    - {family: contact, f: 0.3, m: 3}
+    - {family: contact, f: 0.2, m: 4}
+  # Diagnostic only, not used by gate 1: the spec's literal friction recipe, which scales the shared
+  # default material in place (also changes table, ground and arm-link friction).
+  diagnostic_conditions:
+    - {family: contact, f: 0.5, m: 2, contact_mode: shared_in_place}
+    - {family: contact, f: 0.3, m: 3, contact_mode: shared_in_place}
+    - {family: contact, f: 0.2, m: 4, contact_mode: shared_in_place}
+
+gate1:
+  min_drop_pp: 15.0             # paired success drop vs nominal, percentage points
+  families: [actuation, latency, contact]
+
+phase_b:
+  shift: {family: latency, d: 1}          # Phase A gate-1 choice, carried forward first (amendment 1)
+  policy_checkpoint: runs/maniskill_pickcube_official/checkpoints/pi_bc/pi.pt
+  first_reset_seed: 0
+  seed: 17                                # perturbation RNG seed (+1000 for val)
+  budgets: {train_steps: 20000, val_steps: 5000}
+  noise_floor: {steps: 2000}              # identity "target" (no shift), diagnostic only, not a budget
+  # perturbation amplitude: base_config branches.perturbation_amplitude; every second episode perturbed
+  gap_training:
+    checkpoint_holdout_every: 10          # every 10th train episode selects the best checkpoint; val stays untouched
+  audit:
+    samples: 300
+    step_sizes: [0.02, 0.05, 0.1, 0.2]
+    seed: 13
+
+gate2: {rank_corr_min: 0.5}
+
+# ---------------------------------------------------------------------------
+# Phase C (pre-registered 2026-11-13, before any Phase C result was computed)
+phase_c:
+  shift: {family: latency, d: 1}
+  gap_checkpoint: runs/sim2sim_pilot/latency_d1/checkpoints/gap_sqrtJ.pt     # amendment 6
+  seeds: [17, 18, 19, 20, 21]
+  base_recipe: scripts/02_prepare_policy.py      # run unchanged with a per-seed config (experiment.seed, output_dir)
+  finetune_recipe: scripts/06_train_policy.py    # train_one(): same steps, lr, batch size and batch sequence
+  lambdas: [0.001, 0.003, 0.01, 0.03, 0.1]       # spec grid, gap-demo and gap-logged
+  smooth_betas: [0.1, 0.3, 1.0]                  # base config policy_finetune.smooth_betas (amendment 5)
+  logged_batch_size: 256                         # gap-logged: as many logged as demonstration samples per batch
+  logged_batch_seed_offset: 7                    # separate generator; the demonstration batches stay identical
+  finetune_checkpoint_every: 1000                # same-budget fine-tune candidates at steps 1000..5000
+  selection:                                     # amendment 8
+    initial_states: val_split_seeds              # the 100 val-split demonstration seeds, reset by seed only
+    env: target
+    max_steps: 200
+    rule: most target successes; ties -> smaller weight / earlier checkpoint
+  final_eval:
+    seeds: {start: 200000, count: 150}           # amendment 3, never used before
+    envs: [target, source]
+    max_steps: 400                               # one run; success@200 = success within 200 steps (amendment 4)
+    primary_cap: 200
+    secondary_cap: 400
+    delay: 0
+  true_gap:                                      # sim-to-sim only
+    source: labels_val                           # held-out logged target states (Phase B val logs)
+    samples: 500
+    seed: 23
+  bootstrap: {n_boot: 5000, seed: 0, clusters: "two-way: seeds and initial states resampled independently"}
+  demo_diagnostic:                               # non-gating, sim-to-sim only
+    samples: 300
+    seed: 31
+    step_sizes: [0.02, 0.05, 0.1]
+
+gate4:
+  rule: >-
+    per gap variant vs zero-shot: paired target success@200 difference with 95% CI above 0; AND no drop
+    in source success@200 (CI of the paired difference not entirely below 0); AND no slowdown (CI of the
+    paired difference in target mean end-effector step per control step not entirely below 0)
+gate5:
+  rule: per gap variant vs same-budget fine-tune - CI of the paired target success@200 difference not entirely below 0

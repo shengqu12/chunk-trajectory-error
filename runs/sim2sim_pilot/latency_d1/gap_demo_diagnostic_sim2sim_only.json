@@ -1,0 +1,141 @@
+{
+  "sim_to_sim_only": true,
+  "gating": false,
+  "banner": "SIM-TO-SIM ONLY, NON-GATING: target restores are used below",
+  "samples": 300,
+  "episodes": 189,
+  "held_out_train_episodes": 289,
+  "policy": "runs/maniskill_pickcube/checkpoints/pi_bc/pi.pt",
+  "gap_checkpoint": "runs/sim2sim_pilot/latency_d1/checkpoints/gap_sqrtJ.pt",
+  "true_gap_demo_states_m2": {
+    "p10": 4.330803979677496e-06,
+    "median": 1.3773565096959811e-05,
+    "p90": 3.5715375523974065e-05,
+    "mean": 1.742284661281849e-05
+  },
+  "G_pred_demo_states_m2": {
+    "p10": 5.242034831098863e-06,
+    "median": 1.3076021787128411e-05,
+    "p90": 3.752024676941801e-05,
+    "mean": 1.7616592976802774e-05
+  },
+  "labels_logged_val_m2": {
+    "p10": 1.0231723579645636e-06,
+    "median": 1.273778327839925e-05,
+    "p90": 7.892036545742387e-05,
+    "mean": 3.126200664498953e-05
+  },
+  "prediction_vs_truth": {
+    "spearman": 0.8160979566439627,
+    "pearson": 0.8258251799820231,
+    "MAE_m2": 5.428841783904792e-06,
+    "constant_fit_mean_MAE_m2": 2.6923801857274278e-05,
+    "constant_demo_mean_MAE_m2": 1.0140932078371628e-05,
+    "mean_pred_over_mean_true": 1.011120247356235,
+    "median_pred_over_true": 0.936561812386224
+  },
+  "step_test": {
+    "0.02": {
+      "samples": 300,
+      "episodes": 189,
+      "mean_J0_m2": 1.742284661281849e-05,
+      "delta_J_grad_m2": {
+        "mean": -7.255410013988697e-07,
+        "ci95": [
+          -7.812457497304569e-07,
+          -6.678462905834231e-07
+        ]
+      },
+      "delta_J_rand_m2": {
+        "mean": 5.19777607162644e-08,
+        "ci95": [
+          -3.40156873406477e-09,
+          1.0680392715546744e-07
+        ]
+      },
+      "paired_grad_minus_rand_m2": {
+        "mean": -7.775187621151342e-07,
+        "ci95": [
+          -8.524244029346184e-07,
+          -7.031181349608263e-07
+        ]
+      },
+      "relative_change_grad": -0.041643080348596324,
+      "relative_change_rand": 0.0029833104699448407,
+      "fraction_grad_lowers_J": 0.9466666666666667,
+      "fraction_grad_beats_rand": 0.9366666666666666,
+      "mean_effective_norm_grad": 0.01999999923010667,
+      "mean_effective_norm_rand": 0.019999999490876993
+    },
+    "0.05": {
+      "samples": 300,
+      "episodes": 189,
+      "mean_J0_m2": 1.742284661281849e-05,
+      "delta_J_grad_m2": {
+        "mean": -1.6594820253355645e-06,
+        "ci95": [
+          -1.7921573675514047e-06,
+          -1.5282994685086033e-06
+        ]
+      },
+      "delta_J_rand_m2": {
+        "mean": 2.550146691722156e-07,
+        "ci95": [
+          1.3436652568693753e-07,
+          3.761416896287281e-07
+        ]
+      },
+      "paired_grad_minus_rand_m2": {
+        "mean": -1.9144966945077803e-06,
+        "ci95": [
+          -2.0907917083162134e-06,
+          -1.7452105372465828e-06
+        ]
+      },
+      "relative_change_grad": -0.09524746800644136,
+      "relative_change_rand": 0.0146367970079352,
+      "fraction_grad_lowers_J": 0.9566666666666667,
+      "fraction_grad_beats_rand": 0.9633333333333334,
+      "mean_effective_norm_grad": 0.05000000124176343,
+      "mean_effective_norm_rand": 0.050000001130004725
+    },
+    "0.1": {
+      "samples": 300,
+      "episodes": 189,
+      "mean_J0_m2": 1.742284661281849e-05,
+      "delta_J_grad_m2": {
+        "mean": -2.712739488076094e-06,
+        "ci95": [
+          -2.9732364962572913e-06,
+          -2.4654120327635724e-06
+        ]
+      },
+      "delta_J_rand_m2": {
+        "mean": 9.898183193583228e-07,
+        "ci95": [
+          7.473003174190662e-07,
+          1.2378406438583948e-06
+        ]
+      },
+      "paired_grad_minus_rand_m2": {
+        "mean": -3.7025578074344172e-06,
+        "ci95": [
+          -4.058333269130512e-06,
+          -3.369376546561492e-06
+        ]
+      },
+      "relative_change_grad": -0.15570013031511473,
+      "relative_change_rand": 0.05681151544031186,
+      "fraction_grad_lowers_J": 0.8966666666666666,
+      "fraction_grad_beats_rand": 0.9533333333333334,
+      "mean_effective_norm_grad": 0.10000000260770321,
+      "mean_effective_norm_rand": 0.10000000216066837
+    }
+  },
+  "skipped": {
+    "zero_gradient": 0,
+    "aborted_comparisons": 0
+  },
+  "target_restores": 2100,
+  "seconds": 27.804841995239258
+}

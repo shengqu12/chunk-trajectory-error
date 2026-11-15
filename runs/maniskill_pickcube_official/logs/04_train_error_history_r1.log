@@ -1,0 +1,17 @@
+step 1000: train 0.4821  val 1.0992  (label-scale units)
+step 2000: train 0.3961  val 0.6978  (label-scale units)
+step 3000: train 0.2202  val 0.5717  (label-scale units)
+step 4000: train 0.0917  val 0.5223  (label-scale units)
+step 5000: train 0.0701  val 0.5042  (label-scale units)
+step 6000: train 0.0458  val 0.4834  (label-scale units)
+step 7000: train 0.0930  val 0.4702  (label-scale units)
+step 8000: train 0.0596  val 0.4487  (label-scale units)
+step 9000: train 0.0448  val 0.4580  (label-scale units)
+step 10000: train 0.0490  val 0.4749  (label-scale units)
+step 11000: train 0.0570  val 0.4233  (label-scale units)
+step 12000: train 0.0333  val 0.4207  (label-scale units)
+step 13000: train 0.0318  val 0.3995  (label-scale units)
+step 14000: train 0.0496  val 0.3985  (label-scale units)
+step 15000: train 0.0269  val 0.3864  (label-scale units)
+val {'samples': 2400, 'MAE_m2': 7.227696187328547e-05, 'RMSE_mm2': 143.7383034499362, 'MAE_sqrtJ_mm': 3.0011129565536976, 'constant_baseline_MAE_m2': 0.00031092771678231657, 'constant_median_baseline_MAE_m2': 0.00025361127336509526, 'pearson': 0.964470928684052, 'spearman_global': 0.8382018560146918, 'within_anchor_spearman_mean': 0.8638095238095237, 'within_anchor_best_candidate_match': 0.5566666666666666, 'anchors_ranked': 300}
+test {'samples': 2400, 'MAE_m2': 6.907956412760541e-05, 'RMSE_mm2': 131.5992558375001, 'MAE_sqrtJ_mm': 2.8627789579331875, 'constant_baseline_MAE_m2': 0.0003291336470283568, 'constant_median_baseline_MAE_m2': 0.0002763586235232651, 'pearson': 0.9734803607473254, 'spearman_global': 0.8650432254138896, 'within_anchor_spearman_mean': 0.8960317460317462, 'within_anchor_best_candidate_match': 0.59, 'anchors_ranked': 300}

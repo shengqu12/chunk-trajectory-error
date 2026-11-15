@@ -1,0 +1,546 @@
+{
+  "shift": "actuation_s0.4",
+  "label_files": {
+    "train": {
+      "samples": 17190,
+      "used": 17190,
+      "dropped_not_ok": 0
+    },
+    "val": {
+      "samples": 4328,
+      "used": 4328,
+      "dropped_not_ok": 0
+    }
+  },
+  "split": {
+    "fit_episodes": 106,
+    "fit_samples": 15379,
+    "checkpoint_holdout_episodes": [
+      12,
+      28,
+      40,
+      58,
+      72,
+      87,
+      102,
+      120,
+      134,
+      149,
+      167
+    ],
+    "checkpoint_holdout_samples": 1811,
+    "val_episodes": 28,
+    "val_samples": 4328
+  },
+  "training": {
+    "steps": 15000,
+    "batch_size": 256,
+    "lr": 0.001,
+    "eval_every": 1000,
+    "seed": 17,
+    "hidden_dim": 128,
+    "state_source": "robot",
+    "use_history": true,
+    "delay": 0
+  },
+  "constant_predictor_m2": 1.6426167843080026e-05,
+  "networks": {
+    "J": {
+      "checkpoint": "runs/sim2sim_pilot/actuation_s0.4/checkpoints/gap_J.pt",
+      "curve": [
+        {
+          "step": 1000,
+          "train_loss": 0.5092799067497253,
+          "holdout_loss": 27.104196548461914
+        },
+        {
+          "step": 2000,
+          "train_loss": 0.30445265769958496,
+          "holdout_loss": 25.97847557067871
+        },
+        {
+          "step": 3000,
+          "train_loss": 0.11366868019104004,
+          "holdout_loss": 26.068891525268555
+        },
+        {
+          "step": 4000,
+          "train_loss": 0.202388733625412,
+          "holdout_loss": 26.535728454589844
+        },
+        {
+          "step": 5000,
+          "train_loss": 0.08379574120044708,
+          "holdout_loss": 26.8758544921875
+        },
+        {
+          "step": 6000,
+          "train_loss": 0.20564746856689453,
+          "holdout_loss": 27.495759963989258
+        },
+        {
+          "step": 7000,
+          "train_loss": 0.06176650524139404,
+          "holdout_loss": 26.561389923095703
+        },
+        {
+          "step": 8000,
+          "train_loss": 0.05723487213253975,
+          "holdout_loss": 26.72218894958496
+        },
+        {
+          "step": 9000,
+          "train_loss": 0.034957561641931534,
+          "holdout_loss": 26.913423538208008
+        },
+        {
+          "step": 10000,
+          "train_loss": 0.046218376606702805,
+          "holdout_loss": 26.71687126159668
+        },
+        {
+          "step": 11000,
+          "train_loss": 0.03237040340900421,
+          "holdout_loss": 26.93230628967285
+        },
+        {
+          "step": 12000,
+          "train_loss": 0.019335882738232613,
+          "holdout_loss": 26.341108322143555
+        },
+        {
+          "step": 13000,
+          "train_loss": 0.03101126290857792,
+          "holdout_loss": 27.173730850219727
+        },
+        {
+          "step": 14000,
+          "train_loss": 0.018648531287908554,
+          "holdout_loss": 25.678142547607422
+        },
+        {
+          "step": 15000,
+          "train_loss": 0.015907712280750275,
+          "holdout_loss": 26.123186111450195
+        }
+      ],
+      "val": {
+        "samples": 4328,
+        "MAE_m2": 7.446252088115107e-06,
+        "constant_mean_MAE_m2": 1.800136845096687e-05,
+        "MAE_sqrtJ_mm": 0.9319846185070014,
+        "pearson": 0.8614578401136553,
+        "spearman": 0.7908838349559882,
+        "lowest_decile_true_gap": {
+          "n": 432,
+          "mean_true_m2": 1.2764506251977914e-07,
+          "mean_pred_m2": 3.6239716268200767e-06
+        },
+        "mean_true_m2": 1.7102904748254316e-05,
+        "mean_pred_m2": 1.7421102008424306e-05
+      },
+      "val_unperturbed": {
+        "samples": 1985,
+        "MAE_m2": 3.9270076325441556e-06,
+        "constant_mean_MAE_m2": 1.5454508681085567e-05,
+        "MAE_sqrtJ_mm": 0.8253365086945568,
+        "pearson": 0.9312794250547334,
+        "spearman": 0.5803185825631726,
+        "lowest_decile_true_gap": {
+          "n": 198,
+          "mean_true_m2": 2.617382270740061e-08,
+          "mean_pred_m2": 5.7064019944336355e-06
+        },
+        "mean_true_m2": 8.464601907269758e-06,
+        "mean_pred_m2": 9.458902078438228e-06
+      },
+      "val_perturbed": {
+        "samples": 2343,
+        "MAE_m2": 1.0427771611934287e-05,
+        "constant_mean_MAE_m2": 2.0159079352893625e-05,
+        "MAE_sqrtJ_mm": 1.0223373705248007,
+        "pearson": 0.8342943965707011,
+        "spearman": 0.8223882184556047,
+        "lowest_decile_true_gap": {
+          "n": 234,
+          "mean_true_m2": 9.7889758829452e-07,
+          "mean_pred_m2": 3.184429679218936e-06
+        },
+        "mean_true_m2": 2.442131325843543e-05,
+        "mean_pred_m2": 2.4166713131353186e-05
+      },
+      "gate2": {
+        "MAE_below_constant": true,
+        "spearman_above": true,
+        "pass": true
+      },
+      "roughness": {
+        "spearman_prediction_vs_roughness": 0.599168530972262
+      },
+      "magnitude": {
+        "spearman_prediction_vs_magnitude": 0.7070056914281774
+      },
+      "off_distribution": {
+        "G_on_logged_val_states_m2": {
+          "n": 4328,
+          "p10": 1.1300798860247597e-06,
+          "median": 7.073522510836483e-06,
+          "p90": 4.670704729505816e-05,
+          "mean": 1.7421102008424306e-05
+        },
+        "G_on_demo_states_demo_actions_m2": {
+          "n": 21353,
+          "p10": 2.5299490516772493e-06,
+          "median": 8.66211030370323e-06,
+          "p90": 3.2345583895221354e-05,
+          "mean": 1.3503597872614927e-05
+        },
+        "G_on_demo_states_pi_bc_chunk_m2": {
+          "n": 21353,
+          "p10": 2.8119581656937955e-06,
+          "median": 8.685975444677752e-06,
+          "p90": 2.9551179613918064e-05,
+          "mean": 1.294606656148548e-05
+        }
+      }
+    },
+    "sqrtJ": {
+      "checkpoint": "runs/sim2sim_pilot/actuation_s0.4/checkpoints/gap_sqrtJ.pt",
+      "curve": [
+        {
+          "step": 1000,
+          "train_loss": 0.05241405591368675,
+          "holdout_loss": 0.48445773124694824
+        },
+        {
+          "step": 2000,
+          "train_loss": 0.02153141237795353,
+          "holdout_loss": 0.47259601950645447
+        },
+        {
+          "step": 3000,
+          "train_loss": 0.012197707779705524,
+          "holdout_loss": 0.48758599162101746
+        },
+        {
+          "step": 4000,
+          "train_loss": 0.011441681534051895,
+          "holdout_loss": 0.47343745827674866
+        },
+        {
+          "step": 5000,
+          "train_loss": 0.009207542054355145,
+          "holdout_loss": 0.45129692554473877
+        },
+        {
+          "step": 6000,
+          "train_loss": 0.007640053518116474,
+          "holdout_loss": 0.4707336723804474
+        },
+        {
+          "step": 7000,
+          "train_loss": 0.004560572095215321,
+          "holdout_loss": 0.449660986661911
+        },
+        {
+          "step": 8000,
+          "train_loss": 0.0031000084709376097,
+          "holdout_loss": 0.4521135985851288
+        },
+        {
+          "step": 9000,
+          "train_loss": 0.004328303504735231,
+          "holdout_loss": 0.4775092303752899
+        },
+        {
+          "step": 10000,
+          "train_loss": 0.0035813709255307913,
+          "holdout_loss": 0.46356654167175293
+        },
+        {
+          "step": 11000,
+          "train_loss": 0.002841146197170019,
+          "holdout_loss": 0.484514057636261
+        },
+        {
+          "step": 12000,
+          "train_loss": 0.005323280114680529,
+          "holdout_loss": 0.47599172592163086
+        },
+        {
+          "step": 13000,
+          "train_loss": 0.0021421934943646193,
+          "holdout_loss": 0.46742257475852966
+        },
+        {
+          "step": 14000,
+          "train_loss": 0.004279599990695715,
+          "holdout_loss": 0.47577932476997375
+        },
+        {
+          "step": 15000,
+          "train_loss": 0.0019657209049910307,
+          "holdout_loss": 0.46891671419143677
+        }
+      ],
+      "val": {
+        "samples": 4328,
+        "MAE_m2": 6.205120777729473e-06,
+        "constant_mean_MAE_m2": 1.800136845096687e-05,
+        "MAE_sqrtJ_mm": 0.7206042448904999,
+        "pearson": 0.8545795255722533,
+        "spearman": 0.8622023498324402,
+        "lowest_decile_true_gap": {
+          "n": 432,
+          "mean_true_m2": 1.2764506251977914e-07,
+          "mean_pred_m2": 2.6790226019915535e-06
+        },
+        "mean_true_m2": 1.7102904748254316e-05,
+        "mean_pred_m2": 1.5846084394006768e-05
+      },
+      "val_unperturbed": {
+        "samples": 1985,
+        "MAE_m2": 3.1199249373084226e-06,
+        "constant_mean_MAE_m2": 1.5454508681085567e-05,
+        "MAE_sqrtJ_mm": 0.617449525167855,
+        "pearson": 0.938998931160564,
+        "spearman": 0.6928644016884756,
+        "lowest_decile_true_gap": {
+          "n": 198,
+          "mean_true_m2": 2.617382270740061e-08,
+          "mean_pred_m2": 4.505786208146612e-06
+        },
+        "mean_true_m2": 8.464601907269758e-06,
+        "mean_pred_m2": 8.346307095398782e-06
+      },
+      "val_perturbed": {
+        "samples": 2343,
+        "MAE_m2": 8.818912388158744e-06,
+        "constant_mean_MAE_m2": 2.0159079352893625e-05,
+        "MAE_sqrtJ_mm": 0.8079973813179224,
+        "pearson": 0.8240017432085655,
+        "spearman": 0.8816648554929933,
+        "lowest_decile_true_gap": {
+          "n": 234,
+          "mean_true_m2": 9.7889758829452e-07,
+          "mean_pred_m2": 2.4489876931011945e-06
+        },
+        "mean_true_m2": 2.442131325843543e-05,
+        "mean_pred_m2": 2.2199929011051947e-05
+      },
+      "gate2": {
+        "MAE_below_constant": true,
+        "spearman_above": true,
+        "pass": true
+      },
+      "roughness": {
+        "spearman_prediction_vs_roughness": 0.6346318802663928
+      },
+      "magnitude": {
+        "spearman_prediction_vs_magnitude": 0.6968774210778453
+      },
+      "off_distribution": {
+        "G_on_logged_val_states_m2": {
+          "n": 4328,
+          "p10": 9.79135677425802e-07,
+          "median": 6.667062507403898e-06,
+          "p90": 4.09788921388099e-05,
+          "mean": 1.5846084394006768e-05
+        },
+        "G_on_demo_states_demo_actions_m2": {
+          "n": 21353,
+          "p10": 1.6853234228619842e-06,
+          "median": 6.643049800914014e-06,
+          "p90": 2.9573444771813227e-05,
+          "mean": 1.1634157099651117e-05
+        },
+        "G_on_demo_states_pi_bc_chunk_m2": {
+          "n": 21353,
+          "p10": 1.8755778228296551e-06,
+          "median": 6.951494015083881e-06,
+          "p90": 2.592142373032402e-05,
+          "mean": 1.1158213756947656e-05
+        }
+      }
+    }
+  },
+  "roughness": {
+    "definition": "mean over the K-1 consecutive pairs of ||a[j+1, xyz] - a[j, xyz]||^2 of the K commanded actions",
+    "spearman_true_gap_vs_roughness_val": 0.5317643730926269,
+    "pearson_true_gap_vs_roughness_val": 0.5847891190142741,
+    "one_feature_predictors": {
+      "linear_J_on_roughness": {
+        "slope": 0.00041813410092491927,
+        "intercept": 1.1857499349247163e-05,
+        "samples": 4328,
+        "MAE_m2": 1.578347261033101e-05,
+        "constant_mean_MAE_m2": 1.800136845096687e-05,
+        "MAE_sqrtJ_mm": 2.0248291320456975,
+        "pearson": 0.5847891160678217,
+        "spearman": 0.5317646003122665,
+        "lowest_decile_true_gap": {
+          "n": 432,
+          "mean_true_m2": 1.2764506251977914e-07,
+          "mean_pred_m2": 1.3156783097656444e-05
+        },
+        "mean_true_m2": 1.7102904748254316e-05,
+        "mean_pred_m2": 1.4328631550597493e-05
+      },
+      "linear_sqrtJ_on_roughness": {
+        "slope": 0.017864443651541728,
+        "intercept": 0.002860538327935503,
+        "samples": 4328,
+        "MAE_m2": 1.4988087277278391e-05,
+        "constant_mean_MAE_m2": 1.800136845096687e-05,
+        "MAE_sqrtJ_mm": 1.8778646273682047,
+        "pearson": 0.5888858998216393,
+        "spearman": 0.5317646576411661,
+        "lowest_decile_true_gap": {
+          "n": 432,
+          "mean_true_m2": 1.2764506251977914e-07,
+          "mean_pred_m2": 8.5083001977182e-06
+        },
+        "mean_true_m2": 1.7102904748254316e-05,
+        "mean_pred_m2": 8.833260835672263e-06
+      }
+    },
+    "roughness_logged_val": {
+      "n": 4328,
+      "p10": 0.00018726776470430196,
+      "median": 0.0021290236618369818,
+      "p90": 0.014183359220623982,
+      "mean": 0.005909906830781947
+    },
+    "roughness_logged_train": {
+      "n": 17190,
+      "p10": 0.00039642082410864534,
+      "median": 0.0019126218394376338,
+      "p90": 0.013129378668963911,
+      "mean": 0.01166869721963552
+    },
+    "roughness_demo_actions": {
+      "n": 21353,
+      "p10": 0.00017683796759229153,
+      "median": 0.0004930174327455461,
+      "p90": 0.0008156213909387588,
+      "mean": 0.0005040705863913435
+    },
+    "roughness_pi_bc_chunk_on_demo_states": {
+      "n": 21353,
+      "p10": 0.00018350006139371546,
+      "median": 0.000473147927550599,
+      "p90": 0.0007774856290780007,
+      "mean": 0.00047981935513964977
+    }
+  },
+  "magnitude": {
+    "definition": "mean over the K commanded actions of ||a[j, xyz]||^2 (squared translation command)",
+    "spearman_true_gap_vs_magnitude_val": 0.6409052250506923,
+    "pearson_true_gap_vs_magnitude_val": 0.5791080386990066,
+    "one_feature_predictors": {
+      "linear_J_on_magnitude": {
+        "slope": 0.00022140959507346457,
+        "intercept": 5.293786444626926e-06,
+        "samples": 4328,
+        "MAE_m2": 1.3248950089264934e-05,
+        "constant_mean_MAE_m2": 1.800136845096687e-05,
+        "MAE_sqrtJ_mm": 1.6303317585092036,
+        "pearson": 0.579108035685837,
+        "spearman": 0.6409052053766654,
+        "lowest_decile_true_gap": {
+          "n": 432,
+          "mean_true_m2": 1.2764506251977914e-07,
+          "mean_pred_m2": 9.988265446736477e-06
+        },
+        "mean_true_m2": 1.7102904748254316e-05,
+        "mean_pred_m2": 1.4679774722026195e-05
+      },
+      "linear_sqrtJ_on_magnitude": {
+        "slope": 0.010002092420371825,
+        "intercept": 0.0025520693789873594,
+        "samples": 4328,
+        "MAE_m2": 1.3910554201913094e-05,
+        "constant_mean_MAE_m2": 1.800136845096687e-05,
+        "MAE_sqrtJ_mm": 1.7121591618217942,
+        "pearson": 0.5848530498481322,
+        "spearman": 0.6409051462097554,
+        "lowest_decile_true_gap": {
+          "n": 432,
+          "mean_true_m2": 1.2764506251977914e-07,
+          "mean_pred_m2": 7.8026314440649e-06
+        },
+        "mean_true_m2": 1.7102904748254316e-05,
+        "mean_pred_m2": 9.19698504731059e-06
+      }
+    },
+    "magnitude_logged_val": {
+      "n": 4328,
+      "p10": 0.0007745930226519708,
+      "median": 0.019848710857331753,
+      "p90": 0.12325612008571628,
+      "mean": 0.042391965058724924
+    },
+    "magnitude_logged_train": {
+      "n": 17190,
+      "p10": 0.0017882793908938766,
+      "median": 0.016274143010377884,
+      "p90": 0.11109322831034661,
+      "mean": 0.051681559336761766
+    },
+    "magnitude_demo_actions": {
+      "n": 21353,
+      "p10": 0.0013943444471806292,
+      "median": 0.014007973484694958,
+      "p90": 0.07929230928421019,
+      "mean": 0.026991999048096096
+    },
+    "magnitude_pi_bc_chunk_on_demo_states": {
+      "n": 21353,
+      "p10": 0.0021948683075606826,
+      "median": 0.013411636464297771,
+      "p90": 0.07881922870874404,
+      "mean": 0.026614451370092333
+    }
+  },
+  "off_distribution": {
+    "note": "G is applied in Phase C to source demonstration states; it was trained on logged target states",
+    "label_distribution_train_m2": {
+      "n": 17190,
+      "p10": 5.028933850897761e-07,
+      "median": 5.742879016957967e-06,
+      "p90": 3.788240371951568e-05,
+      "mean": 1.6736579570144573e-05
+    },
+    "label_distribution_val_m2": {
+      "n": 4328,
+      "p10": 3.6630104368312775e-07,
+      "median": 5.893316119821032e-06,
+      "p90": 4.382799334820859e-05,
+      "mean": 1.7102904748254316e-05
+    },
+    "demo_samples": 21353,
+    "demo_episodes": 400,
+    "history_norm_logged_val_mm": {
+      "n": 4328,
+      "p10": 22.669220352172854,
+      "median": 155.59973907470703,
+      "p90": 390.44004516601575,
+      "mean": 187.4135323934639
+    },
+    "history_norm_demo_mm": {
+      "n": 21353,
+      "p10": 45.65807876586914,
+      "median": 136.78768920898438,
+      "p90": 305.17979736328124,
+      "mean": 161.76855554943793
+    }
+  },
+  "gate2": {
+    "rule": "on validation: MAE below the constant-mean predictor and global Spearman > 0.5",
+    "by_network": {
+      "J": true,
+      "sqrtJ": true
+    }
+  },
+  "seconds": 52.56294369697571
+}

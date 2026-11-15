@@ -1,0 +1,20 @@
+[PASS] file_exists:raw_h5: data/raw/maniskill/trajectory.h5
+[PASS] file_exists:raw_json: data/raw/maniskill/trajectory.json
+[PASS] file_exists:replayed_h5: data/processed/maniskill/trajectory.state.pd_ee_delta_pos.physx_cpu.h5
+[PASS] file_exists:replayed_json: data/processed/maniskill/trajectory.state.pd_ee_delta_pos.physx_cpu.json
+[PASS] replayed.env_id: PickCube-v1
+[PASS] replayed.control_mode: {'file': 'pd_ee_delta_pos', 'config': 'pd_ee_delta_pos'}
+[PASS] replayed.obs_mode: {'file': 'state', 'config': 'state'}
+[PASS] replayed.sim_backend: {'file': 'physx_cpu', 'config': 'physx_cpu'}
+[PASS] raw.env_id: PickCube-v1
+[PASS] T_actions_vs_T_plus_1_states(all episodes): 1000 episodes checked
+[PASS] episode_control_mode: ['pd_ee_delta_pos']
+[PASS] conversion_count: {'raw': 1000, 'replayed': 1000, 'replayed_success': 1000}
+[PASS] episodes_long_enough_for_one_anchor(L+r+K): {'needed_steps': 25, 'usable': 1000}
+[PASS] state_tree_layout_matches_file: {'live': {'actors': {'table-workspace': [13], 'cube': [13], 'goal_site': [13]}, 'articulations': {'panda': [31]}}, 'file': {'actors': {'table-workspace': [13], 'cube': [13], 'goal_site': [13]}, 'articulations': {'panda': [31]}}}
+[PASS] action_dim_matches_env: {'file': 4, 'env': 4}
+[PASS] obs_dim_matches_env: {'file': 42, 'env': 42}
+[PASS] control_mode_live: pd_ee_delta_pos
+[PASS] action_within_normalized_bounds: {'abs_max': 1.0}
+manifest -> runs/maniskill_pickcube/manifest.json
+SETUP AUDIT: PASS

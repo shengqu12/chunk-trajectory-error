@@ -1,0 +1,41 @@
+{
+  "aborted": 0,
+  "branches": 2400,
+  "clipped_candidates": 0,
+  "tcp_check_max_m": 1.1920928955078125e-07,
+  "anchors": 300,
+  "episodes": 100,
+  "by_type": {
+    "expert": {
+      "count": 300,
+      "J_m2_mean": 0.0,
+      "J_m2_median": 0.0,
+      "J_m2_max": 0.0,
+      "sqrtJ_mm_median": 0.0
+    },
+    "expert_perturbed": {
+      "count": 600,
+      "J_m2_mean": 0.0004104170667382999,
+      "J_m2_median": 0.00010539560797860744,
+      "J_m2_max": 0.005158031693221141,
+      "sqrtJ_mm_median": 10.266235855909647
+    },
+    "policy": {
+      "count": 300,
+      "J_m2_mean": 1.9778289999392294e-05,
+      "J_m2_median": 1.2308534706828102e-05,
+      "J_m2_max": 0.00030547210446668394,
+      "sqrtJ_mm_median": 3.5083495436027192
+    },
+    "policy_perturbed": {
+      "count": 1200,
+      "J_m2_mean": 0.00037113491322597565,
+      "J_m2_median": 0.0001130537979697239,
+      "J_m2_max": 0.004780916639112875,
+      "sqrtJ_mm_median": 10.632675944725568
+    }
+  },
+  "policy_ckpt": "runs/maniskill_pickcube/checkpoints/pi0.pt",
+  "round": 0,
+  "seed": 19
+}

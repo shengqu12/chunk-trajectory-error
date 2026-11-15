@@ -1,0 +1,3 @@
+error_sqrt r=0: 42/150 success
+error_sqrt r=2: 62/150 success
+error_sqrt r=4: 103/150 success

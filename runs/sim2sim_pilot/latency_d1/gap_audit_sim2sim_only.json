@@ -1,0 +1,388 @@
+{
+  "sim_to_sim_only": true,
+  "banner": "SIM-TO-SIM ONLY: target restores are used below; nothing here is a hardware-faithful measurement",
+  "samples": 300,
+  "sample_source": "val split, unperturbed episodes, pi_bc chunk at the logged target observation",
+  "episodes": 14,
+  "selection_episodes": [
+    14,
+    47,
+    88,
+    113,
+    123,
+    156,
+    162
+  ],
+  "samples_by_half": {
+    "selection": 159,
+    "test": 141
+  },
+  "step_sizes": [
+    0.02,
+    0.05,
+    0.1,
+    0.2
+  ],
+  "step_size_rule": "lowest mean dJ_grad on the selection half (as 05)",
+  "chosen_step_size": {
+    "J": 0.1,
+    "sqrtJ": 0.2
+  },
+  "selection": {
+    "J": {
+      "0.02": {
+        "samples": 159,
+        "episodes": 7,
+        "mean_J0_m2": 1.8631216403661932e-05,
+        "delta_J_grad_m2": {
+          "mean": -5.556281404539517e-07,
+          "ci95": [
+            -6.813856998474158e-07,
+            -4.2961726180804717e-07
+          ]
+        },
+        "delta_J_rand_m2": {
+          "mean": 6.286638611092638e-08,
+          "ci95": [
+            -8.203257700603768e-09,
+            2.464337204781829e-07
+          ]
+        },
+        "paired_grad_minus_rand_m2": {
+          "mean": -6.18494526564878e-07,
+          "ci95": [
+            -7.698035103502325e-07,
+            -5.132708469080658e-07
+          ]
+        },
+        "relative_change_grad": -0.029822429647950625,
+        "relative_change_rand": 0.003374250223327882,
+        "fraction_grad_lowers_J": 0.9308176100628931,
+        "fraction_grad_beats_rand": 0.8679245283018868,
+        "mean_effective_norm_grad": 0.019999999962981393,
+        "mean_effective_norm_rand": 0.019999999388958672
+      },
+      "0.05": {
+        "samples": 159,
+        "episodes": 7,
+        "mean_J0_m2": 1.8631216403661932e-05,
+        "delta_J_grad_m2": {
+          "mean": -1.3558448978050668e-06,
+          "ci95": [
+            -1.6456503268299862e-06,
+            -1.05469577050975e-06
+          ]
+        },
+        "delta_J_rand_m2": {
+          "mean": 4.579552360755763e-08,
+          "ci95": [
+            -3.952047767724704e-07,
+            2.843936519109932e-07
+          ]
+        },
+        "paired_grad_minus_rand_m2": {
+          "mean": -1.4016404214126247e-06,
+          "ci95": [
+            -1.8043694418208713e-06,
+            -8.909502239528976e-07
+          ]
+        },
+        "relative_change_grad": -0.07277275237587696,
+        "relative_change_rand": 0.002457999661179213,
+        "fraction_grad_lowers_J": 0.9182389937106918,
+        "fraction_grad_beats_rand": 0.8867924528301887,
+        "mean_effective_norm_grad": 0.05000000128393653,
+        "mean_effective_norm_rand": 0.050000001166789036
+      },
+      "0.1": {
+        "samples": 159,
+        "episodes": 7,
+        "mean_J0_m2": 1.8631216403661932e-05,
+        "delta_J_grad_m2": {
+          "mean": -2.18139942452321e-06,
+          "ci95": [
+            -2.7608475811341882e-06,
+            -1.6130539015820277e-06
+          ]
+        },
+        "delta_J_rand_m2": {
+          "mean": 9.9456786661842e-07,
+          "ci95": [
+            9.026163145177128e-07,
+            1.0945875956102676e-06
+          ]
+        },
+        "paired_grad_minus_rand_m2": {
+          "mean": -3.17596729114163e-06,
+          "ci95": [
+            -3.78618104811659e-06,
+            -2.596396735933575e-06
+          ]
+        },
+        "relative_change_grad": -0.11708303834066679,
+        "relative_change_rand": 0.05338179993566815,
+        "fraction_grad_lowers_J": 0.7861635220125787,
+        "fraction_grad_beats_rand": 0.8805031446540881,
+        "mean_effective_norm_grad": 0.10000000284902705,
+        "mean_effective_norm_rand": 0.10000000247415507
+      },
+      "0.2": {
+        "samples": 159,
+        "episodes": 7,
+        "mean_J0_m2": 1.8631216403661932e-05,
+        "delta_J_grad_m2": {
+          "mean": -4.38393015840599e-07,
+          "ci95": [
+            -2.966821201269444e-06,
+            2.0291661699053473e-06
+          ]
+        },
+        "delta_J_rand_m2": {
+          "mean": 3.7563449385800034e-06,
+          "ci95": [
+            3.520309929426226e-06,
+            3.948366659624383e-06
+          ]
+        },
+        "paired_grad_minus_rand_m2": {
+          "mean": -4.194737954420601e-06,
+          "ci95": [
+            -6.8177195920524854e-06,
+            -1.6820254138976037e-06
+          ]
+        },
+        "relative_change_grad": -0.023530026507256586,
+        "relative_change_rand": 0.2016156571420479,
+        "fraction_grad_lowers_J": 0.5157232704402516,
+        "fraction_grad_beats_rand": 0.8553459119496856,
+        "mean_effective_norm_grad": 0.20000000588549008,
+        "mean_effective_norm_rand": 0.20000000438600216
+      }
+    },
+    "sqrtJ": {
+      "0.02": {
+        "samples": 159,
+        "episodes": 7,
+        "mean_J0_m2": 1.8631216403661932e-05,
+        "delta_J_grad_m2": {
+          "mean": -7.781011584772444e-07,
+          "ci95": [
+            -9.255773692571495e-07,
+            -6.801278004193243e-07
+          ]
+        },
+        "delta_J_rand_m2": {
+          "mean": 6.166907862757652e-08,
+          "ci95": [
+            -7.908932620161024e-09,
+            2.4137291306523364e-07
+          ]
+        },
+        "paired_grad_minus_rand_m2": {
+          "mean": -8.397702371048207e-07,
+          "ci95": [
+            -1.0924217627774834e-06,
+            -6.877536635567799e-07
+          ]
+        },
+        "relative_change_grad": -0.041763304210470656,
+        "relative_change_rand": 0.003309986706796855,
+        "fraction_grad_lowers_J": 0.9748427672955975,
+        "fraction_grad_beats_rand": 0.9433962264150944,
+        "mean_effective_norm_grad": 0.019999999353814427,
+        "mean_effective_norm_rand": 0.019999999388958672
+      },
+      "0.05": {
+        "samples": 159,
+        "episodes": 7,
+        "mean_J0_m2": 1.8631216403661932e-05,
+        "delta_J_grad_m2": {
+          "mean": -1.8411275741844667e-06,
+          "ci95": [
+            -2.26369039670542e-06,
+            -1.4879323325817096e-06
+          ]
+        },
+        "delta_J_rand_m2": {
+          "mean": 3.895108199648567e-08,
+          "ci95": [
+            -4.0272332564360357e-07,
+            2.634538498729829e-07
+          ]
+        },
+        "paired_grad_minus_rand_m2": {
+          "mean": -1.8800786561809522e-06,
+          "ci95": [
+            -2.2709330850959673e-06,
+            -1.5796071043167687e-06
+          ]
+        },
+        "relative_change_grad": -0.09881950455057761,
+        "relative_change_rand": 0.0020906354771785002,
+        "fraction_grad_lowers_J": 0.9622641509433962,
+        "fraction_grad_beats_rand": 0.9622641509433962,
+        "mean_effective_norm_grad": 0.05000000090906455,
+        "mean_effective_norm_rand": 0.050000001166789036
+      },
+      "0.1": {
+        "samples": 159,
+        "episodes": 7,
+        "mean_J0_m2": 1.8631216403661932e-05,
+        "delta_J_grad_m2": {
+          "mean": -2.8307400246067032e-06,
+          "ci95": [
+            -3.55867855567133e-06,
+            -2.24692857264284e-06
+          ]
+        },
+        "delta_J_rand_m2": {
+          "mean": 1.0029152433608925e-06,
+          "ci95": [
+            9.101131412940909e-07,
+            1.109554655328057e-06
+          ]
+        },
+        "paired_grad_minus_rand_m2": {
+          "mean": -3.833655267967595e-06,
+          "ci95": [
+            -4.586980138030702e-06,
+            -3.2604030273237366e-06
+          ]
+        },
+        "relative_change_grad": -0.15193533064488082,
+        "relative_change_rand": 0.053829831699221266,
+        "fraction_grad_lowers_J": 0.8616352201257862,
+        "fraction_grad_beats_rand": 0.9182389937106918,
+        "mean_effective_norm_grad": 0.10000000252101407,
+        "mean_effective_norm_rand": 0.10000000247415507
+      },
+      "0.2": {
+        "samples": 159,
+        "episodes": 7,
+        "mean_J0_m2": 1.8631216403661932e-05,
+        "delta_J_grad_m2": {
+          "mean": -3.3150230651371106e-06,
+          "ci95": [
+            -4.889650834234979e-06,
+            -2.0386342196082476e-06
+          ]
+        },
+        "delta_J_rand_m2": {
+          "mean": 3.7541553900669357e-06,
+          "ci95": [
+            3.514894737380082e-06,
+            3.945298194460975e-06
+          ]
+        },
+        "paired_grad_minus_rand_m2": {
+          "mean": -7.0691784552040455e-06,
+          "ci95": [
+            -8.786460102563303e-06,
+            -5.676300888104562e-06
+          ]
+        },
+        "relative_change_grad": -0.17792842900399936,
+        "relative_change_rand": 0.20149813671473768,
+        "fraction_grad_lowers_J": 0.6666666666666666,
+        "fraction_grad_beats_rand": 0.9182389937106918,
+        "mean_effective_norm_grad": 0.2000000055106181,
+        "mean_effective_norm_rand": 0.20000000438600216
+      }
+    }
+  },
+  "test": {
+    "J": {
+      "samples": 141,
+      "episodes": 7,
+      "mean_J0_m2": 1.3977694971406849e-05,
+      "delta_J_grad_m2": {
+        "mean": -1.2779919497246962e-06,
+        "ci95": [
+          -2.059166308590533e-06,
+          -7.26427106600201e-07
+        ]
+      },
+      "delta_J_rand_m2": {
+        "mean": 1.3234425985528201e-06,
+        "ci95": [
+          6.346401098909621e-07,
+          1.979434902689678e-06
+        ]
+      },
+      "paired_grad_minus_rand_m2": {
+        "mean": -2.6014345482775157e-06,
+        "ci95": [
+          -3.86170593620459e-06,
+          -1.5337474621597884e-06
+        ]
+      },
+      "relative_change_grad": -0.0914308083227593,
+      "relative_change_rand": 0.09468246382970083,
+      "fraction_grad_lowers_J": 0.6453900709219859,
+      "fraction_grad_beats_rand": 0.8085106382978723,
+      "mean_effective_norm_grad": 0.10000000270545906,
+      "mean_effective_norm_rand": 0.10000000291682304,
+      "step_size": 0.1
+    },
+    "sqrtJ": {
+      "samples": 141,
+      "episodes": 7,
+      "mean_J0_m2": 1.3977694971406849e-05,
+      "delta_J_grad_m2": {
+        "mean": -1.4872333568996902e-06,
+        "ci95": [
+          -2.8844123988302305e-06,
+          -3.3205682693043165e-07
+        ]
+      },
+      "delta_J_rand_m2": {
+        "mean": 3.8674876239192395e-06,
+        "ci95": [
+          3.1263713550634883e-06,
+          4.473278888026893e-06
+        ]
+      },
+      "paired_grad_minus_rand_m2": {
+        "mean": -5.354720980818929e-06,
+        "ci95": [
+          -7.045510445085662e-06,
+          -3.8421208348387346e-06
+        ]
+      },
+      "relative_change_grad": -0.10640047303521898,
+      "relative_change_rand": 0.2766899429291222,
+      "fraction_grad_lowers_J": 0.475177304964539,
+      "fraction_grad_beats_rand": 0.900709219858156,
+      "mean_effective_norm_grad": 0.20000000456546216,
+      "mean_effective_norm_rand": 0.2000000055166001,
+      "step_size": 0.2
+    }
+  },
+  "gate3": {
+    "rule": "on the test half at the chosen step: episode-clustered bootstrap 95% CI of dJ_grad below 0 AND of (dJ_grad - dJ_rand) below 0",
+    "by_network": {
+      "J": true,
+      "sqrtJ": true
+    }
+  },
+  "skipped": {
+    "zero_gradient": {
+      "J": 0,
+      "sqrtJ": 0
+    },
+    "aborted_comparisons_selection": 0,
+    "aborted_comparisons_test": 0
+  },
+  "target_restores": 3708,
+  "restore_fidelity_logged_actions": {
+    "note": "same logged commanded actions: target restored from the log (incl. pending buffer) vs the forward-run target label",
+    "samples": 300,
+    "aborted": 0,
+    "median_abs_diff_m2": 4.664828509580984e-10,
+    "p90_abs_diff_m2": 1.843167652337831e-07,
+    "median_forward_label_m2": 4.36820681624147e-06,
+    "median_restored_m2": 4.464071511042344e-06,
+    "spearman_restored_vs_forward": 0.9992968810764564
+  },
+  "seconds": 60.41635084152222
+}
