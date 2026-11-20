@@ -14,7 +14,8 @@ from torch import nn
 
 from chunk_trajectory_error.contracts import ChunkSpec
 from chunk_trajectory_error.error_net import HistoryConditionedErrorNetwork
-from chunk_trajectory_error.policies.mlp_bc import MLPChunkPolicy
+from chunk_trajectory_error.policies.flow_chunk import FlowChunkPolicy
+from chunk_trajectory_error.policies.mlp_bc import MLPChunkPolicy, behavior_cloning_loss
 from chunk_trajectory_error.replay import position_errors, trajectory_cost_m2
 from chunk_trajectory_error.scheduler import ChunkScheduler
 
@@ -154,22 +155,71 @@ def build_policy_dataset(demos: DemoSet, split: str, spec: ChunkSpec) -> dict[st
 # model bundles (network + the statistics needed to run it)
 # --------------------------------------------------------------------------- #
 class PolicyBundle(nn.Module):
-    """MLP chunk policy with train-set observation normalisation.  This is the
-    only artefact the deployment path needs."""
+    """Chunk policy with train-set observation normalisation.  This is the only artefact
+    the deployment path needs.
 
-    def __init__(self, obs_dim: int, action_dim: int, horizon: int, hidden_dims: list[int]) -> None:
+    ``policy_type`` selects the network: ``mlp_chunk`` (deterministic regression, the
+    original experiment) or ``flow_chunk`` (conditional flow matching, sampled with a fixed
+    number of Euler steps).  Checkpoints written before ``policy_type`` existed load as MLPs.
+    For the flow policy, ``forward``/``act`` draw the initial noise from the bundle's own
+    generator (seeded by ``sample_seed`` on construction and on load), so an evaluation run
+    is reproducible without touching the global RNG.
+    """
+
+    def __init__(
+        self, obs_dim: int, action_dim: int, horizon: int, hidden_dims: list[int],
+        policy_type: str = "mlp_chunk", flow: dict[str, Any] | None = None, sample_seed: int = 17,
+    ) -> None:
         super().__init__()
-        self.meta = {"obs_dim": obs_dim, "action_dim": action_dim, "horizon": horizon, "hidden_dims": list(hidden_dims)}
-        self.policy = MLPChunkPolicy(obs_dim, action_dim, horizon, hidden_dims)
+        if policy_type not in ("mlp_chunk", "flow_chunk"):
+            raise ValueError(f"unknown policy_type {policy_type!r}")
+        self.meta = {
+            "obs_dim": obs_dim, "action_dim": action_dim, "horizon": horizon, "hidden_dims": list(hidden_dims),
+            "policy_type": policy_type, "flow": dict(flow or {}), "sample_seed": int(sample_seed),
+        }
+        self.policy_type = policy_type
+        if policy_type == "mlp_chunk":
+            self.policy = MLPChunkPolicy(obs_dim, action_dim, horizon, hidden_dims)
+        else:
+            self.policy = FlowChunkPolicy(obs_dim, action_dim, horizon, hidden_dims, **self.meta["flow"])
+        self.generator = torch.Generator().manual_seed(int(sample_seed))
         self.register_buffer("obs_mean", torch.zeros(obs_dim))
         self.register_buffer("obs_std", torch.ones(obs_dim))
+
+    @property
+    def is_flow(self) -> bool:
+        return self.policy_type == "flow_chunk"
+
+    def reseed(self, seed: int | None = None) -> None:
+        self.generator.manual_seed(int(self.meta["sample_seed"] if seed is None else seed))
 
     def set_normalizer(self, observations: torch.Tensor) -> None:
         self.obs_mean.copy_(observations.mean(0))
         self.obs_std.copy_(observations.std(0).clamp_min(1e-3))
 
+    def normalize(self, observation: torch.Tensor) -> torch.Tensor:
+        return (observation - self.obs_mean) / self.obs_std
+
     def forward(self, observation: torch.Tensor) -> torch.Tensor:
-        return self.policy((observation - self.obs_mean) / self.obs_std)
+        """Action chunk [batch, H, action_dim].  For the flow policy this is one sample
+        (noise from the bundle generator), differentiable w.r.t. the parameters."""
+        if self.is_flow:
+            return self.policy.sample(self.normalize(observation), generator=self.generator)
+        return self.policy(self.normalize(observation))
+
+    def sample(self, observation: torch.Tensor, noise: torch.Tensor | None = None, steps: int | None = None) -> torch.Tensor:
+        """Flow policy only: sample with explicit noise/steps (used by audits and tests)."""
+        if not self.is_flow:
+            raise RuntimeError("sample() is only defined for the flow policy")
+        return self.policy.sample(self.normalize(observation), noise=noise, steps=steps, generator=self.generator)
+
+    def imitation_loss(self, observation: torch.Tensor, expert_chunk: torch.Tensor,
+                       generator: torch.Generator | None = None) -> torch.Tensor:
+        """The policy's own imitation objective: MSE for the MLP, the conditional
+        flow-matching loss for the flow policy (tau and noise from ``generator``)."""
+        if self.is_flow:
+            return self.policy.flow_matching_loss(self.normalize(observation), expert_chunk, generator=generator)
+        return behavior_cloning_loss(self(observation), expert_chunk)
 
     @torch.no_grad()
     def act(self, observation: np.ndarray) -> np.ndarray:

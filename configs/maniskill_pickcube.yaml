@@ -15,6 +15,11 @@ models:
   policy:
     type: mlp_chunk
     hidden_dims: [256, 256]
+  policy_flow:                 # second policy class for the policy-class check (02/06/07 --policy flow)
+    type: flow_chunk
+    hidden_dims: [256, 256, 256]   # velocity field; input = chunk (80) + obs (42) + time features (9)
+    time_frequencies: 4
+    sample_steps: 8              # Euler steps at sampling; gradients pass through every step
   error_network:
     type: history_conditioned_mlp
     hidden_dim: 128

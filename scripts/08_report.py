@@ -26,13 +26,25 @@ LABELS = {
     "error_r1": "BC + error net after 1 refresh round",
     "error_sqrt": "BC + error net, sqrt(J) target (exploratory)",
     "error_fullobs": "BC + error net (history, full obs)",
+    "pi0_flow": "Flow: pi0 (initial flow matching)",
+    "bc_flow": "Flow: fine-tune (lambda = 0)",
+    "error_flow": "Flow + error net (history), selected lambda",
+    "smooth_flow": "Flow + action smoothness, selected beta",
 }
-ORDER = ["pi0", "bc", "error", "nohist", "smooth", "error_w0.03", "error_r1", "error_sqrt", "error_fullobs"]
+ORDER = ["pi0", "bc", "error", "nohist", "smooth", "error_w0.03", "error_r1", "error_sqrt", "error_fullobs",
+         "pi0_flow", "bc_flow", "error_flow", "smooth_flow"]
 # Reference categorical palette, fixed slot per policy (colour follows the entity).
 COLORS = {
     "pi0": "#2a78d6", "bc": "#eb6834", "error": "#1baf7a", "nohist": "#eda100", "smooth": "#e87ba4",
     "error_w0.03": "#008300", "error_r1": "#6250d6", "error_sqrt": "#e34948",
+    "pi0_flow": "#7fb3e6", "bc_flow": "#f3a884", "error_flow": "#7fd3b4", "smooth_flow": "#f3b9d0",
 }
+
+
+def reference(name: str) -> str:
+    """Paired comparisons are made within a policy class: MLP variants against ``bc``,
+    flow-matching variants against ``bc_flow``."""
+    return "bc_flow" if name.endswith("_flow") else "bc"
 SURFACE, INK, MUTED, GRID = "#fcfcfb", "#0b0b0b", "#52514e", "#e4e3df"
 
 
@@ -190,6 +202,16 @@ def main() -> int:
     add("## 4. Policy fine-tuning\n")
     add(f"All variants start from the same pi0 and use the same data, batches, learning rate and {config['policy_finetune']['steps']} update steps. "
         "The weight is chosen on validation by the simulator-recomputed J of the policy's own chunk.\n")
+    flow_baseline = read_json(run_dir / "pi0_flow_baseline.json")
+    if flow_baseline:
+        add(f"Flow-matching policy class (`*_flow` rows): {flow_baseline['parameters']} parameters, "
+            f"{config['models']['policy_flow']['sample_steps']} Euler steps per chunk; pi0_flow best val flow-matching loss "
+            f"{flow_baseline['best_val_flow_matching_loss']:.4f}, val MSE of one sampled chunk {flow_baseline['val_sample_mse']:.5f} "
+            f"(MLP pi0 val BC loss {baseline['best_val_bc_loss']:.5f}); pi0_flow val closed-loop r = 0: "
+            f"{flow_baseline['val_closed_loop_r0']['successes']}/{flow_baseline['val_closed_loop_r0']['episodes']} "
+            f"(MLP pi0: {baseline['val_closed_loop_r0']['successes']}/{baseline['val_closed_loop_r0']['episodes']}). "
+            "Flow variants start from pi0_flow; their imitation term is the flow-matching loss and the auxiliary term acts on a sampled chunk. "
+            "`Val BC loss` for flow rows is the MSE of one sampled chunk.\n")
     add("| Variant | Weights tried (val mean J, m²) | Selected | Val BC loss | Grad-norm ratio auxiliary / imitation (last log) |")
     add("|---|---|---:|---:|---:|")
     for name in policies:
@@ -208,18 +230,19 @@ def main() -> int:
     add("J is recomputed in simulation: the policy's chunk tail and the expert's actions both start from the same restored state and run K steps.\n")
     wide = costs.pivot_table(index=["episode_id", "t"], columns="policy", values="J_m2").dropna()
     groups = wide.index.get_level_values("episode_id").to_numpy()
-    add("| Policy | Mean J (m²) [95% CI] | Mean sqrt(J) (mm) | Paired ΔJ vs BC fine-tune (m²) [95% CI] | Relative |")
+    add("| Policy | Mean J (m²) [95% CI] | Mean sqrt(J) (mm) | Paired ΔJ vs same-class fine-tune, lambda = 0 (m²) [95% CI] | Relative |")
     add("|---|---:|---:|---:|---:|")
     j_values, j_errors = {}, {}
     for name in policies:
         mean, lo, hi = bootstrap_ci(wide[name].to_numpy(), groups)
         j_values[name], j_errors[name] = {"test anchors": mean * 1e6}, {"test anchors": (lo * 1e6, hi * 1e6)}
         root = float(np.sqrt(wide[name]).mean() * 1e3)
-        if name == "bc" or "bc" not in wide:
+        ref = reference(name)
+        if name == ref or ref not in wide:
             add(f"| {LABELS[name]} | {mean:.3e} [{lo:.2e}, {hi:.2e}] | {root:.2f} | – | – |")
         else:
-            d, dlo, dhi = bootstrap_ci((wide[name] - wide["bc"]).to_numpy(), groups)
-            add(f"| {LABELS[name]} | {mean:.3e} [{lo:.2e}, {hi:.2e}] | {root:.2f} | {d:.3e} [{dlo:.2e}, {dhi:.2e}] | {d / wide['bc'].mean():+.1%} |")
+            d, dlo, dhi = bootstrap_ci((wide[name] - wide[ref]).to_numpy(), groups)
+            add(f"| {LABELS[name]} | {mean:.3e} [{lo:.2e}, {hi:.2e}] | {root:.2f} | {d:.3e} [{dlo:.2e}, {dhi:.2e}] | {d / wide[ref].mean():+.1%} |")
     add(f"\n{len(wide)} anchors from {len(np.unique(groups))} test episodes; intervals resample episodes.\n")
     grouped_bars(fig_dir / "test_true_J.png", ["test anchors"], policies, j_values, j_errors, "mean J (mm²)", "Expert deviation J on held-out anchors (lower is better)", ".1f")
     add("![Expert deviation](figures/test_true_J.png)\n")
@@ -250,17 +273,18 @@ def main() -> int:
     unplotted = [LABELS[name] for name in policies if name not in COLORS]
     if unplotted:
         add("Not drawn in the figures (tables only): " + ", ".join(unplotted) + ".\n")
-    if "bc" in policies:
-        add("Paired comparison with BC fine-tune (same initial states):\n")
-        add("| Policy | Delay | Success difference (pp) [95% CI] | Only this policy succeeds | Only BC succeeds | McNemar exact p |")
+    if "bc" in policies or "bc_flow" in policies:
+        add("Paired comparison with the same-class fine-tune at lambda = 0 (same initial states); MLP variants against `bc`, flow variants against `bc_flow`:\n")
+        add("| Policy | Delay | Success difference (pp) [95% CI] | Only this policy succeeds | Only reference succeeds | McNemar exact p |")
         add("|---|---:|---:|---:|---:|---:|")
         for name in policies:
-            if name == "bc":
+            ref = reference(name)
+            if name == ref or ref not in policies:
                 continue
             for delay in [*delays, "all"]:
                 sub = episodes if delay == "all" else episodes[episodes["delay"] == delay]
                 table = sub.pivot_table(index=["init_index", "delay"], columns="policy", values="success").astype(float)
-                diff = (table[name] - table["bc"]).to_numpy()
+                diff = (table[name] - table[ref]).to_numpy()
                 mean, lo, hi = bootstrap_ci(diff, table.index.get_level_values("init_index").to_numpy())
                 a_only, b_only = int((diff > 0).sum()), int((diff < 0).sum())
                 add(f"| {LABELS[name]} | {delay} | {100 * mean:+.1f} [{100 * lo:+.1f}, {100 * hi:+.1f}] | {a_only} | {b_only} | {mcnemar_exact(a_only, b_only):.3f} |")
@@ -283,18 +307,19 @@ def main() -> int:
     add("")
     grouped_bars(fig_dir / "handover_jump_p95.png", [f"r = {d}" for d in delays], policies, p95_values, None, "P95 jump (normalised action units)", "Handover jump at executed boundaries, 95th percentile", ".3f")
     add("![Handover jump](figures/handover_jump_p95.png)\n")
-    if "bc" in policies:
-        add("Paired per-episode mean jump versus BC fine-tune (same initial state and delay):\n")
+    if "bc" in policies or "bc_flow" in policies:
+        add("Paired per-episode mean jump versus the same-class fine-tune at lambda = 0 (same initial state and delay):\n")
         add("| Policy | Delay | Difference in mean jump [95% CI] | Relative |")
         add("|---|---:|---:|---:|")
         per_episode = boundaries.groupby(["policy", "delay", "init_index"])["jump_xyz"].mean().reset_index()
         for name in policies:
-            if name == "bc":
+            ref = reference(name)
+            if name == ref or ref not in policies:
                 continue
             for delay in delays:
-                table = per_episode[per_episode["delay"] == delay].pivot_table(index="init_index", columns="policy", values="jump_xyz").dropna(subset=[name, "bc"])
-                mean, lo, hi = bootstrap_ci((table[name] - table["bc"]).to_numpy())
-                add(f"| {LABELS[name]} | {delay} | {mean:+.4f} [{lo:+.4f}, {hi:+.4f}] | {mean / table['bc'].mean():+.1%} |")
+                table = per_episode[per_episode["delay"] == delay].pivot_table(index="init_index", columns="policy", values="jump_xyz").dropna(subset=[name, ref])
+                mean, lo, hi = bootstrap_ci((table[name] - table[ref]).to_numpy())
+                add(f"| {LABELS[name]} | {delay} | {mean:+.4f} [{lo:+.4f}, {hi:+.4f}] | {mean / table[ref].mean():+.1%} |")
         add("")
 
     # ---- deployment ------------------------------------------------------- #
@@ -308,8 +333,8 @@ def main() -> int:
     add("\nSingle chunk, batch 1, after 200 warm-up calls. This is measured forward time and is unrelated to the injected delay r.\n")
 
     # ---- acceptance ------------------------------------------------------- #
-    if "bc" in policies:
-        add("## 8. Acceptance check against BC fine-tune\n")
+    if "bc" in policies or "bc_flow" in policies:
+        add("## 8. Acceptance check against the same-class fine-tune (lambda = 0)\n")
         add("Rule from the specification: a closed-loop improvement is claimed only if held-out J and handover jump both improve "
             "and the success evidence supports no loss. \"Improves\" below means the paired 95% interval excludes zero in the favourable direction.\n")
         add("| Policy | Held-out J | Handover jump (delays pooled) | Success (delays pooled) | Conclusion |")
@@ -325,12 +350,13 @@ def main() -> int:
             return "no detectable change"
 
         for name in policies:
-            if name in ("bc", "pi0"):
+            ref = reference(name)
+            if name in ("bc", "pi0", "bc_flow", "pi0_flow") or ref not in policies:
                 continue
-            j = bootstrap_ci((wide[name] - wide["bc"]).to_numpy(), groups)
-            jumps = per_episode.pivot_table(index=["init_index", "delay"], columns="policy", values="jump_xyz").dropna(subset=[name, "bc"])
-            jump = bootstrap_ci((jumps[name] - jumps["bc"]).to_numpy(), jumps.index.get_level_values("init_index").to_numpy())
-            succ = bootstrap_ci((success_table[name] - success_table["bc"]).to_numpy(), success_table.index.get_level_values("init_index").to_numpy())
+            j = bootstrap_ci((wide[name] - wide[ref]).to_numpy(), groups)
+            jumps = per_episode.pivot_table(index=["init_index", "delay"], columns="policy", values="jump_xyz").dropna(subset=[name, ref])
+            jump = bootstrap_ci((jumps[name] - jumps[ref]).to_numpy(), jumps.index.get_level_values("init_index").to_numpy())
+            succ = bootstrap_ci((success_table[name] - success_table[ref]).to_numpy(), success_table.index.get_level_values("init_index").to_numpy())
             v_j, v_jump, v_s = verdict(*j), verdict(*jump), verdict(*succ, lower_is_better=False)
             if v_j == "improves" and v_jump == "improves" and v_s != "worse":
                 conclusion = "closed-loop improvement supported"
@@ -339,10 +365,10 @@ def main() -> int:
             elif v_jump == "improves" and v_s == "worse":
                 conclusion = "smoother handover at the cost of task success"
             elif v_j == "worse" or v_s == "worse":
-                conclusion = "worse than BC fine-tune"
+                conclusion = f"worse than {ref} fine-tune"
             else:
                 conclusion = "no supported improvement"
-            add(f"| {LABELS[name]} | {v_j} ({j[0] / wide['bc'].mean():+.1%}) | {v_jump} ({jump[0] / jumps['bc'].mean():+.1%}) | "
+            add(f"| {LABELS[name]} | {v_j} ({j[0] / wide[ref].mean():+.1%}) | {v_jump} ({jump[0] / jumps[ref].mean():+.1%}) | "
                 f"{v_s} ({100 * succ[0]:+.1f} pp [{100 * succ[1]:+.1f}, {100 * succ[2]:+.1f}]) | {conclusion} |")
         add("")
 

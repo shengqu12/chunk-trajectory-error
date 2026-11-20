@@ -34,6 +34,11 @@ DEFAULT_POLICIES = {
     "error_w0.03": "checkpoints/pi_error/w0.03.pt",  # fixed, non-selected weight: shows the term when it is active
     "error_r1": "checkpoints/pi_error_r1/pi.pt",  # after one critic refresh round
     "error_sqrt": "checkpoints/pi_error_sqrt/pi.pt",  # exploratory sqrt(J) target
+    # flow-matching policy class (02/06 --policy flow); sampled with the bundle's seeded noise
+    "pi0_flow": "checkpoints/pi0_flow.pt",
+    "bc_flow": "checkpoints/pi_bc_flow/pi.pt",
+    "error_flow": "checkpoints/pi_error_flow/pi.pt",
+    "smooth_flow": "checkpoints/pi_smooth_flow/pi.pt",
 }
 
 
@@ -118,6 +123,8 @@ def main() -> int:
     for name, bundle in bundles.items():
         for delay in delays:
             spec = chunk_spec(config, delay)
+            if bundle.is_flow:
+                bundle.reseed(config["experiment"]["seed"] + delay)
             wins = 0
             for init_index, (source, seed, init_state) in enumerate(inits):
                 record, edges = closed_loop_episode(backend, bundle, spec, delay, seed, init_state, max_steps, demos.gripper_dims)
@@ -134,6 +141,8 @@ def main() -> int:
     spec = chunk_spec(config)
     rows = []
     for name, bundle in bundles.items():
+        if bundle.is_flow:
+            bundle.reseed()
         for row in policy_true_cost(backend, demos, bundle, "test", spec, config["branches"]["anchors_per_episode"]["test"]):
             row["policy"] = name
             rows.append(row)

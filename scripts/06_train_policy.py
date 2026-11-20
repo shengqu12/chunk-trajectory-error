@@ -10,8 +10,14 @@ Variants
 The weight is selected on the validation split by the simulator-recomputed J of the
 policy's own chunk; the test split is not touched here.
 
-Outputs: ``checkpoints/pi_<variant>/w<weight>.pt``, ``checkpoints/pi_<variant>/pi.pt``
-(selected) and ``policy_training_<variant>.json``.
+``--policy flow`` runs the same variants for the flow-matching policy: it starts from
+``checkpoints/pi0_flow.pt``, the imitation term is the conditional flow-matching loss, and the
+auxiliary term (critic or smoothness) is applied to a chunk sampled with the Euler integrator,
+so its gradient reaches the parameters through every sampling step.  Names get a ``_flow``
+suffix (``bc_flow``, ``error_flow``, ``smooth_flow``).
+
+Outputs: ``checkpoints/pi_<name>/w<weight>.pt``, ``checkpoints/pi_<name>/pi.pt``
+(selected) and ``policy_training_<name>.json``.
 """
 
 from __future__ import annotations
@@ -49,13 +55,20 @@ def train_one(config, spec, train, val, pi0_path, variant, weight, error, contin
     parameters = list(bundle.policy.parameters())
     optimizer = torch.optim.Adam(parameters, lr=cfg["lr"])
     generator = torch.Generator().manual_seed(config["experiment"]["seed"] + 6)  # identical batches for all variants
+    noise_generator = torch.Generator().manual_seed(config["experiment"]["seed"] + 7)  # flow loss tau / x0, identical for all variants
     r, K = spec.delay, spec.evaluation_steps
     log = []
     for step in range(1, cfg["steps"] + 1):
         batch = torch.randint(0, len(train["obs"]), (cfg["batch_size"],), generator=generator)
-        chunk = bundle(train["obs"][batch])
-        imitation = behavior_cloning_loss(chunk, train["chunk"][batch])
-        auxiliary = chunk.sum() * 0.0
+        if bundle.is_flow:
+            imitation = bundle.imitation_loss(train["obs"][batch], train["chunk"][batch], generator=noise_generator)
+            # the auxiliary terms act on a sampled chunk; sampling is skipped when no term is active
+            chunk = bundle(train["obs"][batch]) if weight > 0 else None
+            auxiliary = imitation * 0.0
+        else:
+            chunk = bundle(train["obs"][batch])
+            imitation = behavior_cloning_loss(chunk, train["chunk"][batch])
+            auxiliary = chunk.sum() * 0.0
         if variant in ERROR_TAGS and weight > 0:
             valid = train["error_valid"][batch]
             if valid.any():
@@ -74,11 +87,22 @@ def train_one(config, spec, train, val, pi0_path, variant, weight, error, contin
         total.backward()
         optimizer.step()
     bundle.eval()
+    info = {"weight": weight}
     with torch.no_grad():
-        val_chunk = bundle(val["obs"])
-        val_bc = float(behavior_cloning_loss(val_chunk, val["chunk"]))
+        if bundle.is_flow:
+            bundle.reseed()
+            val_chunk = bundle(val["obs"]).clamp(-1.0, 1.0)
+            val_generator = torch.Generator().manual_seed(config["experiment"]["seed"] + 2)
+            val_tau = torch.rand(len(val["obs"]), generator=val_generator)
+            val_noise = torch.randn(val["chunk"].shape, generator=val_generator)
+            info["val_flow_matching_loss"] = float(bundle.policy.flow_matching_loss(bundle.normalize(val["obs"]), val["chunk"], tau=val_tau, noise=val_noise))
+            bundle.reseed()
+        else:
+            val_chunk = bundle(val["obs"])
+        val_bc = float(behavior_cloning_loss(val_chunk, val["chunk"]))  # for the flow policy: MSE of one sampled chunk
         val_smooth = float(((val_chunk[:, 1:, continuous] - val_chunk[:, :-1, continuous]) ** 2).mean())
-    return bundle, {"weight": weight, "val_bc_loss": val_bc, "val_chunk_roughness": val_smooth, "log": log}
+    info.update({"val_bc_loss": val_bc, "val_chunk_roughness": val_smooth, "log": log})
+    return bundle, info
 
 
 def main() -> int:
@@ -90,14 +114,16 @@ def main() -> int:
     parser.add_argument("--name", default=None, help="output name (default: variant, or variant_r<round> for refresh rounds)")
     parser.add_argument("--weights", default=None,
                         help="comma-separated weights to add; results already recorded for this variant are kept and merged")
+    parser.add_argument("--policy", choices=("mlp", "flow"), default="mlp", help="policy class (flow: start from pi0_flow, names get _flow)")
     args = parser.parse_args()
     config = load_config(args.config)
     spec, cfg = chunk_spec(config), config["policy_finetune"]
     run_dir = out_dir(config)
-    name = args.name or (args.variant if args.round == 0 else f"{args.variant}_r{args.round}")
+    suffix = "_flow" if args.policy == "flow" else ""
+    name = args.name or (f"{args.variant}{suffix}" if args.round == 0 else f"{args.variant}_r{args.round}{suffix}")
     demos = load_demoset(config)
     train, val = build_policy_dataset(demos, "train", spec), build_policy_dataset(demos, "val", spec)
-    pi0_path = args.checkpoint or run_dir / "checkpoints" / "pi0.pt"
+    pi0_path = args.checkpoint or run_dir / "checkpoints" / f"pi0{suffix}.pt"
     continuous = [d for d in range(train["chunk"].shape[2]) if d not in demos.gripper_dims]
 
     error = None
@@ -143,7 +169,7 @@ def main() -> int:
     write_json(
         record_path,
         {
-            "name": name, "variant": args.variant, "round": args.round, "start_checkpoint": str(pi0_path), "steps": cfg["steps"], "lr": cfg["lr"],
+            "name": name, "variant": args.variant, "policy": args.policy, "round": args.round, "start_checkpoint": str(pi0_path), "steps": cfg["steps"], "lr": cfg["lr"],
             "batch_size": cfg["batch_size"], "selection_rule": "minimum simulator-recomputed J of the policy chunk on val anchors",
             "selected_weight": chosen_info["weight"], "selected_checkpoint": str(selected),
             "candidates": [info for info, _ in candidates],
