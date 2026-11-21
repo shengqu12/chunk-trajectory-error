@@ -29,10 +29,20 @@ def main() -> int:
     parser.add_argument("--config", required=True)
     parser.add_argument("--baseline-episodes", type=int, default=30)
     parser.add_argument("--policy", choices=("mlp", "flow"), default="mlp")
+    parser.add_argument("--steps", type=int, default=None, help="override bc.steps (the flow policy may need a longer budget)")
+    parser.add_argument("--lr-schedule", choices=("constant", "cosine"), default=None,
+                        help="override bc.lr_schedule; cosine decays to lr / 100 over the run")
     args = parser.parse_args()
     config = load_config(args.config)
     seed_everything(config["experiment"]["seed"])
-    spec, bc = chunk_spec(config), config["bc"]
+    spec, bc = chunk_spec(config), dict(config["bc"])
+    if args.policy == "flow" and "flow" in bc:  # per-class overrides from the config (bc.flow: {steps, lr_schedule, lr})
+        bc.update(bc["flow"])
+    if args.steps:
+        bc["steps"] = args.steps
+    if args.lr_schedule:
+        bc["lr_schedule"] = args.lr_schedule
+    bc.setdefault("lr_schedule", "constant")
     demos = load_demoset(config)
     train, val = build_policy_dataset(demos, "train", spec), build_policy_dataset(demos, "val", spec)
 
@@ -48,6 +58,7 @@ def main() -> int:
         suffix = ""
     bundle.set_normalizer(train["obs"])
     optimizer = torch.optim.Adam(bundle.policy.parameters(), lr=bc["lr"])
+    scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=bc["steps"], eta_min=bc["lr"] / 100) if bc["lr_schedule"] == "cosine" else None
     generator = torch.Generator().manual_seed(config["experiment"]["seed"])
     noise_generator = torch.Generator().manual_seed(config["experiment"]["seed"] + 1)  # tau / x0 draws of the flow loss
     # fixed validation draws so that the selection criterion is deterministic for the flow policy
@@ -62,6 +73,8 @@ def main() -> int:
         optimizer.zero_grad()
         loss.backward()
         optimizer.step()
+        if scheduler is not None:
+            scheduler.step()
         if step % bc["eval_every"] == 0 or step == bc["steps"]:
             with torch.no_grad():
                 if bundle.is_flow:
@@ -109,6 +122,8 @@ def main() -> int:
         "parameters": int(sum(p.numel() for p in bundle.policy.parameters())),
         "train_samples": len(train["obs"]),
         "train_episodes": len(demos.ids("train")),
+        "training": {"steps": bc["steps"], "lr": bc["lr"], "lr_schedule": bc["lr_schedule"], "batch_size": bc["batch_size"],
+                     "hidden_dims": list(bundle.meta["hidden_dims"])},
         "best_val_bc_loss" if not bundle.is_flow else "best_val_flow_matching_loss": best,
         "curve": curve,
         "val_true_J_m2_mean": float(np.nanmean(costs)),

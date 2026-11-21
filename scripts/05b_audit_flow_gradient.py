@@ -55,10 +55,14 @@ def main() -> int:
     parser.add_argument("--gate-steps", type=int, default=100)
     parser.add_argument("--val-episodes", type=int, default=40, help="validation episodes used for the simulator J")
     parser.add_argument("--critic", default="error_round0_history.pt")
+    parser.add_argument("--lr", type=float, default=None, help="Adam step size (default: policy_finetune.lr)")
+    parser.add_argument("--tag", default=None, help="suffix for the output file (flow_gradient_audit_<tag>.json)")
     args = parser.parse_args()
     config = load_config(args.config)
     seed_everything(config["experiment"]["seed"])
-    spec, cfg = chunk_spec(config), config["policy_finetune"]
+    spec, cfg = chunk_spec(config), dict(config["policy_finetune"])
+    if args.lr:
+        cfg["lr"] = args.lr
     run_dir = out_dir(config)
     demos = load_demoset(config)
     train = build_policy_dataset(demos, "train", spec)
@@ -163,7 +167,7 @@ def main() -> int:
         },
         "settings": {"lr": cfg["lr"], "batch_size": cfg["batch_size"], "critic": args.critic, "val_episodes": args.val_episodes},
     })
-    write_json(run_dir / "flow_gradient_audit.json", results)
+    write_json(run_dir / ("flow_gradient_audit.json" if not args.tag else f"flow_gradient_audit_{args.tag}.json"), results)
     print("gate:", results["gate"])
     return 0
 

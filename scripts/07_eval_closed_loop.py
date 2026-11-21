@@ -39,6 +39,7 @@ DEFAULT_POLICIES = {
     "bc_flow": "checkpoints/pi_bc_flow/pi.pt",
     "error_flow": "checkpoints/pi_error_flow/pi.pt",
     "smooth_flow": "checkpoints/pi_smooth_flow/pi.pt",
+    "error_flow_w0.3": "checkpoints/pi_error_flow/w0.3.pt",  # fixed, non-selected weight: the critic term when it dominates
 }
 
 

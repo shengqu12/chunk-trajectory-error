@@ -1,0 +1,5 @@
+[33;1m2026-11-20 19:14:56,904 - mani_skill  - WARNING - Requested to use render device "sapien_cuda", but CUDA device was not found. Falling back to "cpu" device. Rendering might be disabled.[0m
+smooth_flow weight=0.1: val true J 4.335e-05 m^2 (sqrtJ 5.013 mm), val BC 0.01272
+smooth_flow weight=0.3: val true J 4.337e-05 m^2 (sqrtJ 5.012 mm), val BC 0.01272
+smooth_flow weight=1: val true J 4.344e-05 m^2 (sqrtJ 5.009 mm), val BC 0.01271
+selected weight: 0.1

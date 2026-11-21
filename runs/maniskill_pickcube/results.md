@@ -57,6 +57,8 @@ Direction gate (on test, at the step size chosen on val for that candidate type:
 
 All variants start from the same pi0 and use the same data, batches, learning rate and 5000 update steps. The weight is chosen on validation by the simulator-recomputed J of the policy's own chunk.
 
+Flow-matching policy class (`*_flow` rows): 633936 parameters, 8 Euler steps per chunk; pi0_flow best val flow-matching loss 0.0346, val MSE of one sampled chunk 0.01277 (MLP pi0 val BC loss 0.00750); pi0_flow val closed-loop r = 0: 29/30 (MLP pi0: 5/30). Flow variants start from pi0_flow; their imitation term is the flow-matching loss and the auxiliary term acts on a sampled chunk. `Val BC loss` for flow rows is the MSE of one sampled chunk.
+
 | Variant | Weights tried (val mean J, m²) | Selected | Val BC loss | Grad-norm ratio auxiliary / imitation (last log) |
 |---|---|---:|---:|---:|
 | BC fine-tune (lambda = 0) | 0: 2.78e-05 | 0 | 0.00771 | 0.00 |
@@ -65,12 +67,15 @@ All variants start from the same pi0 and use the same data, batches, learning ra
 | BC + action smoothness, selected beta | 0.1: 2.78e-05, 0.3: 2.88e-05, 1: 2.87e-05 | 0.1 | 0.00769 | 0.05 |
 | BC + error net after 1 refresh round | 0.003: 2.83e-05, 0.01: 3.29e-05, 0.03: 4.55e-05, 0.1: 7.41e-05 | 0.003 | 0.00778 | 0.44 |
 | BC + error net, sqrt(J) target (exploratory) | 0.003: 2.66e-05, 0.01: 2.67e-05, 0.03: 2.96e-05, 0.1: 3.56e-05, 0.3: 4.88e-05 | 0.003 | 0.00777 | 0.33 |
+| Flow: fine-tune (lambda = 0) | 0: 4.33e-05 | 0 | 0.01272 | 0.00 |
+| Flow + error net (history), selected lambda | 0.001: 4.10e-05, 0.003: 3.91e-05, 0.01: 3.72e-05, 0.03: 3.61e-05, 0.1: 4.28e-05, 0.3: 4.57e-04, 1: 3.70e-03 | 0.03 | 0.01279 | 0.10 |
+| Flow + action smoothness, selected beta | 0.1: 4.33e-05, 0.3: 4.34e-05, 1: 4.34e-05 | 0.1 | 0.01272 | 0.00 |
 
 ## 5. Expert deviation on held-out test anchors (r = 0)
 
 J is recomputed in simulation: the policy's chunk tail and the expert's actions both start from the same restored state and run K steps.
 
-| Policy | Mean J (m²) [95% CI] | Mean sqrt(J) (mm) | Paired ΔJ vs BC fine-tune (m²) [95% CI] | Relative |
+| Policy | Mean J (m²) [95% CI] | Mean sqrt(J) (mm) | Paired ΔJ vs same-class fine-tune, lambda = 0 (m²) [95% CI] | Relative |
 |---|---:|---:|---:|---:|
 | pi0 (initial BC) | 2.091e-05 [1.78e-05, 2.48e-05] | 4.01 | 2.469e-06 [7.59e-07, 4.13e-06] | +13.4% |
 | BC fine-tune (lambda = 0) | 1.844e-05 [1.52e-05, 2.26e-05] | 3.63 | – | – |
@@ -80,6 +85,11 @@ J is recomputed in simulation: the policy's chunk tail and the expert's actions 
 | BC + error net (history), fixed lambda = 0.03 | 3.532e-05 [3.15e-05, 3.97e-05] | 5.45 | 1.689e-05 [1.37e-05, 2.00e-05] | +91.6% |
 | BC + error net after 1 refresh round | 2.174e-05 [1.84e-05, 2.60e-05] | 4.01 | 3.301e-06 [1.75e-06, 4.96e-06] | +17.9% |
 | BC + error net, sqrt(J) target (exploratory) | 2.009e-05 [1.66e-05, 2.43e-05] | 3.80 | 1.649e-06 [3.62e-07, 3.00e-06] | +8.9% |
+| Flow: pi0 (initial flow matching) | 2.985e-05 [2.20e-05, 3.95e-05] | 3.89 | -4.731e-06 [-6.13e-06, -3.43e-06] | -13.7% |
+| Flow: fine-tune (lambda = 0) | 3.459e-05 [2.65e-05, 4.45e-05] | 4.51 | – | – |
+| Flow + error net (history), selected lambda | 2.926e-05 [2.40e-05, 3.53e-05] | 4.35 | -5.326e-06 [-1.05e-05, -1.25e-06] | -15.4% |
+| Flow + action smoothness, selected beta | 3.461e-05 [2.65e-05, 4.46e-05] | 4.51 | 2.247e-08 [-5.51e-10, 4.83e-08] | +0.1% |
+| Flow + error net (history), fixed lambda = 0.3 | 4.584e-04 [4.13e-04, 5.05e-04] | 18.95 | 4.400e-04 [3.96e-04, 4.84e-04] | +2386.4% |
 
 300 anchors from 100 test episodes; intervals resample episodes.
 
@@ -101,14 +111,19 @@ J is recomputed in simulation: the policy's chunk tail and the expert's actions 
 | BC + error net (history), fixed lambda = 0.03 | 2/150 (1%) [0%, 5%] | 1/150 (1%) [0%, 4%] | 3/150 (2%) [1%, 6%] |
 | BC + error net after 1 refresh round | 34/150 (23%) [17%, 30%] | 47/150 (31%) [24%, 39%] | 85/150 (57%) [49%, 64%] |
 | BC + error net, sqrt(J) target (exploratory) | 30/150 (20%) [14%, 27%] | 46/150 (31%) [24%, 38%] | 74/150 (49%) [41%, 57%] |
+| Flow: pi0 (initial flow matching) | 134/150 (89%) [83%, 93%] | 144/150 (96%) [92%, 98%] | 148/150 (99%) [95%, 100%] |
+| Flow: fine-tune (lambda = 0) | 135/150 (90%) [84%, 94%] | 138/150 (92%) [87%, 95%] | 144/150 (96%) [92%, 98%] |
+| Flow + error net (history), selected lambda | 115/150 (77%) [69%, 83%] | 88/150 (59%) [51%, 66%] | 68/150 (45%) [38%, 53%] |
+| Flow + action smoothness, selected beta | 131/150 (87%) [81%, 92%] | 143/150 (95%) [91%, 98%] | 145/150 (97%) [92%, 99%] |
+| Flow + error net (history), fixed lambda = 0.3 | 1/150 (1%) [0%, 4%] | 0/150 (0%) [0%, 2%] | 0/150 (0%) [0%, 2%] |
 
 Brackets are Wilson 95% intervals.
 
 ![Success](figures/closed_loop_success.png)
 
-Paired comparison with BC fine-tune (same initial states):
+Paired comparison with the same-class fine-tune at lambda = 0 (same initial states); MLP variants against `bc`, flow variants against `bc_flow`:
 
-| Policy | Delay | Success difference (pp) [95% CI] | Only this policy succeeds | Only BC succeeds | McNemar exact p |
+| Policy | Delay | Success difference (pp) [95% CI] | Only this policy succeeds | Only reference succeeds | McNemar exact p |
 |---|---:|---:|---:|---:|---:|
 | pi0 (initial BC) | 0 | -30.0 [-39.3, -20.7] | 9 | 54 | 0.000 |
 | pi0 (initial BC) | 2 | -24.7 [-34.7, -14.7] | 14 | 51 | 0.000 |
@@ -138,6 +153,22 @@ Paired comparison with BC fine-tune (same initial states):
 | BC + error net, sqrt(J) target (exploratory) | 2 | -17.3 [-27.3, -7.3] | 19 | 45 | 0.002 |
 | BC + error net, sqrt(J) target (exploratory) | 4 | -30.7 [-39.3, -22.0] | 5 | 51 | 0.000 |
 | BC + error net, sqrt(J) target (exploratory) | all | -24.0 [-30.2, -17.6] | 36 | 144 | 0.000 |
+| Flow: pi0 (initial flow matching) | 0 | -0.7 [-6.7, +5.3] | 11 | 12 | 1.000 |
+| Flow: pi0 (initial flow matching) | 2 | +4.0 [-1.3, +9.3] | 12 | 6 | 0.238 |
+| Flow: pi0 (initial flow matching) | 4 | +2.7 [-0.7, +6.7] | 6 | 2 | 0.289 |
+| Flow: pi0 (initial flow matching) | all | +2.0 [-1.3, +5.6] | 29 | 20 | 0.253 |
+| Flow + error net (history), selected lambda | 0 | -13.3 [-20.0, -6.7] | 5 | 25 | 0.000 |
+| Flow + error net (history), selected lambda | 2 | -33.3 [-42.0, -25.3] | 4 | 54 | 0.000 |
+| Flow + error net (history), selected lambda | 4 | -50.7 [-59.3, -42.0] | 3 | 79 | 0.000 |
+| Flow + error net (history), selected lambda | all | -32.4 [-38.4, -26.4] | 12 | 158 | 0.000 |
+| Flow + action smoothness, selected beta | 0 | -2.7 [-8.0, +2.7] | 7 | 11 | 0.481 |
+| Flow + action smoothness, selected beta | 2 | +3.3 [-0.7, +8.0] | 8 | 3 | 0.227 |
+| Flow + action smoothness, selected beta | 4 | +0.7 [-1.3, +2.7] | 2 | 1 | 1.000 |
+| Flow + action smoothness, selected beta | all | +0.4 [-2.0, +2.9] | 17 | 15 | 0.860 |
+| Flow + error net (history), fixed lambda = 0.3 | 0 | -43.3 [-51.3, -35.3] | 0 | 65 | 0.000 |
+| Flow + error net (history), fixed lambda = 0.3 | 2 | -48.0 [-56.0, -40.0] | 0 | 72 | 0.000 |
+| Flow + error net (history), fixed lambda = 0.3 | 4 | -80.0 [-86.0, -73.3] | 0 | 120 | 0.000 |
+| Flow + error net (history), fixed lambda = 0.3 | all | -57.1 [-62.7, -51.6] | 0 | 257 | 0.000 |
 
 ### Handover jump at executed boundaries
 
@@ -169,10 +200,25 @@ Jump = ||u_b − u_{b−1}||₂ on the three translation channels of the execute
 | BC + error net, sqrt(J) target (exploratory) | 0 | 5241 | 0.0430 | 0.2615 | 0.0290 | 78.1% | 4.38 | 179.4 |
 | BC + error net, sqrt(J) target (exploratory) | 2 | 4836 | 0.0510 | 0.2363 | 0.0273 | 78.2% | 4.15 | 165.5 |
 | BC + error net, sqrt(J) target (exploratory) | 4 | 4300 | 0.0563 | 0.2139 | 0.0227 | 70.1% | 4.06 | 147.3 |
+| Flow: pi0 (initial flow matching) | 0 | 2555 | 0.0194 | 0.0388 | 0.0209 | 65.0% | 4.66 | 88.4 |
+| Flow: pi0 (initial flow matching) | 2 | 2299 | 0.0273 | 0.0579 | 0.0217 | 72.1% | 4.82 | 79.8 |
+| Flow: pi0 (initial flow matching) | 4 | 2175 | 0.0309 | 0.0879 | 0.0215 | 81.8% | 4.91 | 75.5 |
+| Flow: fine-tune (lambda = 0) | 0 | 2572 | 0.0313 | 0.0662 | 0.0280 | 69.6% | 4.96 | 89.0 |
+| Flow: fine-tune (lambda = 0) | 2 | 2497 | 0.0360 | 0.1057 | 0.0290 | 68.9% | 5.00 | 86.7 |
+| Flow: fine-tune (lambda = 0) | 4 | 2407 | 0.0451 | 0.1148 | 0.0270 | 84.0% | 4.90 | 83.5 |
+| Flow + error net (history), selected lambda | 0 | 3304 | 0.0355 | 0.1632 | 0.0342 | 65.0% | 4.61 | 113.6 |
+| Flow + error net (history), selected lambda | 2 | 3934 | 0.0607 | 0.4005 | 0.0450 | 76.9% | 5.67 | 134.8 |
+| Flow + error net (history), selected lambda | 4 | 4473 | 0.0782 | 0.6521 | 0.0489 | 85.0% | 6.33 | 153.1 |
+| Flow + action smoothness, selected beta | 0 | 2685 | 0.0315 | 0.0624 | 0.0280 | 71.4% | 4.93 | 92.9 |
+| Flow + action smoothness, selected beta | 2 | 2402 | 0.0349 | 0.0869 | 0.0286 | 68.4% | 4.95 | 83.2 |
+| Flow + action smoothness, selected beta | 4 | 2413 | 0.0456 | 0.1197 | 0.0270 | 85.4% | 4.87 | 83.5 |
+| Flow + error net (history), fixed lambda = 0.3 | 0 | 5818 | 0.8943 | 3.4494 | 0.9054 | 42.4% | 22.53 | 198.9 |
+| Flow + error net (history), fixed lambda = 0.3 | 2 | 5850 | 0.2583 | 0.4480 | 0.2332 | 97.4% | 7.53 | 200.0 |
+| Flow + error net (history), fixed lambda = 0.3 | 4 | 5850 | 0.3184 | 0.5152 | 0.1593 | 100.0% | 6.28 | 200.0 |
 
 ![Handover jump](figures/handover_jump_p95.png)
 
-Paired per-episode mean jump versus BC fine-tune (same initial state and delay):
+Paired per-episode mean jump versus the same-class fine-tune at lambda = 0 (same initial state and delay):
 
 | Policy | Delay | Difference in mean jump [95% CI] | Relative |
 |---|---:|---:|---:|
@@ -197,6 +243,18 @@ Paired per-episode mean jump versus BC fine-tune (same initial state and delay):
 | BC + error net, sqrt(J) target (exploratory) | 0 | +0.0389 [+0.0163, +0.0628] | +68.2% |
 | BC + error net, sqrt(J) target (exploratory) | 2 | +0.0226 [+0.0065, +0.0354] | +42.1% |
 | BC + error net, sqrt(J) target (exploratory) | 4 | +0.0238 [+0.0145, +0.0321] | +48.2% |
+| Flow: pi0 (initial flow matching) | 0 | -0.0133 [-0.0158, -0.0113] | -38.2% |
+| Flow: pi0 (initial flow matching) | 2 | -0.0111 [-0.0132, -0.0092] | -26.9% |
+| Flow: pi0 (initial flow matching) | 4 | -0.0152 [-0.0179, -0.0128] | -29.1% |
+| Flow + error net (history), selected lambda | 0 | +0.0330 [+0.0122, +0.0601] | +94.6% |
+| Flow + error net (history), selected lambda | 2 | +0.0509 [+0.0419, +0.0608] | +123.9% |
+| Flow + error net (history), selected lambda | 4 | +0.1012 [+0.0808, +0.1244] | +193.7% |
+| Flow + action smoothness, selected beta | 0 | +0.0001 [-0.0021, +0.0023] | +0.3% |
+| Flow + action smoothness, selected beta | 2 | -0.0016 [-0.0036, +0.0001] | -3.9% |
+| Flow + action smoothness, selected beta | 4 | -0.0001 [-0.0023, +0.0016] | -0.2% |
+| Flow + error net (history), fixed lambda = 0.3 | 0 | +1.3782 [+1.3003, +1.4576] | +2417.3% |
+| Flow + error net (history), fixed lambda = 0.3 | 2 | +0.2126 [+0.1981, +0.2238] | +395.3% |
+| Flow + error net (history), fixed lambda = 0.3 | 4 | +0.2750 [+0.2662, +0.2826] | +556.6% |
 
 ## 7. Deployment path and latency
 
@@ -212,21 +270,29 @@ Evaluation loads policy checkpoints only (weights plus observation normalisation
 | BC + error net (history), fixed lambda = 0.03 | cpu (1 thread) | 0.062 | 0.137 |
 | BC + error net after 1 refresh round | cpu (1 thread) | 0.058 | 0.104 |
 | BC + error net, sqrt(J) target (exploratory) | cpu (1 thread) | 0.058 | 0.112 |
+| Flow: pi0 (initial flow matching) | cpu (1 thread) | 1.940 | 2.555 |
+| Flow: fine-tune (lambda = 0) | cpu (1 thread) | 2.049 | 2.713 |
+| Flow + action smoothness, selected beta | cpu (1 thread) | 2.021 | 2.229 |
+| Flow + error net (history), selected lambda | cpu (1 thread) | 2.175 | 3.638 |
+| Flow + error net (history), fixed lambda = 0.3 | cpu (1 thread) | 1.815 | 2.594 |
 
 Single chunk, batch 1, after 200 warm-up calls. This is measured forward time and is unrelated to the injected delay r.
 
-## 8. Acceptance check against BC fine-tune
+## 8. Acceptance check against the same-class fine-tune (lambda = 0)
 
 Rule from the specification: a closed-loop improvement is claimed only if held-out J and handover jump both improve and the success evidence supports no loss. "Improves" below means the paired 95% interval excludes zero in the favourable direction.
 
 | Policy | Held-out J | Handover jump (delays pooled) | Success (delays pooled) | Conclusion |
 |---|---|---|---|---|
-| BC + error net (history), selected lambda | no detectable change (-1.3%) | worse (+16.2%) | worse (-8.4 pp [-13.6, -3.3]) | worse than BC fine-tune |
-| BC + error net (no history), selected lambda | no detectable change (+1.9%) | worse (+39.9%) | worse (-6.2 pp [-11.6, -1.1]) | worse than BC fine-tune |
+| BC + error net (history), selected lambda | no detectable change (-1.3%) | worse (+16.2%) | worse (-8.4 pp [-13.6, -3.3]) | worse than bc fine-tune |
+| BC + error net (no history), selected lambda | no detectable change (+1.9%) | worse (+39.9%) | worse (-6.2 pp [-11.6, -1.1]) | worse than bc fine-tune |
 | BC + action smoothness, selected beta | no detectable change (+1.0%) | no detectable change (-3.2%) | no detectable change (+2.7 pp [-0.7, +6.0]) | no supported improvement |
-| BC + error net (history), fixed lambda = 0.03 | worse (+91.6%) | worse (+180.1%) | worse (-56.0 pp [-61.6, -50.4]) | worse than BC fine-tune |
-| BC + error net after 1 refresh round | worse (+17.9%) | worse (+33.6%) | worse (-20.4 pp [-26.7, -14.4]) | worse than BC fine-tune |
-| BC + error net, sqrt(J) target (exploratory) | worse (+8.9%) | worse (+53.2%) | worse (-24.0 pp [-30.2, -17.6]) | worse than BC fine-tune |
+| BC + error net (history), fixed lambda = 0.03 | worse (+91.6%) | worse (+180.1%) | worse (-56.0 pp [-61.6, -50.4]) | worse than bc fine-tune |
+| BC + error net after 1 refresh round | worse (+17.9%) | worse (+33.6%) | worse (-20.4 pp [-26.7, -14.4]) | worse than bc fine-tune |
+| BC + error net, sqrt(J) target (exploratory) | worse (+8.9%) | worse (+53.2%) | worse (-24.0 pp [-30.2, -17.6]) | worse than bc fine-tune |
+| Flow + error net (history), selected lambda | improves (-15.4%) | worse (+144.4%) | worse (-32.4 pp [-38.4, -26.4]) | changes trajectory deviation only; no evidence on handover |
+| Flow + action smoothness, selected beta | no detectable change (+0.1%) | no detectable change (-1.3%) | no detectable change (+0.4 pp [-2.0, +2.9]) | no supported improvement |
+| Flow + error net (history), fixed lambda = 0.3 | worse (+2386.4%) | worse (+1164.6%) | worse (-57.1 pp [-62.7, -51.6]) | worse than bc fine-tune |
 
 ## 9. Validation sweeps for every trained variant
 
@@ -235,9 +301,12 @@ Simulator-recomputed mean J of the policy chunk on validation anchors (m²); BC 
 | Run | Weight: val mean J |
 |---|---|
 | bc | 0: 2.78e-05 |
+| bc_flow | 0: 4.33e-05 |
 | error | 0.001: 2.69e-05, 0.003: 2.96e-05, 0.01: 3.20e-05, 0.03: 4.32e-05, 0.1: 7.01e-05, 0.3: 1.37e-04, 1: 2.57e-04 |
+| error_flow | 0.001: 4.10e-05, 0.003: 3.91e-05, 0.01: 3.72e-05, 0.03: 3.61e-05, 0.1: 4.28e-05, 0.3: 4.57e-04, 1: 3.70e-03 |
 | error_fullobs | 0.001: 3.05e-05, 0.003: 3.55e-05, 0.01: 4.28e-05, 0.03: 6.21e-05, 0.1: 1.10e-04, 0.3: 1.90e-04, 1: 3.64e-04 |
 | error_r1 | 0.003: 2.83e-05, 0.01: 3.29e-05, 0.03: 4.55e-05, 0.1: 7.41e-05 |
 | error_sqrt | 0.003: 2.66e-05, 0.01: 2.67e-05, 0.03: 2.96e-05, 0.1: 3.56e-05, 0.3: 4.88e-05 |
 | nohist | 0.001: 2.64e-05, 0.003: 2.77e-05, 0.01: 3.39e-05, 0.03: 4.86e-05, 0.1: 8.80e-05, 0.3: 1.45e-04, 1: 2.50e-04 |
 | smooth | 0.1: 2.78e-05, 0.3: 2.88e-05, 1: 2.87e-05 |
+| smooth_flow | 0.1: 4.33e-05, 0.3: 4.34e-05, 1: 4.34e-05 |

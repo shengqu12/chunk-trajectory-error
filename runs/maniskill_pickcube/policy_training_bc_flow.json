@@ -1,0 +1,103 @@
+{
+  "name": "bc_flow",
+  "variant": "bc",
+  "policy": "flow",
+  "round": 0,
+  "start_checkpoint": "runs/maniskill_pickcube/checkpoints/pi0_flow.pt",
+  "steps": 5000,
+  "lr": 0.0003,
+  "batch_size": 256,
+  "selection_rule": "minimum simulator-recomputed J of the policy chunk on val anchors",
+  "selected_weight": 0.0,
+  "selected_checkpoint": "runs/maniskill_pickcube/checkpoints/pi_bc_flow/pi.pt",
+  "candidates": [
+    {
+      "weight": 0.0,
+      "val_flow_matching_loss": 0.04181165620684624,
+      "val_bc_loss": 0.012718264944851398,
+      "val_chunk_roughness": 0.00033289159182459116,
+      "log": [
+        {
+          "step": 1,
+          "imitation": 0.03257467597723007,
+          "auxiliary": 0.0,
+          "grad_norm_imitation": 0.24100899696350098,
+          "grad_norm_weighted_auxiliary": 0.0
+        },
+        {
+          "step": 500,
+          "imitation": 0.04270462319254875,
+          "auxiliary": 0.0,
+          "grad_norm_imitation": 0.3403441905975342,
+          "grad_norm_weighted_auxiliary": 0.0
+        },
+        {
+          "step": 1000,
+          "imitation": 0.0402088388800621,
+          "auxiliary": 0.0,
+          "grad_norm_imitation": 0.3122791051864624,
+          "grad_norm_weighted_auxiliary": 0.0
+        },
+        {
+          "step": 1500,
+          "imitation": 0.025171935558319092,
+          "auxiliary": 0.0,
+          "grad_norm_imitation": 0.16835804283618927,
+          "grad_norm_weighted_auxiliary": 0.0
+        },
+        {
+          "step": 2000,
+          "imitation": 0.032604463398456573,
+          "auxiliary": 0.0,
+          "grad_norm_imitation": 0.2726871073246002,
+          "grad_norm_weighted_auxiliary": 0.0
+        },
+        {
+          "step": 2500,
+          "imitation": 0.035911742597818375,
+          "auxiliary": 0.0,
+          "grad_norm_imitation": 0.2485385686159134,
+          "grad_norm_weighted_auxiliary": 0.0
+        },
+        {
+          "step": 3000,
+          "imitation": 0.03402470424771309,
+          "auxiliary": 0.0,
+          "grad_norm_imitation": 0.2559444010257721,
+          "grad_norm_weighted_auxiliary": 0.0
+        },
+        {
+          "step": 3500,
+          "imitation": 0.03862389922142029,
+          "auxiliary": 0.0,
+          "grad_norm_imitation": 0.25647059082984924,
+          "grad_norm_weighted_auxiliary": 0.0
+        },
+        {
+          "step": 4000,
+          "imitation": 0.03540885075926781,
+          "auxiliary": 0.0,
+          "grad_norm_imitation": 0.2820888161659241,
+          "grad_norm_weighted_auxiliary": 0.0
+        },
+        {
+          "step": 4500,
+          "imitation": 0.03052990511059761,
+          "auxiliary": 0.0,
+          "grad_norm_imitation": 0.23499208688735962,
+          "grad_norm_weighted_auxiliary": 0.0
+        },
+        {
+          "step": 5000,
+          "imitation": 0.050507187843322754,
+          "auxiliary": 0.0,
+          "grad_norm_imitation": 0.34823065996170044,
+          "grad_norm_weighted_auxiliary": 0.0
+        }
+      ],
+      "val_true_J_m2_mean": 4.333726505057394e-05,
+      "val_true_sqrtJ_mm_mean": 5.013829655682772,
+      "checkpoint": "runs/maniskill_pickcube/checkpoints/pi_bc_flow/w0.pt"
+    }
+  ]
+}

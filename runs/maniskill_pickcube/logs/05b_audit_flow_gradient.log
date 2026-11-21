@@ -1,0 +1,13 @@
+gradient check: {'critic_term': 0.21988053619861603, 'policy_parameters': 8, 'parameters_with_gradient': 8, 'all_finite': True, 'total_grad_norm': 3.708464153408691, 'critic_parameters_require_grad': 0, 'pass': True}
+[33;1m2026-11-20 19:01:14,765 - mani_skill  - WARNING - Requested to use render device "sapien_cuda", but CUDA device was not found. Falling back to "cpu" device. Rendering might be disabled.[0m
+gradient   10 updates: predicted E 0.0231  mean J 3.427e-04  dJ +3.107e-04 [+2.90e-04, +3.32e-04]
+gradient   25 updates: predicted E 0.0051  mean J 1.071e-03  dJ +1.039e-03 [+1.00e-03, +1.08e-03]
+gradient   50 updates: predicted E 0.0023  mean J 1.646e-03  dJ +1.614e-03 [+1.56e-03, +1.67e-03]
+gradient  100 updates: predicted E 0.0013  mean J 1.978e-03  dJ +1.946e-03 [+1.89e-03, +2.00e-03]
+gradient  200 updates: predicted E 0.0006  mean J 2.668e-03  dJ +2.637e-03 [+2.57e-03, +2.70e-03]
+random   10 updates: predicted E 0.2487  mean J 3.284e-05  dJ +8.973e-07 [-3.38e-07, +2.29e-06]
+random   25 updates: predicted E 0.2535  mean J 3.490e-05  dJ +2.960e-06 [+1.15e-06, +4.92e-06]
+random   50 updates: predicted E 0.2671  mean J 3.692e-05  dJ +4.973e-06 [+2.60e-06, +7.55e-06]
+random  100 updates: predicted E 0.2631  mean J 3.864e-05  dJ +6.700e-06 [+4.16e-06, +9.29e-06]
+random  200 updates: predicted E 0.2544  mean J 4.463e-05  dJ +1.269e-05 [+8.99e-06, +1.70e-05]
+gate: {'rule': 'at some checkpoint <= 100 updates on the critic term alone, 95% CI of dJ below 0 and 95% CI of (gradient - random) below 0', 'pass': False, 'passing_checkpoints': []}

@@ -1,0 +1,23 @@
+{
+  "pi0_flow": {
+    "device": "cpu (1 thread)",
+    "batch": 1,
+    "repeats": 2000,
+    "p50_ms": 1.9401114996071556,
+    "p95_ms": 2.554684299911969
+  },
+  "bc_flow": {
+    "device": "cpu (1 thread)",
+    "batch": 1,
+    "repeats": 2000,
+    "p50_ms": 2.0486115004132444,
+    "p95_ms": 2.7127338004902413
+  },
+  "smooth_flow": {
+    "device": "cpu (1 thread)",
+    "batch": 1,
+    "repeats": 2000,
+    "p50_ms": 2.0206899998811423,
+    "p95_ms": 2.22916354937297
+  }
+}

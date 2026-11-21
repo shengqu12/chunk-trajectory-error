@@ -17,7 +17,7 @@ models:
     hidden_dims: [256, 256]
   policy_flow:                 # second policy class for the policy-class check (02/06/07 --policy flow)
     type: flow_chunk
-    hidden_dims: [256, 256, 256]   # velocity field; input = chunk (80) + obs (42) + time features (9)
+    hidden_dims: [512, 512, 512]   # velocity field; input = chunk (80) + obs (42) + time features (9).  3x256 at 60k steps gave val J 7.4 mm vs 4.2 mm here
     time_frequencies: 4
     sample_steps: 8              # Euler steps at sampling; gradients pass through every step
   error_network:
@@ -68,6 +68,9 @@ bc:
   batch_size: 256
   lr: 0.001
   eval_every: 1000
+  flow:                        # overrides for 02 --policy flow: the velocity field needs a longer, decaying schedule
+    steps: 60000               # (20k constant-lr steps: val J 9.1 mm, sampled-chunk MSE 2.2x the MLP's)
+    lr_schedule: cosine
 
 branches:
   anchors_per_episode: {train: 4, val: 3, test: 3}

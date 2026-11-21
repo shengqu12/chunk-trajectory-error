@@ -4,11 +4,12 @@ Can a learned trajectory-error critic improve action-chunk policies? This reposi
 
 A chunk policy predicts `H = 20` actions and executes `e = 5` of them. For a candidate action tail, the simulator restores the same state, runs `K = 10` steps of the candidate and of the expert, and records the mean squared end-effector deviation `J`. A critic `E_phi(history, robot state, action tail, delay)` is regressed on these labels, frozen, and added to the behaviour-cloning loss as `lambda * E_phi`. The weight `lambda` is chosen by simulator-recomputed `J`, never by the critic.
 
-## Status (2026-11-15)
+## Status (2026-11-20)
 
 | Part | State | Where |
 |---|---|---|
 | Experiment 1: expert-deviation critic, ManiSkill PickCube-v1 | Stages `00`-`08` implemented and run twice: on a CPU-only Linux container with locally generated demonstrations (outputs in `runs/`), and on the GPU workstation with the official demonstrations (outputs not in this repository) | `src/`, `scripts/`, `runs/maniskill_pickcube/` |
+| Experiment 1b: policy-class check with a flow-matching chunk policy | Implemented (`--policy flow` in stages 02/06/07, audit `05b`) and run on the container with the same data, critic and labels | `src/chunk_trajectory_error/policies/flow_chunk.py`, `runs/maniskill_pickcube/*_flow*`, [docs/FLOW_POLICY_RESULTS.md](docs/FLOW_POLICY_RESULTS.md) |
 | Experiment 2: sim-to-sim gap critic (latency and actuation shifts) | Run on the GPU workstation; **code and outputs not yet in this repository** | Specification: [docs/SIM2SIM_PILOT_SPEC.md](docs/SIM2SIM_PILOT_SPEC.md) |
 | LIBERO / SmolVLA | Not implemented (configuration and backend stub only) | `configs/libero_spatial.yaml`, `src/chunk_trajectory_error/backends/libero.py` |
 
@@ -20,6 +21,8 @@ Both experiments are negative for the critic.
 - Adding the critic to the BC loss does not improve closed-loop success. In the container run (150 initial states per delay), the selected-`lambda` critic policy succeeds 38 / 45 / 64 % at delay `r` = 0 / 2 / 4, against 44 / 48 / 80 % for BC fine-tuning with the same budget; the pooled paired difference is -8.4 pp [-13.6, -3.3]. An action-smoothness penalty matches or beats BC.
 - With a larger weight the policy exploits the critic: as `lambda` goes from 0 to 1, the predicted `J` falls from 4.2e-5 to 3.5e-6 while the simulator-recomputed `J` rises from 2.8e-5 to 2.6e-4.
 - In the sim-to-sim pilot (latency `d = 1` and stiffness `s = 0.4` shifts), the gap critic did not beat the smoothness penalty or same-budget fine-tuning on the target simulator.
+- The conclusion does not depend on the policy class. With a flow-matching chunk policy (same data, same frozen critic, same labels, same fine-tuning budget) the selected-`lambda` critic policy lowers the test-anchor `J` by 15 % and still loses 13 / 33 / 51 pp of closed-loop success at `r` = 0 / 2 / 4 against the `lambda = 0` fine-tune (90 / 92 / 96 %). A gradient audit through the sampler shows why: steps on the critic term alone lower the predicted `E` monotonically while the simulator `J` is flat and then rises, at every step size tried. Details in [docs/FLOW_POLICY_RESULTS.md](docs/FLOW_POLICY_RESULTS.md).
+- Side finding: the flow-matching policy is a far stronger base policy than the MLP on this task (closed-loop success 89 / 96 / 99 % for `pi0_flow` against 14 / 23 / 49 % for the MLP `pi0`), with a comparable open-loop error. The Experiment 1 MLP baseline is weak in closed loop.
 
 Full numbers: [runs/maniskill_pickcube/results.md](runs/maniskill_pickcube/results.md) and the mid-point report (`report/midterm/`).
 
@@ -99,6 +102,17 @@ python scripts/07_eval_closed_loop.py --config $C                  # eval_*.parq
 python scripts/08_report.py --config $C                            # results.md, figures/
 ```
 
+Policy-class check (Experiment 1b; reuses the critic and labels from the run above):
+
+```bash
+python scripts/02_prepare_policy.py --config $C --policy flow                 # pi0_flow (bc.flow: 60k steps, cosine)
+python scripts/05b_audit_flow_gradient.py --config $C                          # critic gradient through the sampler, lr 3e-4
+python scripts/05b_audit_flow_gradient.py --config $C --lr 0.00001 --checkpoints 1,2,5,10,25 --gate-steps 25 --tag lr1e-5
+for v in bc error smooth; do python scripts/06_train_policy.py --config $C --policy flow --variant $v; done
+python scripts/07_eval_closed_loop.py --config $C --policies pi0_flow,bc_flow,error_flow,smooth_flow,error_flow_w0.3 --tag flow
+python scripts/08_report.py --config $C                                        # adds the Flow rows
+```
+
 Optional runs that appear in the recorded results: `04 --state-source full_obs`, `04 --target sqrtJ` (exploratory, outside the specified loss), `06 --variant error_fullobs | error_sqrt`, and one critic refresh round (`03 --round 1 --checkpoint <policy> --policy-perturbed 1 --expert-perturbed 0`, `04 --round 1`, `06 --variant error --round 1`). `07 --policies a,b --tag x` shards the evaluation across processes; `08` merges every `eval_*_<tag>.parquet`.
 
 The container run, including the optional variants, took about two hours of wall time on a 2-core CPU; stages `03` (branch labels) and `07` (closed-loop evaluation, sharded over two processes) take most of it.
@@ -110,7 +124,8 @@ The container run, including the optional variants, took about two hours of wall
 | `results.md`, `figures/` | the report generated by stage `08` |
 | `manifest.json`, `replay_audit*.csv/json/mp4` | environment versions and the replay / determinism audit |
 | `branches_{train,val,test}*.h5`, `branch_stats_*.json`, `anchors_*.parquet` | simulator labels `J` for every candidate tail |
-| `checkpoints/` | `pi0`, the critics and every fine-tuned policy |
+| `checkpoints/` | `pi0`, `pi0_flow`, the critics and every fine-tuned policy (`pi_<name>/w<weight>.pt`, selected `pi.pt`) |
+| `flow_gradient_audit*.json` | critic gradient through the flow sampler: parameter-gradient check and descent-vs-random-direction runs |
 | `error_report_*.json` | critic accuracy on held-out branches |
 | `gradient_audit*.csv/json` | does a gradient step through the critic lower the true `J`? |
 | `policy_training_*.json` | weight selection on validation for each variant |

@@ -30,14 +30,15 @@ LABELS = {
     "bc_flow": "Flow: fine-tune (lambda = 0)",
     "error_flow": "Flow + error net (history), selected lambda",
     "smooth_flow": "Flow + action smoothness, selected beta",
+    "error_flow_w0.3": "Flow + error net (history), fixed lambda = 0.3",
 }
 ORDER = ["pi0", "bc", "error", "nohist", "smooth", "error_w0.03", "error_r1", "error_sqrt", "error_fullobs",
-         "pi0_flow", "bc_flow", "error_flow", "smooth_flow"]
+         "pi0_flow", "bc_flow", "error_flow", "smooth_flow", "error_flow_w0.3"]
 # Reference categorical palette, fixed slot per policy (colour follows the entity).
 COLORS = {
     "pi0": "#2a78d6", "bc": "#eb6834", "error": "#1baf7a", "nohist": "#eda100", "smooth": "#e87ba4",
     "error_w0.03": "#008300", "error_r1": "#6250d6", "error_sqrt": "#e34948",
-    "pi0_flow": "#7fb3e6", "bc_flow": "#f3a884", "error_flow": "#7fd3b4", "smooth_flow": "#f3b9d0",
+    "pi0_flow": "#7fb3e6", "bc_flow": "#f3a884", "error_flow": "#7fd3b4", "smooth_flow": "#f3b9d0", "error_flow_w0.3": "#7fc17f",
 }
 
 
