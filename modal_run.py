@@ -38,7 +38,7 @@ _cpu_lock = [
 ]
 
 image = (
-    modal.Image.debian_slim(python_version="3.10")
+    modal.Image.debian_slim(python_version="3.11")  # Modal's 2026.10 builder has no 3.10; the lock resolves on 3.11
     # Vulkan loader + Mesa lavapipe: SAPIEN initialises Vulkan even with state observations and no rendering.
     .apt_install("libvulkan1", "mesa-vulkan-drivers", "libgl1", "libglib2.0-0", "libxrender1", "libxext6", "libsm6", "git")
     .pip_install("torch==2.14.1", index_url="https://download.pytorch.org/whl/cpu")

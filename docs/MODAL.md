@@ -22,7 +22,7 @@ Notes
   change network initialisation, batch order, flow-policy noise and branch perturbations. The
   episode split is created once by the first stage 01 and locked in the data volume, so all
   seeds share the same train/val/test episodes and the same 150 evaluation states.
-- The image installs the tested lock file with a CPU-only torch wheel and Mesa's lavapipe Vulkan
+- The image installs the tested lock file with a CPU-only torch wheel (Python 3.11: Modal no longer offers 3.10; the pins resolve unchanged) and Mesa's lavapipe Vulkan
   driver (SAPIEN needs a Vulkan ICD even without rendering). If SAPIEN fails to initialise, the
   log will say so in stage 00; the fallback is a GPU container with the NVIDIA ICD, see the
   ManiSkill installation notes.
