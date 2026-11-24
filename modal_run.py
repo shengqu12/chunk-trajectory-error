@@ -30,12 +30,16 @@ REPO = Path(__file__).resolve().parent
 REMOTE_REPO = "/root/proj"
 DATA, RUNS = "/vol/data", "/vol/runs"
 
-# Lock file without the CUDA wheels: torch comes from the CPU index instead (a 3 GB smaller image).
+# Lock file without the CUDA wheels (torch comes from the CPU index instead, a 3 GB smaller
+# image), without mplib (only needed to generate demonstrations; it is also what forced
+# numpy < 2) and with opencv-python pinned to a release that accepts numpy 1.26 (5.0 requires
+# numpy >= 2 and pip refuses the pair; cv2 is unused by the pipeline).
 _lock = (REPO / "envs/maniskill/requirements.lock.linux-py310.txt").read_text().splitlines()
+_drop = ("torch", "nvidia-", "triton", "mplib", "cuda-", "opencv-python")
 _cpu_lock = [
     line for line in _lock
-    if line and not line.startswith("#") and not line.split("==")[0].lower().startswith(("torch", "nvidia-", "triton", "mplib"))
-]
+    if line and not line.startswith("#") and not line.split("==")[0].lower().startswith(_drop)
+] + ["opencv-python==4.11.0.86"]
 
 image = (
     modal.Image.debian_slim(python_version="3.11")  # Modal's 2026.10 builder has no 3.10; the lock resolves on 3.11
