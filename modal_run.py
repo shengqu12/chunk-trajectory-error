@@ -48,12 +48,16 @@ _cpu_lock = [
 ] + ["opencv-python==4.11.0.86"]
 
 image = (
-    modal.Image.debian_slim(python_version="3.11")  # Modal's 2026.10 builder has no 3.10; the lock resolves on 3.11
-    # Vulkan loader + Mesa lavapipe: SAPIEN initialises Vulkan even with state observations and no rendering.
-    .apt_install("libvulkan1", "mesa-vulkan-drivers", "libgl1", "libglib2.0-0", "libxrender1", "libxext6", "libsm6", "git")
+    # Ubuntu 24.04 rather than Modal's Debian 12 slim image: SAPIEN initialises Vulkan even with
+    # state observations and no rendering, and Debian 12's Mesa 22.3 lavapipe is rejected by its
+    # loader ("ErrorIncompatibleDriver"); Ubuntu 24.04 ships the Mesa the tested container uses.
+    # Python 3.11: Modal's 2026.10 builder has no 3.10; the lock resolves unchanged.
+    modal.Image.from_registry("ubuntu:24.04", add_python="3.11")
+    .apt_install("libvulkan1", "mesa-vulkan-drivers", "vulkan-tools", "libgl1", "libglib2.0-0", "libxrender1", "libxext6", "libsm6", "git")
     .pip_install("torch==2.14.1", index_url="https://download.pytorch.org/whl/cpu")
     .pip_install(*_cpu_lock)
     .env({
+        "VK_DRIVER_FILES": "/usr/share/vulkan/icd.d/lvp_icd.x86_64.json",
         "VK_ICD_FILENAMES": "/usr/share/vulkan/icd.d/lvp_icd.x86_64.json",
         "PYTHONPATH": f"{REMOTE_REPO}/src",
         "OMP_NUM_THREADS": "2",
@@ -105,6 +109,8 @@ def prepare_data() -> str:
         return "already prepared"
     raw.mkdir(parents=True, exist_ok=True)
     processed.mkdir(parents=True, exist_ok=True)
+    sh(["sh", "-c", "ls -la /usr/share/vulkan/icd.d/ /etc/vulkan/icd.d/ 2>&1; cat /usr/share/vulkan/icd.d/lvp_icd.x86_64.json 2>&1; "
+        "vulkaninfo --summary 2>&1 | head -40; VK_LOADER_DEBUG=error,warn vulkaninfo --summary > /dev/null"])
     sh([sys.executable, "-c", "import gymnasium as gym, mani_skill.envs; e = gym.make('PickCube-v1', obs_mode='state', "
         "control_mode='pd_ee_delta_pos', sim_backend='physx_cpu', num_envs=1); e.reset(seed=0); e.step(e.action_space.sample()); "
         "print('simulator ok'); e.close()"])
