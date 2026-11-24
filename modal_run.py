@@ -72,17 +72,25 @@ VOLUMES = {DATA: data_volume, RUNS: runs_volume}
 
 
 def sh(cmd: list[str], log: Path | None = None) -> None:
+    """Run one stage, streaming its output (warnings filtered) and keeping a tail so that a
+    failure shows the real traceback instead of the filtered stream."""
+    from collections import deque
+
     print("+", " ".join(cmd), flush=True)
     start = time.time()
+    tail: deque[str] = deque(maxlen=80)
     with (log.open("a") if log else open("/dev/null", "w")) as handle:
         proc = subprocess.Popen(cmd, cwd=REMOTE_REPO, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
         for line in proc.stdout:
             if "warning" not in line.lower():
                 print(line, end="", flush=True)
             handle.write(line)
+            tail.append(line)
         code = proc.wait()
     print(f"  -> exit {code} after {(time.time() - start) / 60:.1f} min", flush=True)
     if code != 0:
+        print("----- last lines of the failed stage (unfiltered) -----", flush=True)
+        print("".join(tail), flush=True)
         raise RuntimeError(f"stage failed: {' '.join(cmd)}")
 
 
@@ -97,10 +105,15 @@ def prepare_data() -> str:
         return "already prepared"
     raw.mkdir(parents=True, exist_ok=True)
     processed.mkdir(parents=True, exist_ok=True)
-    sh([sys.executable, "-m", "mani_skill.utils.download_demo", "PickCube-v1", "-o", f"{DATA}/official"])
-    source = next(Path(DATA, "official").rglob("motionplanning/trajectory.h5"))
-    shutil.copy(source, raw / "trajectory.h5")
-    shutil.copy(source.with_suffix(".json"), raw / "trajectory.json")
+    sh([sys.executable, "-c", "import gymnasium as gym, mani_skill.envs; e = gym.make('PickCube-v1', obs_mode='state', "
+        "control_mode='pd_ee_delta_pos', sim_backend='physx_cpu', num_envs=1); e.reset(seed=0); e.step(e.action_space.sample()); "
+        "print('simulator ok'); e.close()"])
+    if not (raw / "trajectory.h5").is_file():
+        sh([sys.executable, "-m", "mani_skill.utils.download_demo", "PickCube-v1", "-o", f"{DATA}/official"])
+        source = next(Path(DATA, "official").rglob("motionplanning/trajectory.h5"))
+        shutil.copy(source, raw / "trajectory.h5")
+        shutil.copy(source.with_suffix(".json"), raw / "trajectory.json")
+        data_volume.commit()
     sh([
         sys.executable, "-m", "mani_skill.trajectory.replay_trajectory", "--traj-path", str(raw / "trajectory.h5"),
         "--use-first-env-state", "-c", "pd_ee_delta_pos", "-o", "state", "--save-traj", "--num-envs", "1", "-b", "physx_cpu",
@@ -108,7 +121,7 @@ def prepare_data() -> str:
     for suffix in (".h5", ".json"):
         shutil.move(raw / f"trajectory.state.pd_ee_delta_pos.physx_cpu{suffix}", processed / f"trajectory.state.pd_ee_delta_pos.physx_cpu{suffix}")
     data_volume.commit()
-    return f"prepared from {source}"
+    return "prepared official PickCube-v1 demonstrations"
 
 
 def seed_config(seed: int, smoke: bool) -> Path:
