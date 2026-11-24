@@ -373,7 +373,10 @@ def policy_true_cost(
         for t in times:
             snapshot = anchor_snapshot(episode, t, r)
             expert, _ = rollout_branch(backend, snapshot, episode.actions[t + r : t + r + K])
-            chunk = bundle.act(demos.observation(episode_id, t))
+            if hasattr(bundle, "act_with_history"):
+                chunk = bundle.act_with_history(demos.observation(episode_id, t), demos.history(episode_id, t, spec.history_steps))
+            else:
+                chunk = bundle.act(demos.observation(episode_id, t))
             candidate, status = rollout_branch(backend, snapshot, chunk[r : r + K])
             rows.append({"episode_id": episode_id, "t": t, "J_m2": branch_cost(candidate, expert) if status == "ok" else np.nan, "status": status})
     return rows
@@ -416,6 +419,8 @@ def closed_loop_episode(
     record per *executed* handover boundary."""
     scheduler = ChunkScheduler(spec.horizon, spec.execute_steps, delay)
     backend.reset(seed=seed, init_state=init_state)
+    if hasattr(bundle, "reset_episode"):  # test-time selectors rebuild the EE history online
+        bundle.reset_episode()
     continuous = [dim for dim in range(bundle.meta["action_dim"]) if dim not in gripper_dims]
     previous_command, previous_position = None, np.asarray(backend.ee_position())
     boundaries, within_jumps, speeds, path = [], [], [], 0.0
@@ -424,6 +429,8 @@ def closed_loop_episode(
         frames.append(backend.render_rgb())
     for k in range(max_steps):
         observation = backend.observe()["state"]
+        if hasattr(bundle, "observe"):
+            bundle.observe(observation)
         command, record = scheduler.step(k, lambda: bundle.act(observation))
         command = np.asarray(command, dtype=np.float32)
         backend.step(command)

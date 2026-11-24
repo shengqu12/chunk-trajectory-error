@@ -12,6 +12,7 @@ Outputs (per ``--tag``): ``eval_episodes_<tag>.parquet``, ``eval_boundaries_<tag
 from __future__ import annotations
 
 import time
+import re
 from argparse import ArgumentParser
 from pathlib import Path
 
@@ -20,7 +21,9 @@ import pandas as pd
 import torch
 
 from chunk_trajectory_error.config import load_config
+from chunk_trajectory_error.selection import ChunkSelector
 from chunk_trajectory_error.pipeline import (
+    ErrorBundle,
     PolicyBundle, chunk_spec, closed_loop_episode, load_demoset, out_dir, policy_true_cost, write_json,
 )
 
@@ -41,6 +44,20 @@ DEFAULT_POLICIES = {
     "smooth_flow": "checkpoints/pi_smooth_flow/pi.pt",
     "error_flow_w0.3": "checkpoints/pi_error_flow/w0.3.pt",  # fixed, non-selected weight: the critic term when it dominates
 }
+# Test-time selection: ``select_<best|worst|first><N>_flow`` samples N chunks from bc_flow at every
+# decision and executes the one the frozen critic scores lowest (best) / highest (worst) / the first.
+SELECT_PATTERN = re.compile(r"^select_(best|worst|first)(\d+)_flow$")
+SELECT_BASE, SELECT_CRITIC = "checkpoints/pi_bc_flow/pi.pt", "checkpoints/error_round0_history.pt"
+
+
+def build_bundle(name: str, run_dir, config, demos):
+    match = SELECT_PATTERN.match(name)
+    if not match:
+        return PolicyBundle.load(run_dir / DEFAULT_POLICIES[name])
+    policy = PolicyBundle.load(run_dir / SELECT_BASE)
+    error = ErrorBundle.load(run_dir / SELECT_CRITIC)
+    spec = chunk_spec(config)
+    return ChunkSelector(policy, error, int(match.group(2)), spec.delay, spec.history_steps, demos.tcp_slice, demos.robot_slice, mode=match.group(1))
 
 
 def latency(bundle: PolicyBundle, observation: np.ndarray, repeats: int) -> dict:
@@ -92,7 +109,7 @@ def main() -> int:
     eval_cfg = config["evaluation"]
     demos = load_demoset(config)
     names = args.policies.split(",") if args.policies else [n for n, p in DEFAULT_POLICIES.items() if (run_dir / p).is_file()]
-    bundles = {name: PolicyBundle.load(run_dir / DEFAULT_POLICIES[name]) for name in names}
+    bundles = {name: build_bundle(name, run_dir, config, demos) for name in names}
     delays = [int(x) for x in args.delays.split(",")] if args.delays else list(eval_cfg["delays"])
     max_steps = config["environment"]["max_episode_steps"]
 
@@ -111,7 +128,10 @@ def main() -> int:
         sequences = []
         for name in (name_a, name_b):
             frames: list = []
-            record, _ = closed_loop_episode(backend, PolicyBundle.load(run_dir / DEFAULT_POLICIES[name]), chunk_spec(config), int(delay), seed, init_state, max_steps, demos.gripper_dims, frames)
+            video_bundle = build_bundle(name, run_dir, config, demos)
+            if isinstance(video_bundle, ChunkSelector):
+                video_bundle.delay = int(delay)
+            record, _ = closed_loop_episode(backend, video_bundle, chunk_spec(config), int(delay), seed, init_state, max_steps, demos.gripper_dims, frames)
             sequences.append((frames, f"{name}: {'success' if record['success'] else 'no success'} in {record['steps']} steps"))
         backend.close()
         path = run_dir / f"eval_pair_{name_a}_vs_{name_b}_r{delay}_seed{seed}.mp4"
@@ -124,6 +144,8 @@ def main() -> int:
     for name, bundle in bundles.items():
         for delay in delays:
             spec = chunk_spec(config, delay)
+            if isinstance(bundle, ChunkSelector):
+                bundle.delay = delay  # score the tail that will actually be executed
             if bundle.is_flow:
                 bundle.reseed(config["experiment"]["seed"] + delay)
             wins = 0
@@ -137,11 +159,16 @@ def main() -> int:
                     boundaries.append(edge)
             print(f"{name} r={delay}: {wins}/{len(inits)} success", flush=True)
     pd.DataFrame(episodes).to_parquet(run_dir / f"eval_episodes_{args.tag}.parquet", index=False)
+    selection = {name: bundle.summary() for name, bundle in bundles.items() if isinstance(bundle, ChunkSelector)}
+    if selection:
+        write_json(run_dir / f"eval_selection_{args.tag}.json", selection)
     pd.DataFrame(boundaries).to_parquet(run_dir / f"eval_boundaries_{args.tag}.parquet", index=False)
 
     spec = chunk_spec(config)
     rows = []
     for name, bundle in bundles.items():
+        if isinstance(bundle, ChunkSelector):
+            bundle.delay = spec.delay
         if bundle.is_flow:
             bundle.reseed()
         for row in policy_true_cost(backend, demos, bundle, "test", spec, config["branches"]["anchors_per_episode"]["test"]):
@@ -150,7 +177,13 @@ def main() -> int:
     backend.close()
     pd.DataFrame(rows).to_parquet(run_dir / f"eval_true_J_{args.tag}.parquet", index=False)
 
-    observation = demos.observation(demos.ids("test")[0], 0)
+    first_test = demos.ids("test")[0]
+    observation = demos.observation(first_test, 0)
+    for bundle in bundles.values():  # selectors time a *selected* decision: give them a full history first
+        if isinstance(bundle, ChunkSelector):
+            bundle.reset_episode()
+            for t in range(bundle.history_steps + 1):
+                bundle.observe(demos.observation(first_test, t))
     write_json(
         run_dir / f"eval_latency_{args.tag}.json",
         {name: latency(bundle, observation, eval_cfg["latency_repeats"]) for name, bundle in bundles.items()},
