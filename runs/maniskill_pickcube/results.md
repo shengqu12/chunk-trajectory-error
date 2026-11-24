@@ -90,6 +90,9 @@ J is recomputed in simulation: the policy's chunk tail and the expert's actions 
 | Flow + error net (history), selected lambda | 2.926e-05 [2.40e-05, 3.53e-05] | 4.35 | -5.326e-06 [-1.05e-05, -1.25e-06] | -15.4% |
 | Flow + action smoothness, selected beta | 3.461e-05 [2.65e-05, 4.46e-05] | 4.51 | 2.247e-08 [-5.51e-10, 4.83e-08] | +0.1% |
 | Flow + error net (history), fixed lambda = 0.3 | 4.584e-04 [4.13e-04, 5.05e-04] | 18.95 | 4.400e-04 [3.96e-04, 4.84e-04] | +2386.4% |
+| Flow (lambda = 0) + critic selects best of 8 chunks | 1.991e-05 [1.52e-05, 2.61e-05] | 3.61 | -1.468e-05 [-2.22e-05, -7.42e-06] | -42.4% |
+| Flow (lambda = 0) + critic selects best of 32 chunks | 1.616e-05 [1.31e-05, 2.02e-05] | 3.41 | -1.843e-05 [-2.75e-05, -1.06e-05] | -53.3% |
+| Flow (lambda = 0) + critic selects worst of 8 chunks | 5.765e-05 [4.52e-05, 7.25e-05] | 5.73 | 2.307e-05 [1.66e-05, 3.01e-05] | +66.7% |
 
 300 anchors from 100 test episodes; intervals resample episodes.
 
@@ -116,6 +119,9 @@ J is recomputed in simulation: the policy's chunk tail and the expert's actions 
 | Flow + error net (history), selected lambda | 115/150 (77%) [69%, 83%] | 88/150 (59%) [51%, 66%] | 68/150 (45%) [38%, 53%] |
 | Flow + action smoothness, selected beta | 131/150 (87%) [81%, 92%] | 143/150 (95%) [91%, 98%] | 145/150 (97%) [92%, 99%] |
 | Flow + error net (history), fixed lambda = 0.3 | 1/150 (1%) [0%, 4%] | 0/150 (0%) [0%, 2%] | 0/150 (0%) [0%, 2%] |
+| Flow (lambda = 0) + critic selects best of 8 chunks | 133/150 (89%) [83%, 93%] | 142/150 (95%) [90%, 97%] | 144/150 (96%) [92%, 98%] |
+| Flow (lambda = 0) + critic selects best of 32 chunks | 125/150 (83%) [77%, 88%] | 132/150 (88%) [82%, 92%] | 137/150 (91%) [86%, 95%] |
+| Flow (lambda = 0) + critic selects worst of 8 chunks | 131/150 (87%) [81%, 92%] | 138/150 (92%) [87%, 95%] | 148/150 (99%) [95%, 100%] |
 
 Brackets are Wilson 95% intervals.
 
@@ -169,6 +175,18 @@ Paired comparison with the same-class fine-tune at lambda = 0 (same initial stat
 | Flow + error net (history), fixed lambda = 0.3 | 2 | -48.0 [-56.0, -40.0] | 0 | 72 | 0.000 |
 | Flow + error net (history), fixed lambda = 0.3 | 4 | -80.0 [-86.0, -73.3] | 0 | 120 | 0.000 |
 | Flow + error net (history), fixed lambda = 0.3 | all | -57.1 [-62.7, -51.6] | 0 | 257 | 0.000 |
+| Flow (lambda = 0) + critic selects best of 8 chunks | 0 | -1.3 [-7.3, +4.7] | 10 | 12 | 0.832 |
+| Flow (lambda = 0) + critic selects best of 8 chunks | 2 | +2.7 [-1.3, +7.3] | 7 | 3 | 0.344 |
+| Flow (lambda = 0) + critic selects best of 8 chunks | 4 | +0.0 [-4.7, +4.7] | 6 | 6 | 1.000 |
+| Flow (lambda = 0) + critic selects best of 8 chunks | all | +0.4 [-2.0, +2.9] | 23 | 21 | 0.880 |
+| Flow (lambda = 0) + critic selects best of 32 chunks | 0 | -6.7 [-14.0, +0.7] | 12 | 22 | 0.121 |
+| Flow (lambda = 0) + critic selects best of 32 chunks | 2 | -4.0 [-10.0, +2.0] | 7 | 13 | 0.263 |
+| Flow (lambda = 0) + critic selects best of 32 chunks | 4 | -4.7 [-10.0, +0.7] | 5 | 12 | 0.143 |
+| Flow (lambda = 0) + critic selects best of 32 chunks | all | -5.1 [-8.7, -1.6] | 24 | 47 | 0.009 |
+| Flow (lambda = 0) + critic selects worst of 8 chunks | 0 | -2.7 [-8.7, +3.3] | 9 | 13 | 0.523 |
+| Flow (lambda = 0) + critic selects worst of 8 chunks | 2 | +0.0 [-4.7, +4.7] | 6 | 6 | 1.000 |
+| Flow (lambda = 0) + critic selects worst of 8 chunks | 4 | +2.7 [+0.0, +6.0] | 5 | 1 | 0.219 |
+| Flow (lambda = 0) + critic selects worst of 8 chunks | all | +0.0 [-2.2, +2.2] | 20 | 20 | 1.000 |
 
 ### Handover jump at executed boundaries
 
@@ -215,6 +233,15 @@ Jump = ||u_b − u_{b−1}||₂ on the three translation channels of the execute
 | Flow + error net (history), fixed lambda = 0.3 | 0 | 5818 | 0.8943 | 3.4494 | 0.9054 | 42.4% | 22.53 | 198.9 |
 | Flow + error net (history), fixed lambda = 0.3 | 2 | 5850 | 0.2583 | 0.4480 | 0.2332 | 97.4% | 7.53 | 200.0 |
 | Flow + error net (history), fixed lambda = 0.3 | 4 | 5850 | 0.3184 | 0.5152 | 0.1593 | 100.0% | 6.28 | 200.0 |
+| Flow (lambda = 0) + critic selects best of 8 chunks | 0 | 2889 | 0.0292 | 0.0568 | 0.0278 | 64.3% | 4.59 | 99.6 |
+| Flow (lambda = 0) + critic selects best of 8 chunks | 2 | 2632 | 0.0331 | 0.0907 | 0.0280 | 66.8% | 4.64 | 91.0 |
+| Flow (lambda = 0) + critic selects best of 8 chunks | 4 | 2568 | 0.0437 | 0.1094 | 0.0262 | 84.0% | 4.56 | 88.8 |
+| Flow (lambda = 0) + critic selects best of 32 chunks | 0 | 3236 | 0.0284 | 0.0579 | 0.0280 | 70.2% | 4.29 | 111.2 |
+| Flow (lambda = 0) + critic selects best of 32 chunks | 2 | 3054 | 0.0335 | 0.0950 | 0.0278 | 68.0% | 4.32 | 105.3 |
+| Flow (lambda = 0) + critic selects best of 32 chunks | 4 | 2945 | 0.0423 | 0.1274 | 0.0258 | 86.1% | 4.29 | 101.5 |
+| Flow (lambda = 0) + critic selects worst of 8 chunks | 0 | 2492 | 0.0340 | 0.1224 | 0.0291 | 70.7% | 5.19 | 86.4 |
+| Flow (lambda = 0) + critic selects worst of 8 chunks | 2 | 2416 | 0.0379 | 0.0975 | 0.0296 | 72.1% | 5.17 | 83.9 |
+| Flow (lambda = 0) + critic selects worst of 8 chunks | 4 | 2167 | 0.0493 | 0.1223 | 0.0285 | 77.3% | 5.28 | 75.4 |
 
 ![Handover jump](figures/handover_jump_p95.png)
 
@@ -255,6 +282,15 @@ Paired per-episode mean jump versus the same-class fine-tune at lambda = 0 (same
 | Flow + error net (history), fixed lambda = 0.3 | 0 | +1.3782 [+1.3003, +1.4576] | +2417.3% |
 | Flow + error net (history), fixed lambda = 0.3 | 2 | +0.2126 [+0.1981, +0.2238] | +395.3% |
 | Flow + error net (history), fixed lambda = 0.3 | 4 | +0.2750 [+0.2662, +0.2826] | +556.6% |
+| Flow (lambda = 0) + critic selects best of 8 chunks | 0 | -0.0024 [-0.0050, +0.0003] | -7.0% |
+| Flow (lambda = 0) + critic selects best of 8 chunks | 2 | -0.0029 [-0.0043, -0.0015] | -7.1% |
+| Flow (lambda = 0) + critic selects best of 8 chunks | 4 | -0.0031 [-0.0059, -0.0004] | -5.9% |
+| Flow (lambda = 0) + critic selects best of 32 chunks | 0 | -0.0024 [-0.0052, +0.0007] | -6.8% |
+| Flow (lambda = 0) + critic selects best of 32 chunks | 2 | -0.0023 [-0.0040, -0.0005] | -5.7% |
+| Flow (lambda = 0) + critic selects best of 32 chunks | 4 | -0.0004 [-0.0035, +0.0034] | -0.8% |
+| Flow (lambda = 0) + critic selects worst of 8 chunks | 0 | +0.0036 [+0.0006, +0.0067] | +10.2% |
+| Flow (lambda = 0) + critic selects worst of 8 chunks | 2 | +0.0021 [-0.0004, +0.0046] | +5.2% |
+| Flow (lambda = 0) + critic selects worst of 8 chunks | 4 | +0.0040 [+0.0015, +0.0061] | +7.6% |
 
 ## 7. Deployment path and latency
 
@@ -275,6 +311,9 @@ Evaluation loads policy checkpoints only (weights plus observation normalisation
 | Flow + action smoothness, selected beta | cpu (1 thread) | 2.021 | 2.229 |
 | Flow + error net (history), selected lambda | cpu (1 thread) | 2.175 | 3.638 |
 | Flow + error net (history), fixed lambda = 0.3 | cpu (1 thread) | 1.815 | 2.594 |
+| Flow (lambda = 0) + critic selects best of 8 chunks | cpu (1 thread) | 3.576 | 4.643 |
+| Flow (lambda = 0) + critic selects worst of 8 chunks | cpu (1 thread) | 3.709 | 4.491 |
+| Flow (lambda = 0) + critic selects best of 32 chunks | cpu (1 thread) | 6.299 | 8.449 |
 
 Single chunk, batch 1, after 200 warm-up calls. This is measured forward time and is unrelated to the injected delay r.
 
@@ -293,6 +332,8 @@ Rule from the specification: a closed-loop improvement is claimed only if held-o
 | Flow + error net (history), selected lambda | improves (-15.4%) | worse (+144.4%) | worse (-32.4 pp [-38.4, -26.4]) | changes trajectory deviation only; no evidence on handover |
 | Flow + action smoothness, selected beta | no detectable change (+0.1%) | no detectable change (-1.3%) | no detectable change (+0.4 pp [-2.0, +2.9]) | no supported improvement |
 | Flow + error net (history), fixed lambda = 0.3 | worse (+2386.4%) | worse (+1164.6%) | worse (-57.1 pp [-62.7, -51.6]) | worse than bc fine-tune |
+| Flow (lambda = 0) + critic selects best of 8 chunks | improves (-42.4%) | improves (-6.6%) | no detectable change (+0.4 pp [-2.0, +2.9]) | lower J and smoother handovers; no detectable change in task success |
+| Flow (lambda = 0) + critic selects best of 32 chunks | improves (-53.3%) | improves (-4.0%) | worse (-5.1 pp [-8.7, -1.6]) | smoother handover at the cost of task success |
 
 ## 9. Validation sweeps for every trained variant
 

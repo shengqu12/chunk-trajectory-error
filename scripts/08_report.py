@@ -364,8 +364,10 @@ def main() -> int:
             jump = bootstrap_ci((jumps[name] - jumps[ref]).to_numpy(), jumps.index.get_level_values("init_index").to_numpy())
             succ = bootstrap_ci((success_table[name] - success_table[ref]).to_numpy(), success_table.index.get_level_values("init_index").to_numpy())
             v_j, v_jump, v_s = verdict(*j), verdict(*jump), verdict(*succ, lower_is_better=False)
-            if v_j == "improves" and v_jump == "improves" and v_s != "worse":
+            if v_j == "improves" and v_jump == "improves" and v_s == "improves":
                 conclusion = "closed-loop improvement supported"
+            elif v_j == "improves" and v_jump == "improves" and v_s != "worse":
+                conclusion = "lower J and smoother handovers; no detectable change in task success"
             elif v_j == "improves" and v_jump != "improves":
                 conclusion = "changes trajectory deviation only; no evidence on handover"
             elif v_jump == "improves" and v_s == "worse":

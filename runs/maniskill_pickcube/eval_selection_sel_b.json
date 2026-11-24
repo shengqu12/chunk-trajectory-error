@@ -1,0 +1,12 @@
+{
+  "select_worst8_flow": {
+    "decisions": 7731,
+    "selected_decisions": 6081,
+    "num_samples": 8,
+    "mode": "worst",
+    "mean_score_chosen": 1.2083008713126453,
+    "mean_score_min": 0.6451639627867887,
+    "mean_score_median": 0.8468295721571676,
+    "mean_score_max": 1.2083008713126453
+  }
+}

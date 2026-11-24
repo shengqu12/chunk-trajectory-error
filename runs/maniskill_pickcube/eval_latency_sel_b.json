@@ -1,0 +1,9 @@
+{
+  "select_worst8_flow": {
+    "device": "cpu (1 thread)",
+    "batch": 1,
+    "repeats": 2000,
+    "p50_ms": 3.7094620000175382,
+    "p95_ms": 4.491197050066376
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "select_best32_flow": {
+    "device": "cpu (1 thread)",
+    "batch": 1,
+    "repeats": 2000,
+    "p50_ms": 6.29852099996242,
+    "p95_ms": 8.448893450099602
+  }
+}
