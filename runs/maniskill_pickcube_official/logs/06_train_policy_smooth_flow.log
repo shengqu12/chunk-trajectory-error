@@ -1,0 +1,4 @@
+smooth_flow weight=0.1: val true J 4.335e-05 m^2 (sqrtJ 5.013 mm), val BC 0.01272
+smooth_flow weight=0.3: val true J 4.337e-05 m^2 (sqrtJ 5.012 mm), val BC 0.01272
+smooth_flow weight=1: val true J 4.345e-05 m^2 (sqrtJ 5.009 mm), val BC 0.01271
+selected weight: 0.1

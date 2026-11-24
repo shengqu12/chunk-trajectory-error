@@ -1,0 +1,13 @@
+stage	start	end	wall_s	exit	command
+02_prepare_policy_flow	2026-11-24T10:48:43-05:00	2026-11-24T10:57:51-05:00	548	0	python scripts/02_prepare_policy.py --config configs/maniskill_pickcube.yaml --policy flow
+05b_audit_flow_gradient	2026-11-24T10:58:49-05:00	2026-11-24T11:00:18-05:00	89	0	python scripts/05b_audit_flow_gradient.py --config configs/maniskill_pickcube.yaml
+05b_audit_flow_gradient_lr1e-5	2026-11-24T11:00:18-05:00	2026-11-24T11:01:21-05:00	63	0	python scripts/05b_audit_flow_gradient.py --config configs/maniskill_pickcube.yaml --lr 0.00001 --checkpoints 1,2,5,10,25 --gate-steps 25 --tag lr1e-5
+06_train_policy_bc_flow	2026-11-24T11:01:21-05:00	2026-11-24T11:02:20-05:00	59	0	python scripts/06_train_policy.py --config configs/maniskill_pickcube.yaml --policy flow --variant bc
+06_train_policy_error_flow	2026-11-24T11:02:20-05:00	2026-11-24T11:47:32-05:00	2712	0	python scripts/06_train_policy.py --config configs/maniskill_pickcube.yaml --policy flow --variant error
+06_train_policy_smooth_flow	2026-11-24T11:47:32-05:00	2026-11-24T12:06:20-05:00	1128	0	python scripts/06_train_policy.py --config configs/maniskill_pickcube.yaml --policy flow --variant smooth
+07_eval_flow	2026-11-24T12:06:20-05:00	2026-11-24T12:20:02-05:00	822	0	python scripts/07_eval_closed_loop.py --config configs/maniskill_pickcube.yaml --policies pi0_flow,bc_flow,error_flow,smooth_flow,error_flow_w0.3 --tag flow
+09_audit_selection	2026-11-24T12:20:02-05:00	2026-11-24T12:21:02-05:00	60	0	python scripts/09_audit_selection.py --config configs/maniskill_pickcube.yaml --samples 8
+07_eval_sel	2026-11-24T12:21:02-05:00	2026-11-24T12:29:20-05:00	498	0	python scripts/07_eval_closed_loop.py --config configs/maniskill_pickcube.yaml --policies select_best8_flow,select_worst8_flow,select_best32_flow --tag sel
+08_report	2026-11-24T12:29:20-05:00	2026-11-24T12:29:23-05:00	3	0	python scripts/08_report.py --config configs/maniskill_pickcube.yaml
+pytest	2026-11-24T12:29:23-05:00	2026-11-24T12:29:23-05:00	0	1	python -m pytest -q
+pytest_rerun	2026-11-24T12:29:37-05:00	2026-11-24T12:29:39-05:00	2	0	PYTHONPATH=src python -m pytest -q (ROS Jazzy PYTHONPATH removed)

@@ -1,0 +1,32 @@
+{
+  "select_best8_flow": {
+    "decisions": 9817,
+    "selected_decisions": 8167,
+    "num_samples": 8,
+    "mode": "best",
+    "mean_score_chosen": 0.8891404684139473,
+    "mean_score_min": 0.8891404684139473,
+    "mean_score_median": 1.160911734552432,
+    "mean_score_max": 1.6196507655884202
+  },
+  "select_worst8_flow": {
+    "decisions": 7623,
+    "selected_decisions": 5973,
+    "num_samples": 8,
+    "mode": "worst",
+    "mean_score_chosen": 1.2973671768633401,
+    "mean_score_min": 0.7590927287983611,
+    "mean_score_median": 0.9574969369358659,
+    "mean_score_max": 1.2973671768633401
+  },
+  "select_best32_flow": {
+    "decisions": 10703,
+    "selected_decisions": 9053,
+    "num_samples": 32,
+    "mode": "best",
+    "mean_score_chosen": 0.9272077549323003,
+    "mean_score_min": 0.9272077549323003,
+    "mean_score_median": 1.3895917595375984,
+    "mean_score_max": 2.1427109073623267
+  }
+}

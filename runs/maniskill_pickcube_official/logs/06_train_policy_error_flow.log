@@ -1,0 +1,8 @@
+error_flow weight=0.001: val true J 4.108e-05 m^2 (sqrtJ 4.947 mm), val BC 0.01271
+error_flow weight=0.003: val true J 3.927e-05 m^2 (sqrtJ 4.884 mm), val BC 0.01271
+error_flow weight=0.01: val true J 3.723e-05 m^2 (sqrtJ 4.735 mm), val BC 0.01272
+error_flow weight=0.03: val true J 3.909e-05 m^2 (sqrtJ 4.833 mm), val BC 0.01282
+error_flow weight=0.1: val true J 5.650e-05 m^2 (sqrtJ 6.264 mm), val BC 0.01331
+error_flow weight=0.3: val true J 1.606e-03 m^2 (sqrtJ 34.728 mm), val BC 0.04390
+error_flow weight=1: val true J 7.929e-03 m^2 (sqrtJ 84.045 mm), val BC 0.12199
+selected weight: 0.01

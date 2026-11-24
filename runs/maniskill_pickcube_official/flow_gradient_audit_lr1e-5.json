@@ -1,0 +1,212 @@
+{
+  "baseline_mean_J_m2": 3.194486170447928e-05,
+  "anchors": 120,
+  "runs": {
+    "gradient": [
+      {
+        "updates": 1,
+        "predicted_normalized_E_train": 0.26784855127334595,
+        "mean_J_m2": 3.191677938720732e-05,
+        "delta_J_m2": {
+          "mean": -2.808231727196657e-08,
+          "ci95": [
+            -7.962659638273632e-07,
+            6.294157955750529e-07
+          ]
+        },
+        "relative": -0.0008790871449610594
+      },
+      {
+        "updates": 2,
+        "predicted_normalized_E_train": 0.2559705674648285,
+        "mean_J_m2": 3.233407886143537e-05,
+        "delta_J_m2": {
+          "mean": 3.892171569560909e-07,
+          "ci95": [
+            -9.959438754896205e-07,
+            1.5516816381824037e-06
+          ]
+        },
+        "relative": 0.012184030112783842
+      },
+      {
+        "updates": 5,
+        "predicted_normalized_E_train": 0.22799155116081238,
+        "mean_J_m2": 3.4790620201742547e-05,
+        "delta_J_m2": {
+          "mean": 2.8457584972632676e-06,
+          "ci95": [
+            2.1255355027715465e-07,
+            5.134141816504461e-06
+          ]
+        },
+        "relative": 0.08908345021460018
+      },
+      {
+        "updates": 10,
+        "predicted_normalized_E_train": 0.19979166984558105,
+        "mean_J_m2": 4.021877366781402e-05,
+        "delta_J_m2": {
+          "mean": 8.273911963334736e-06,
+          "ci95": [
+            4.18894659175127e-06,
+            1.184567694413237e-05
+          ]
+        },
+        "relative": 0.25900603483202983
+      },
+      {
+        "updates": 25,
+        "predicted_normalized_E_train": 0.14552775025367737,
+        "mean_J_m2": 4.2642392883304506e-05,
+        "delta_J_m2": {
+          "mean": 1.0697531178825217e-05,
+          "ci95": [
+            6.2634265720695874e-06,
+            1.4821963628405263e-05
+          ]
+        },
+        "relative": 0.3348748627490605
+      }
+    ],
+    "random": [
+      {
+        "updates": 1,
+        "predicted_normalized_E_train": 0.2810683250427246,
+        "mean_J_m2": 3.191510571933456e-05,
+        "delta_J_m2": {
+          "mean": -2.975598514471948e-08,
+          "ci95": [
+            -9.192738438133068e-08,
+            1.0457049843971123e-08
+          ]
+        },
+        "relative": -0.0009314795418427848
+      },
+      {
+        "updates": 2,
+        "predicted_normalized_E_train": 0.2810474932193756,
+        "mean_J_m2": 3.1936372617898316e-05,
+        "delta_J_m2": {
+          "mean": -8.489086580969572e-09,
+          "ci95": [
+            -3.133535516012397e-08,
+            1.4119615422120712e-08
+          ]
+        },
+        "relative": -0.00026574184792226664
+      },
+      {
+        "updates": 5,
+        "predicted_normalized_E_train": 0.28098583221435547,
+        "mean_J_m2": 3.192798531802812e-05,
+        "delta_J_m2": {
+          "mean": -1.6876386451161133e-08,
+          "ci95": [
+            -5.0380129269062964e-08,
+            1.5285914493803017e-08
+          ]
+        },
+        "relative": -0.0005282973708662117
+      },
+      {
+        "updates": 10,
+        "predicted_normalized_E_train": 0.2809111177921295,
+        "mean_J_m2": 3.191898988913714e-05,
+        "delta_J_m2": {
+          "mean": -2.5871815342140303e-08,
+          "ci95": [
+            -9.728640655885256e-08,
+            3.776147786730473e-08
+          ]
+        },
+        "relative": -0.0008098897275398935
+      },
+      {
+        "updates": 25,
+        "predicted_normalized_E_train": 0.28107890486717224,
+        "mean_J_m2": 3.1967519796309945e-05,
+        "delta_J_m2": {
+          "mean": 2.2658091830663972e-08,
+          "ci95": [
+            -3.8020663500105426e-08,
+            8.630606860891291e-08
+          ]
+        },
+        "relative": 0.0007092875229911192
+      }
+    ]
+  },
+  "gradient_check": {
+    "critic_term": 0.24798962473869324,
+    "policy_parameters": 8,
+    "parameters_with_gradient": 8,
+    "all_finite": true,
+    "total_grad_norm": 4.437084512586297,
+    "critic_parameters_require_grad": 0,
+    "pass": true
+  },
+  "gradient_minus_random": [
+    {
+      "updates": 1,
+      "gradient_minus_random_J_m2": {
+        "mean": 1.6736678727528789e-09,
+        "ci95": [
+          -7.410261698366114e-07,
+          6.33707909674104e-07
+        ]
+      }
+    },
+    {
+      "updates": 2,
+      "gradient_minus_random_J_m2": {
+        "mean": 3.977062435370606e-07,
+        "ci95": [
+          -9.797148847412408e-07,
+          1.5562224805567815e-06
+        ]
+      }
+    },
+    {
+      "updates": 5,
+      "gradient_minus_random_J_m2": {
+        "mean": 2.862634883714429e-06,
+        "ci95": [
+          2.39897093663497e-07,
+          5.141690775630232e-06
+        ]
+      }
+    },
+    {
+      "updates": 10,
+      "gradient_minus_random_J_m2": {
+        "mean": 8.299783778676877e-06,
+        "ci95": [
+          4.224033235619137e-06,
+          1.1854757136145845e-05
+        ]
+      }
+    },
+    {
+      "updates": 25,
+      "gradient_minus_random_J_m2": {
+        "mean": 1.0674873086994552e-05,
+        "ci95": [
+          6.221609064055817e-06,
+          1.4819493273209502e-05
+        ]
+      }
+    }
+  ],
+  "gate": {
+    "rule": "at some checkpoint <= 25 updates on the critic term alone, 95% CI of dJ below 0 and 95% CI of (gradient - random) below 0",
+    "pass": false,
+    "passing_checkpoints": []
+  },
+  "settings": {
+    "lr": 1e-05,
+    "batch_size": 256,
+    "critic": "error_round0_history.pt",
+    "val_episodes": 40
+  }
+}

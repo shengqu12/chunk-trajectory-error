@@ -1,0 +1,212 @@
+{
+  "baseline_mean_J_m2": 3.194486170447928e-05,
+  "anchors": 120,
+  "runs": {
+    "gradient": [
+      {
+        "updates": 10,
+        "predicted_normalized_E_train": 0.031280048191547394,
+        "mean_J_m2": 0.00036356557994349215,
+        "delta_J_m2": {
+          "mean": 0.0003316207182390129,
+          "ci95": [
+            0.00030271272998486526,
+            0.00036200327576772887
+          ]
+        },
+        "relative": 10.381034712462483
+      },
+      {
+        "updates": 25,
+        "predicted_normalized_E_train": 0.007308874279260635,
+        "mean_J_m2": 0.001175939457976639,
+        "delta_J_m2": {
+          "mean": 0.0011439945962721599,
+          "ci95": [
+            0.0010944295696918226,
+            0.0011951502310830258
+          ]
+        },
+        "relative": 35.81153698066409
+      },
+      {
+        "updates": 50,
+        "predicted_normalized_E_train": 0.002556114224717021,
+        "mean_J_m2": 0.0020256700493501627,
+        "delta_J_m2": {
+          "mean": 0.0019937251876456833,
+          "ci95": [
+            0.0019165031389927773,
+            0.002068599449319278
+          ]
+        },
+        "relative": 62.41145152198686
+      },
+      {
+        "updates": 100,
+        "predicted_normalized_E_train": 0.0011826687259599566,
+        "mean_J_m2": 0.0026444949953996415,
+        "delta_J_m2": {
+          "mean": 0.0026125501336951617,
+          "ci95": [
+            0.0025035287374745746,
+            0.002719655585418061
+          ]
+        },
+        "relative": 81.78310984294642
+      },
+      {
+        "updates": 200,
+        "predicted_normalized_E_train": 0.0004315330588724464,
+        "mean_J_m2": 0.004024885252131111,
+        "delta_J_m2": {
+          "mean": 0.003992940390426632,
+          "ci95": [
+            0.0038393867883516368,
+            0.004131903337570794
+          ]
+        },
+        "relative": 124.99476214250588
+      }
+    ],
+    "random": [
+      {
+        "updates": 10,
+        "predicted_normalized_E_train": 0.2786122262477875,
+        "mean_J_m2": 3.281453866417057e-05,
+        "delta_J_m2": {
+          "mean": 8.696769596912806e-07,
+          "ci95": [
+            -3.8157880819438546e-07,
+            2.2645806593223195e-06
+          ]
+        },
+        "relative": 0.027224314437064388
+      },
+      {
+        "updates": 25,
+        "predicted_normalized_E_train": 0.2852652966976166,
+        "mean_J_m2": 3.482108482103562e-05,
+        "delta_J_m2": {
+          "mean": 2.8762231165563364e-06,
+          "ci95": [
+            1.086208034148254e-06,
+            4.821624823092467e-06
+          ]
+        },
+        "relative": 0.09003711279654827
+      },
+      {
+        "updates": 50,
+        "predicted_normalized_E_train": 0.2992953658103943,
+        "mean_J_m2": 3.666726214446616e-05,
+        "delta_J_m2": {
+          "mean": 4.722400439986877e-06,
+          "ci95": [
+            2.3829386843734384e-06,
+            7.279650989271468e-06
+          ]
+        },
+        "relative": 0.1478297349875428
+      },
+      {
+        "updates": 100,
+        "predicted_normalized_E_train": 0.29655054211616516,
+        "mean_J_m2": 3.842013569681736e-05,
+        "delta_J_m2": {
+          "mean": 6.475273992338073e-06,
+          "ci95": [
+            3.881252353501843e-06,
+            9.07502012593673e-06
+          ]
+        },
+        "relative": 0.20270158162650978
+      },
+      {
+        "updates": 200,
+        "predicted_normalized_E_train": 0.28491732478141785,
+        "mean_J_m2": 4.413374107313576e-05,
+        "delta_J_m2": {
+          "mean": 1.218887936865648e-05,
+          "ci95": [
+            8.530196905225856e-06,
+            1.639462217631254e-05
+          ]
+        },
+        "relative": 0.3815599354104377
+      }
+    ]
+  },
+  "gradient_check": {
+    "critic_term": 0.24798962473869324,
+    "policy_parameters": 8,
+    "parameters_with_gradient": 8,
+    "all_finite": true,
+    "total_grad_norm": 4.437084512586297,
+    "critic_parameters_require_grad": 0,
+    "pass": true
+  },
+  "gradient_minus_random": [
+    {
+      "updates": 10,
+      "gradient_minus_random_J_m2": {
+        "mean": 0.0003307510412793216,
+        "ci95": [
+          0.00030171628736656424,
+          0.0003612574666909837
+        ]
+      }
+    },
+    {
+      "updates": 25,
+      "gradient_minus_random_J_m2": {
+        "mean": 0.0011411183731556036,
+        "ci95": [
+          0.0010918069010079055,
+          0.0011921116432388012
+        ]
+      }
+    },
+    {
+      "updates": 50,
+      "gradient_minus_random_J_m2": {
+        "mean": 0.0019890027872056966,
+        "ci95": [
+          0.0019122021834691704,
+          0.002063378267130992
+        ]
+      }
+    },
+    {
+      "updates": 100,
+      "gradient_minus_random_J_m2": {
+        "mean": 0.0026060748597028236,
+        "ci95": [
+          0.0024967714959087664,
+          0.0027137380709304692
+        ]
+      }
+    },
+    {
+      "updates": 200,
+      "gradient_minus_random_J_m2": {
+        "mean": 0.003980751511057976,
+        "ci95": [
+          0.003827026379069706,
+          0.004120009729595896
+        ]
+      }
+    }
+  ],
+  "gate": {
+    "rule": "at some checkpoint <= 100 updates on the critic term alone, 95% CI of dJ below 0 and 95% CI of (gradient - random) below 0",
+    "pass": false,
+    "passing_checkpoints": []
+  },
+  "settings": {
+    "lr": 0.0003,
+    "batch_size": 256,
+    "critic": "error_round0_history.pt",
+    "val_episodes": 40
+  }
+}

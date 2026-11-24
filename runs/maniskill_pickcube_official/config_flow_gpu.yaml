@@ -1,0 +1,100 @@
+experiment:
+  name: maniskill_pickcube_audit
+  seed: 17
+  output_dir: /home/sheng/Desktop/courses/10703_Deep_Reinforcement_Learning_and_control/10703-project/runs/maniskill_pickcube   # GPU workstation: Experiment 1 run with the official demonstrations
+
+environment:
+  backend: maniskill
+  task: PickCube-v1
+  sim_backend: physx_cpu
+  obs_mode: state
+  control_mode: pd_ee_delta_pos
+  max_episode_steps: 200
+
+models:
+  policy:
+    type: mlp_chunk
+    hidden_dims: [256, 256]
+  policy_flow:                 # second policy class for the policy-class check (02/06/07 --policy flow)
+    type: flow_chunk
+    hidden_dims: [512, 512, 512]   # velocity field; input = chunk (80) + obs (42) + time features (9).  3x256 at 60k steps gave val J 7.4 mm vs 4.2 mm here
+    time_frequencies: 4
+    sample_steps: 8              # Euler steps at sampling; gradients pass through every step
+  error_network:
+    type: history_conditioned_mlp
+    hidden_dim: 128
+
+data:
+  source: official_motionplanning
+  provenance_note: >-
+    Generated locally with ManiSkill's official motion-planning solution
+    (python -m mani_skill.examples.motionplanning.panda.run -e PickCube-v1 -n 600 --only-count-success; 600 successful episodes, one failed plan skipped),
+    because the Hugging Face download used by mani_skill.utils.download_demo was blocked on the audit host.
+    Swap in the downloaded official trajectory.h5/.json and rerun to audit the published file.
+  trajectory_path: /home/sheng/Desktop/courses/10703_Deep_Reinforcement_Learning_and_control/10703-project/data/raw/maniskill/trajectory.h5
+  replayed_trajectory_path: /home/sheng/Desktop/courses/10703_Deep_Reinforcement_Learning_and_control/10703-project/data/processed/maniskill/trajectory.state.pd_ee_delta_pos.physx_cpu.h5
+  split_manifest: /home/sheng/Desktop/courses/10703_Deep_Reinforcement_Learning_and_control/10703-project/data/processed/maniskill/splits.json
+  output_dir: /home/sheng/Desktop/courses/10703_Deep_Reinforcement_Learning_and_control/10703-project/data/processed/maniskill
+
+chunk:
+  horizon: 20
+  execute_steps: 5
+  history_steps: 15
+  evaluation_steps: 10
+  train_delay: 0
+  evaluation_delays: [0, 2, 4]
+
+audit:
+  replay_position_tolerance_m: 0.001
+  branch_repeat_tolerance_m: 0.000001
+  control_min_motion_m: 0.002
+  anchors_per_episode: 3
+  num_episodes: 600
+  render_video: true
+  split_ratio: [4, 1, 1]
+  video_fps: 10
+
+observation:
+  # PickCube-v1 state layout (42): qpos 9, qvel 9, is_grasped 1, tcp_pose 7, goal_pos 3,
+  # obj_pose 7, tcp_to_obj 3, obj_to_goal 3.  03 verifies tcp_position_slice against the simulator.
+  tcp_position_slice: [19, 22]
+  robot_state_slice: [0, 26]
+
+action:
+  gripper_dims: [3]
+
+bc:
+  steps: 20000
+  batch_size: 256
+  lr: 0.001
+  eval_every: 1000
+  flow:                        # overrides for 02 --policy flow: the velocity field needs a longer, decaying schedule
+    steps: 60000               # (20k constant-lr steps: val J 9.1 mm, sampled-chunk MSE 2.2x the MLP's)
+    lr_schedule: cosine
+
+branches:
+  anchors_per_episode: {train: 4, val: 3, test: 3}
+  policy_perturbed_per_anchor: 4
+  expert_perturbed_per_anchor: 2
+  perturbation_amplitude: [0.01, 0.2]
+
+error_training:
+  steps: 15000
+  batch_size: 256
+  lr: 0.001
+  eval_every: 1000
+
+gradient_audit:
+  step_sizes: [0.02, 0.05, 0.1, 0.2, 0.4]
+
+policy_finetune:
+  steps: 5000
+  batch_size: 256
+  lr: 0.0003
+  lambdas: [0.0, 0.001, 0.003, 0.01, 0.03, 0.1, 0.3, 1.0]
+  smooth_betas: [0.1, 0.3, 1.0]
+
+evaluation:
+  delays: [0, 2, 4]
+  fresh_seeds: {start: 100000, count: 50}
+  latency_repeats: 2000

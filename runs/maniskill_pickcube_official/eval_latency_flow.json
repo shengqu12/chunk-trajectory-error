@@ -1,0 +1,37 @@
+{
+  "pi0_flow": {
+    "device": "cpu (1 thread)",
+    "batch": 1,
+    "repeats": 2000,
+    "p50_ms": 0.5206974965403788,
+    "p95_ms": 0.5741954999393784
+  },
+  "bc_flow": {
+    "device": "cpu (1 thread)",
+    "batch": 1,
+    "repeats": 2000,
+    "p50_ms": 0.5136990075698122,
+    "p95_ms": 0.5645304554491304
+  },
+  "error_flow": {
+    "device": "cpu (1 thread)",
+    "batch": 1,
+    "repeats": 2000,
+    "p50_ms": 0.5143355010659434,
+    "p95_ms": 0.5797676043584943
+  },
+  "smooth_flow": {
+    "device": "cpu (1 thread)",
+    "batch": 1,
+    "repeats": 2000,
+    "p50_ms": 0.5084769945824519,
+    "p95_ms": 0.5953322419372853
+  },
+  "error_flow_w0.3": {
+    "device": "cpu (1 thread)",
+    "batch": 1,
+    "repeats": 2000,
+    "p50_ms": 0.519481000083033,
+    "p95_ms": 0.5429556098533794
+  }
+}

@@ -1,0 +1,631 @@
+{
+  "name": "error_flow",
+  "variant": "error",
+  "policy": "flow",
+  "round": 0,
+  "start_checkpoint": "/home/sheng/Desktop/courses/10703_Deep_Reinforcement_Learning_and_control/10703-project/runs/maniskill_pickcube/checkpoints/pi0_flow.pt",
+  "steps": 5000,
+  "lr": 0.0003,
+  "batch_size": 256,
+  "selection_rule": "minimum simulator-recomputed J of the policy chunk on val anchors",
+  "selected_weight": 0.01,
+  "selected_checkpoint": "/home/sheng/Desktop/courses/10703_Deep_Reinforcement_Learning_and_control/10703-project/runs/maniskill_pickcube/checkpoints/pi_error_flow/pi.pt",
+  "candidates": [
+    {
+      "weight": 0.001,
+      "val_flow_matching_loss": 0.0418086051940918,
+      "val_bc_loss": 0.012713189236819744,
+      "val_chunk_roughness": 0.0003303532430436462,
+      "log": [
+        {
+          "step": 1,
+          "imitation": 0.03257465735077858,
+          "auxiliary": 0.2714269757270813,
+          "grad_norm_imitation": 0.24100908637046814,
+          "grad_norm_weighted_auxiliary": 0.005809425842016935
+        },
+        {
+          "step": 500,
+          "imitation": 0.04271666333079338,
+          "auxiliary": 0.27884262800216675,
+          "grad_norm_imitation": 0.3402196168899536,
+          "grad_norm_weighted_auxiliary": 0.005681079346686602
+        },
+        {
+          "step": 1000,
+          "imitation": 0.04023713991045952,
+          "auxiliary": 0.2824227511882782,
+          "grad_norm_imitation": 0.31230857968330383,
+          "grad_norm_weighted_auxiliary": 0.005220870953053236
+        },
+        {
+          "step": 1500,
+          "imitation": 0.025212770327925682,
+          "auxiliary": 0.3033740520477295,
+          "grad_norm_imitation": 0.168193519115448,
+          "grad_norm_weighted_auxiliary": 0.005443094298243523
+        },
+        {
+          "step": 2000,
+          "imitation": 0.03257230296730995,
+          "auxiliary": 0.2633320093154907,
+          "grad_norm_imitation": 0.2720644176006317,
+          "grad_norm_weighted_auxiliary": 0.0038306834176182747
+        },
+        {
+          "step": 2500,
+          "imitation": 0.03591699153184891,
+          "auxiliary": 0.22587813436985016,
+          "grad_norm_imitation": 0.24790441989898682,
+          "grad_norm_weighted_auxiliary": 0.003443480469286442
+        },
+        {
+          "step": 3000,
+          "imitation": 0.03400101885199547,
+          "auxiliary": 0.21535836160182953,
+          "grad_norm_imitation": 0.2554459869861603,
+          "grad_norm_weighted_auxiliary": 0.0033428024034947157
+        },
+        {
+          "step": 3500,
+          "imitation": 0.038636304438114166,
+          "auxiliary": 0.20135736465454102,
+          "grad_norm_imitation": 0.25643980503082275,
+          "grad_norm_weighted_auxiliary": 0.003264159196987748
+        },
+        {
+          "step": 4000,
+          "imitation": 0.035445861518383026,
+          "auxiliary": 0.30371662974357605,
+          "grad_norm_imitation": 0.2822210192680359,
+          "grad_norm_weighted_auxiliary": 0.006312658544629812
+        },
+        {
+          "step": 4500,
+          "imitation": 0.030529672279953957,
+          "auxiliary": 0.2435438483953476,
+          "grad_norm_imitation": 0.23513035476207733,
+          "grad_norm_weighted_auxiliary": 0.0037558635231107473
+        },
+        {
+          "step": 5000,
+          "imitation": 0.050495535135269165,
+          "auxiliary": 0.20253004133701324,
+          "grad_norm_imitation": 0.34814512729644775,
+          "grad_norm_weighted_auxiliary": 0.0029998929239809513
+        }
+      ],
+      "val_true_J_m2_mean": 4.108192968610493e-05,
+      "val_true_sqrtJ_mm_mean": 4.946573455131228,
+      "checkpoint": "/home/sheng/Desktop/courses/10703_Deep_Reinforcement_Learning_and_control/10703-project/runs/maniskill_pickcube/checkpoints/pi_error_flow/w0.001.pt"
+    },
+    {
+      "weight": 0.003,
+      "val_flow_matching_loss": 0.041835617274045944,
+      "val_bc_loss": 0.012711349874734879,
+      "val_chunk_roughness": 0.00033295771572738886,
+      "log": [
+        {
+          "step": 1,
+          "imitation": 0.03257465735077858,
+          "auxiliary": 0.2714269757270813,
+          "grad_norm_imitation": 0.24100908637046814,
+          "grad_norm_weighted_auxiliary": 0.01742827519774437
+        },
+        {
+          "step": 500,
+          "imitation": 0.0427577830851078,
+          "auxiliary": 0.22682414948940277,
+          "grad_norm_imitation": 0.34004834294319153,
+          "grad_norm_weighted_auxiliary": 0.012160604819655418
+        },
+        {
+          "step": 1000,
+          "imitation": 0.040319811552762985,
+          "auxiliary": 0.23008853197097778,
+          "grad_norm_imitation": 0.31243929266929626,
+          "grad_norm_weighted_auxiliary": 0.0112935621291399
+        },
+        {
+          "step": 1500,
+          "imitation": 0.02533586323261261,
+          "auxiliary": 0.24340876936912537,
+          "grad_norm_imitation": 0.16838419437408447,
+          "grad_norm_weighted_auxiliary": 0.01089294534176588
+        },
+        {
+          "step": 2000,
+          "imitation": 0.032562077045440674,
+          "auxiliary": 0.22077278792858124,
+          "grad_norm_imitation": 0.2713639736175537,
+          "grad_norm_weighted_auxiliary": 0.008450396358966827
+        },
+        {
+          "step": 2500,
+          "imitation": 0.03596274182200432,
+          "auxiliary": 0.192701518535614,
+          "grad_norm_imitation": 0.24744868278503418,
+          "grad_norm_weighted_auxiliary": 0.007233711890876293
+        },
+        {
+          "step": 3000,
+          "imitation": 0.03404132276773453,
+          "auxiliary": 0.18160280585289001,
+          "grad_norm_imitation": 0.25528135895729065,
+          "grad_norm_weighted_auxiliary": 0.007968232966959476
+        },
+        {
+          "step": 3500,
+          "imitation": 0.03869394585490227,
+          "auxiliary": 0.17316479980945587,
+          "grad_norm_imitation": 0.2562423348426819,
+          "grad_norm_weighted_auxiliary": 0.007239161990582943
+        },
+        {
+          "step": 4000,
+          "imitation": 0.035558927804231644,
+          "auxiliary": 0.24123407900333405,
+          "grad_norm_imitation": 0.28232815861701965,
+          "grad_norm_weighted_auxiliary": 0.014328393153846264
+        },
+        {
+          "step": 4500,
+          "imitation": 0.030604928731918335,
+          "auxiliary": 0.20092347264289856,
+          "grad_norm_imitation": 0.23582163453102112,
+          "grad_norm_weighted_auxiliary": 0.008000262081623077
+        },
+        {
+          "step": 5000,
+          "imitation": 0.05050859972834587,
+          "auxiliary": 0.1738518476486206,
+          "grad_norm_imitation": 0.3482065796852112,
+          "grad_norm_weighted_auxiliary": 0.0066305180080235004
+        }
+      ],
+      "val_true_J_m2_mean": 3.926958519572584e-05,
+      "val_true_sqrtJ_mm_mean": 4.884446460821371,
+      "checkpoint": "/home/sheng/Desktop/courses/10703_Deep_Reinforcement_Learning_and_control/10703-project/runs/maniskill_pickcube/checkpoints/pi_error_flow/w0.003.pt"
+    },
+    {
+      "weight": 0.01,
+      "val_flow_matching_loss": 0.04200490191578865,
+      "val_bc_loss": 0.012722911313176155,
+      "val_chunk_roughness": 0.0003741272375918925,
+      "log": [
+        {
+          "step": 1,
+          "imitation": 0.03257465735077858,
+          "auxiliary": 0.2714269757270813,
+          "grad_norm_imitation": 0.24100908637046814,
+          "grad_norm_weighted_auxiliary": 0.05809425190091133
+        },
+        {
+          "step": 500,
+          "imitation": 0.042967043817043304,
+          "auxiliary": 0.1728367805480957,
+          "grad_norm_imitation": 0.3404662311077118,
+          "grad_norm_weighted_auxiliary": 0.027646739035844803
+        },
+        {
+          "step": 1000,
+          "imitation": 0.040601350367069244,
+          "auxiliary": 0.17070184648036957,
+          "grad_norm_imitation": 0.313398152589798,
+          "grad_norm_weighted_auxiliary": 0.0226467065513134
+        },
+        {
+          "step": 1500,
+          "imitation": 0.025695670396089554,
+          "auxiliary": 0.18473663926124573,
+          "grad_norm_imitation": 0.168927863240242,
+          "grad_norm_weighted_auxiliary": 0.02543734200298786
+        },
+        {
+          "step": 2000,
+          "imitation": 0.03279285877943039,
+          "auxiliary": 0.1738210767507553,
+          "grad_norm_imitation": 0.272488534450531,
+          "grad_norm_weighted_auxiliary": 0.02446802146732807
+        },
+        {
+          "step": 2500,
+          "imitation": 0.03628268465399742,
+          "auxiliary": 0.15592503547668457,
+          "grad_norm_imitation": 0.24925780296325684,
+          "grad_norm_weighted_auxiliary": 0.016164133325219154
+        },
+        {
+          "step": 3000,
+          "imitation": 0.03426742926239967,
+          "auxiliary": 0.1427648365497589,
+          "grad_norm_imitation": 0.255972295999527,
+          "grad_norm_weighted_auxiliary": 0.01949979178607464
+        },
+        {
+          "step": 3500,
+          "imitation": 0.03884823992848396,
+          "auxiliary": 0.13917003571987152,
+          "grad_norm_imitation": 0.25519371032714844,
+          "grad_norm_weighted_auxiliary": 0.018203627318143845
+        },
+        {
+          "step": 4000,
+          "imitation": 0.03591630607843399,
+          "auxiliary": 0.1711028516292572,
+          "grad_norm_imitation": 0.28348079323768616,
+          "grad_norm_weighted_auxiliary": 0.029788527637720108
+        },
+        {
+          "step": 4500,
+          "imitation": 0.030882978811860085,
+          "auxiliary": 0.15359847247600555,
+          "grad_norm_imitation": 0.2374861091375351,
+          "grad_norm_weighted_auxiliary": 0.018613936379551888
+        },
+        {
+          "step": 5000,
+          "imitation": 0.05062158778309822,
+          "auxiliary": 0.13928885757923126,
+          "grad_norm_imitation": 0.348385751247406,
+          "grad_norm_weighted_auxiliary": 0.015208601951599121
+        }
+      ],
+      "val_true_J_m2_mean": 3.722696512723092e-05,
+      "val_true_sqrtJ_mm_mean": 4.734868851475767,
+      "checkpoint": "/home/sheng/Desktop/courses/10703_Deep_Reinforcement_Learning_and_control/10703-project/runs/maniskill_pickcube/checkpoints/pi_error_flow/w0.01.pt"
+    },
+    {
+      "weight": 0.03,
+      "val_flow_matching_loss": 0.04255155101418495,
+      "val_bc_loss": 0.012816830538213253,
+      "val_chunk_roughness": 0.0006165324593894184,
+      "log": [
+        {
+          "step": 1,
+          "imitation": 0.03257465735077858,
+          "auxiliary": 0.2714269757270813,
+          "grad_norm_imitation": 0.24100908637046814,
+          "grad_norm_weighted_auxiliary": 0.1742827445268631
+        },
+        {
+          "step": 500,
+          "imitation": 0.04371083527803421,
+          "auxiliary": 0.1264059841632843,
+          "grad_norm_imitation": 0.3432641923427582,
+          "grad_norm_weighted_auxiliary": 0.05576452240347862
+        },
+        {
+          "step": 1000,
+          "imitation": 0.04149957746267319,
+          "auxiliary": 0.1223810538649559,
+          "grad_norm_imitation": 0.3173828125,
+          "grad_norm_weighted_auxiliary": 0.04259224981069565
+        },
+        {
+          "step": 1500,
+          "imitation": 0.026504242792725563,
+          "auxiliary": 0.1303626000881195,
+          "grad_norm_imitation": 0.17123639583587646,
+          "grad_norm_weighted_auxiliary": 0.04121288284659386
+        },
+        {
+          "step": 2000,
+          "imitation": 0.0333326980471611,
+          "auxiliary": 0.12427985668182373,
+          "grad_norm_imitation": 0.27509650588035583,
+          "grad_norm_weighted_auxiliary": 0.05531736835837364
+        },
+        {
+          "step": 2500,
+          "imitation": 0.03721768409013748,
+          "auxiliary": 0.12032976001501083,
+          "grad_norm_imitation": 0.25456926226615906,
+          "grad_norm_weighted_auxiliary": 0.04761631786823273
+        },
+        {
+          "step": 3000,
+          "imitation": 0.0350094810128212,
+          "auxiliary": 0.10313844680786133,
+          "grad_norm_imitation": 0.25881463289260864,
+          "grad_norm_weighted_auxiliary": 0.03299050033092499
+        },
+        {
+          "step": 3500,
+          "imitation": 0.03955889865756035,
+          "auxiliary": 0.10153339058160782,
+          "grad_norm_imitation": 0.2566271722316742,
+          "grad_norm_weighted_auxiliary": 0.037162795662879944
+        },
+        {
+          "step": 4000,
+          "imitation": 0.03680487722158432,
+          "auxiliary": 0.11505616456270218,
+          "grad_norm_imitation": 0.2856314778327942,
+          "grad_norm_weighted_auxiliary": 0.057530727237463
+        },
+        {
+          "step": 4500,
+          "imitation": 0.03153061121702194,
+          "auxiliary": 0.1069551482796669,
+          "grad_norm_imitation": 0.239606574177742,
+          "grad_norm_weighted_auxiliary": 0.03842928633093834
+        },
+        {
+          "step": 5000,
+          "imitation": 0.05107055976986885,
+          "auxiliary": 0.10460402816534042,
+          "grad_norm_imitation": 0.34886428713798523,
+          "grad_norm_weighted_auxiliary": 0.03672507777810097
+        }
+      ],
+      "val_true_J_m2_mean": 3.9092937836250686e-05,
+      "val_true_sqrtJ_mm_mean": 4.832929873219303,
+      "checkpoint": "/home/sheng/Desktop/courses/10703_Deep_Reinforcement_Learning_and_control/10703-project/runs/maniskill_pickcube/checkpoints/pi_error_flow/w0.03.pt"
+    },
+    {
+      "weight": 0.1,
+      "val_flow_matching_loss": 0.04452388733625412,
+      "val_bc_loss": 0.01331308577209711,
+      "val_chunk_roughness": 0.0018414165824651718,
+      "log": [
+        {
+          "step": 1,
+          "imitation": 0.03257465735077858,
+          "auxiliary": 0.2714269757270813,
+          "grad_norm_imitation": 0.24100908637046814,
+          "grad_norm_weighted_auxiliary": 0.5809425711631775
+        },
+        {
+          "step": 500,
+          "imitation": 0.0462721511721611,
+          "auxiliary": 0.07723446190357208,
+          "grad_norm_imitation": 0.354313462972641,
+          "grad_norm_weighted_auxiliary": 0.1033688560128212
+        },
+        {
+          "step": 1000,
+          "imitation": 0.044139184057712555,
+          "auxiliary": 0.07545363903045654,
+          "grad_norm_imitation": 0.3278191387653351,
+          "grad_norm_weighted_auxiliary": 0.09579115360975266
+        },
+        {
+          "step": 1500,
+          "imitation": 0.02953246235847473,
+          "auxiliary": 0.0778285339474678,
+          "grad_norm_imitation": 0.18793807923793793,
+          "grad_norm_weighted_auxiliary": 0.08509306609630585
+        },
+        {
+          "step": 2000,
+          "imitation": 0.03493114188313484,
+          "auxiliary": 0.07500194013118744,
+          "grad_norm_imitation": 0.28093940019607544,
+          "grad_norm_weighted_auxiliary": 0.15295220911502838
+        },
+        {
+          "step": 2500,
+          "imitation": 0.04026377946138382,
+          "auxiliary": 0.07435929030179977,
+          "grad_norm_imitation": 0.2687841057777405,
+          "grad_norm_weighted_auxiliary": 0.14069564640522003
+        },
+        {
+          "step": 3000,
+          "imitation": 0.03766833245754242,
+          "auxiliary": 0.06133624166250229,
+          "grad_norm_imitation": 0.26702985167503357,
+          "grad_norm_weighted_auxiliary": 0.06896117329597473
+        },
+        {
+          "step": 3500,
+          "imitation": 0.0421772375702858,
+          "auxiliary": 0.05626341328024864,
+          "grad_norm_imitation": 0.2664221525192261,
+          "grad_norm_weighted_auxiliary": 0.058494094759225845
+        },
+        {
+          "step": 4000,
+          "imitation": 0.03962009772658348,
+          "auxiliary": 0.06180918589234352,
+          "grad_norm_imitation": 0.29741689562797546,
+          "grad_norm_weighted_auxiliary": 0.08704123646020889
+        },
+        {
+          "step": 4500,
+          "imitation": 0.03379056602716446,
+          "auxiliary": 0.05879755690693855,
+          "grad_norm_imitation": 0.24894239008426666,
+          "grad_norm_weighted_auxiliary": 0.06029217317700386
+        },
+        {
+          "step": 5000,
+          "imitation": 0.053230129182338715,
+          "auxiliary": 0.06197125092148781,
+          "grad_norm_imitation": 0.3590199053287506,
+          "grad_norm_weighted_auxiliary": 0.06098959594964981
+        }
+      ],
+      "val_true_J_m2_mean": 5.649640549478748e-05,
+      "val_true_sqrtJ_mm_mean": 6.263667940733197,
+      "checkpoint": "/home/sheng/Desktop/courses/10703_Deep_Reinforcement_Learning_and_control/10703-project/runs/maniskill_pickcube/checkpoints/pi_error_flow/w0.1.pt"
+    },
+    {
+      "weight": 0.3,
+      "val_flow_matching_loss": 0.049231987446546555,
+      "val_bc_loss": 0.043896425515413284,
+      "val_chunk_roughness": 0.07506141811609268,
+      "log": [
+        {
+          "step": 1,
+          "imitation": 0.03257465735077858,
+          "auxiliary": 0.2714269757270813,
+          "grad_norm_imitation": 0.24100908637046814,
+          "grad_norm_weighted_auxiliary": 1.7428275346755981
+        },
+        {
+          "step": 500,
+          "imitation": 0.051548976451158524,
+          "auxiliary": 0.046163275837898254,
+          "grad_norm_imitation": 0.37138631939888,
+          "grad_norm_weighted_auxiliary": 0.2174365222454071
+        },
+        {
+          "step": 1000,
+          "imitation": 0.049203045666217804,
+          "auxiliary": 0.04185592383146286,
+          "grad_norm_imitation": 0.34207162261009216,
+          "grad_norm_weighted_auxiliary": 0.1526295244693756
+        },
+        {
+          "step": 1500,
+          "imitation": 0.03604879230260849,
+          "auxiliary": 0.0384049117565155,
+          "grad_norm_imitation": 0.22619862854480743,
+          "grad_norm_weighted_auxiliary": 0.1502862423658371
+        },
+        {
+          "step": 2000,
+          "imitation": 0.03935413435101509,
+          "auxiliary": 0.03128258138895035,
+          "grad_norm_imitation": 0.2874072194099426,
+          "grad_norm_weighted_auxiliary": 0.19378319382667542
+        },
+        {
+          "step": 2500,
+          "imitation": 0.046352677047252655,
+          "auxiliary": 0.03076326660811901,
+          "grad_norm_imitation": 0.2990628182888031,
+          "grad_norm_weighted_auxiliary": 0.14919637143611908
+        },
+        {
+          "step": 3000,
+          "imitation": 0.04458201304078102,
+          "auxiliary": 0.021667825058102608,
+          "grad_norm_imitation": 0.3041626513004303,
+          "grad_norm_weighted_auxiliary": 0.09421712905168533
+        },
+        {
+          "step": 3500,
+          "imitation": 0.04795108363032341,
+          "auxiliary": 0.01369218435138464,
+          "grad_norm_imitation": 0.274555504322052,
+          "grad_norm_weighted_auxiliary": 0.07879559695720673
+        },
+        {
+          "step": 4000,
+          "imitation": 0.04510172829031944,
+          "auxiliary": 0.012156556360423565,
+          "grad_norm_imitation": 0.32596632838249207,
+          "grad_norm_weighted_auxiliary": 0.08742748945951462
+        },
+        {
+          "step": 4500,
+          "imitation": 0.03752980753779411,
+          "auxiliary": 0.00843016617000103,
+          "grad_norm_imitation": 0.25765132904052734,
+          "grad_norm_weighted_auxiliary": 0.07213002443313599
+        },
+        {
+          "step": 5000,
+          "imitation": 0.057876963168382645,
+          "auxiliary": 0.007673903834074736,
+          "grad_norm_imitation": 0.3697548508644104,
+          "grad_norm_weighted_auxiliary": 0.07183725386857986
+        }
+      ],
+      "val_true_J_m2_mean": 0.00160615854806969,
+      "val_true_sqrtJ_mm_mean": 34.728220045855124,
+      "checkpoint": "/home/sheng/Desktop/courses/10703_Deep_Reinforcement_Learning_and_control/10703-project/runs/maniskill_pickcube/checkpoints/pi_error_flow/w0.3.pt"
+    },
+    {
+      "weight": 1.0,
+      "val_flow_matching_loss": 0.05210484191775322,
+      "val_bc_loss": 0.12199211120605469,
+      "val_chunk_roughness": 0.22556909918785095,
+      "log": [
+        {
+          "step": 1,
+          "imitation": 0.03257465735077858,
+          "auxiliary": 0.2714269757270813,
+          "grad_norm_imitation": 0.24100908637046814,
+          "grad_norm_weighted_auxiliary": 5.8094258308410645
+        },
+        {
+          "step": 500,
+          "imitation": 0.06336812674999237,
+          "auxiliary": 0.020004859194159508,
+          "grad_norm_imitation": 0.38855060935020447,
+          "grad_norm_weighted_auxiliary": 0.40091708302497864
+        },
+        {
+          "step": 1000,
+          "imitation": 0.06109454110264778,
+          "auxiliary": 0.010458486154675484,
+          "grad_norm_imitation": 0.36445358395576477,
+          "grad_norm_weighted_auxiliary": 0.18814489245414734
+        },
+        {
+          "step": 1500,
+          "imitation": 0.04541249945759773,
+          "auxiliary": 0.00554825970903039,
+          "grad_norm_imitation": 0.292052686214447,
+          "grad_norm_weighted_auxiliary": 0.1545606404542923
+        },
+        {
+          "step": 2000,
+          "imitation": 0.04782230406999588,
+          "auxiliary": 0.004320545122027397,
+          "grad_norm_imitation": 0.331382691860199,
+          "grad_norm_weighted_auxiliary": 0.1324135810136795
+        },
+        {
+          "step": 2500,
+          "imitation": 0.05058428645133972,
+          "auxiliary": 0.0036453951615840197,
+          "grad_norm_imitation": 0.2927752137184143,
+          "grad_norm_weighted_auxiliary": 0.1582837998867035
+        },
+        {
+          "step": 3000,
+          "imitation": 0.04455024003982544,
+          "auxiliary": 0.0019927984103560448,
+          "grad_norm_imitation": 0.28619712591171265,
+          "grad_norm_weighted_auxiliary": 0.135422483086586
+        },
+        {
+          "step": 3500,
+          "imitation": 0.04934525489807129,
+          "auxiliary": 0.0014828741550445557,
+          "grad_norm_imitation": 0.2846290171146393,
+          "grad_norm_weighted_auxiliary": 0.09576507657766342
+        },
+        {
+          "step": 4000,
+          "imitation": 0.04302790015935898,
+          "auxiliary": 0.0016250417102128267,
+          "grad_norm_imitation": 0.31134819984436035,
+          "grad_norm_weighted_auxiliary": 0.10099417716264725
+        },
+        {
+          "step": 4500,
+          "imitation": 0.03738299757242203,
+          "auxiliary": 0.000757434987463057,
+          "grad_norm_imitation": 0.2561042010784149,
+          "grad_norm_weighted_auxiliary": 0.05261952802538872
+        },
+        {
+          "step": 5000,
+          "imitation": 0.05979897826910019,
+          "auxiliary": 0.0006358126411214471,
+          "grad_norm_imitation": 0.38427114486694336,
+          "grad_norm_weighted_auxiliary": 0.04796160012483597
+        }
+      ],
+      "val_true_J_m2_mean": 0.007929277590399764,
+      "val_true_sqrtJ_mm_mean": 84.04495151265941,
+      "checkpoint": "/home/sheng/Desktop/courses/10703_Deep_Reinforcement_Learning_and_control/10703-project/runs/maniskill_pickcube/checkpoints/pi_error_flow/w1.pt"
+    }
+  ]
+}

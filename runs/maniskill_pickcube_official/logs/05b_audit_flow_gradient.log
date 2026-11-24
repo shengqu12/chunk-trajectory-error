@@ -1,0 +1,12 @@
+gradient check: {'critic_term': 0.24798962473869324, 'policy_parameters': 8, 'parameters_with_gradient': 8, 'all_finite': True, 'total_grad_norm': 4.437084512586297, 'critic_parameters_require_grad': 0, 'pass': True}
+gradient   10 updates: predicted E 0.0313  mean J 3.636e-04  dJ +3.316e-04 [+3.03e-04, +3.62e-04]
+gradient   25 updates: predicted E 0.0073  mean J 1.176e-03  dJ +1.144e-03 [+1.09e-03, +1.20e-03]
+gradient   50 updates: predicted E 0.0026  mean J 2.026e-03  dJ +1.994e-03 [+1.92e-03, +2.07e-03]
+gradient  100 updates: predicted E 0.0012  mean J 2.644e-03  dJ +2.613e-03 [+2.50e-03, +2.72e-03]
+gradient  200 updates: predicted E 0.0004  mean J 4.025e-03  dJ +3.993e-03 [+3.84e-03, +4.13e-03]
+random   10 updates: predicted E 0.2786  mean J 3.281e-05  dJ +8.697e-07 [-3.82e-07, +2.26e-06]
+random   25 updates: predicted E 0.2853  mean J 3.482e-05  dJ +2.876e-06 [+1.09e-06, +4.82e-06]
+random   50 updates: predicted E 0.2993  mean J 3.667e-05  dJ +4.722e-06 [+2.38e-06, +7.28e-06]
+random  100 updates: predicted E 0.2966  mean J 3.842e-05  dJ +6.475e-06 [+3.88e-06, +9.08e-06]
+random  200 updates: predicted E 0.2849  mean J 4.413e-05  dJ +1.219e-05 [+8.53e-06, +1.64e-05]
+gate: {'rule': 'at some checkpoint <= 100 updates on the critic term alone, 95% CI of dJ below 0 and 95% CI of (gradient - random) below 0', 'pass': False, 'passing_checkpoints': []}

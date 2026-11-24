@@ -1,0 +1,23 @@
+{
+  "select_best8_flow": {
+    "device": "cpu (1 thread)",
+    "batch": 1,
+    "repeats": 2000,
+    "p50_ms": 1.4805500104557723,
+    "p95_ms": 1.7262851513805797
+  },
+  "select_worst8_flow": {
+    "device": "cpu (1 thread)",
+    "batch": 1,
+    "repeats": 2000,
+    "p50_ms": 1.4741900013177656,
+    "p95_ms": 1.5746439908980392
+  },
+  "select_best32_flow": {
+    "device": "cpu (1 thread)",
+    "batch": 1,
+    "repeats": 2000,
+    "p50_ms": 3.2130154941114597,
+    "p95_ms": 3.465730950119905
+  }
+}
