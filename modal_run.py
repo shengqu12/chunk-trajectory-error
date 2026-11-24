@@ -34,7 +34,13 @@ DATA, RUNS = "/vol/data", "/vol/runs"
 # image), without mplib (only needed to generate demonstrations; it is also what forced
 # numpy < 2) and with opencv-python pinned to a release that accepts numpy 1.26 (5.0 requires
 # numpy >= 2 and pip refuses the pair; cv2 is unused by the pipeline).
-_lock = (REPO / "envs/maniskill/requirements.lock.linux-py310.txt").read_text().splitlines()
+# This module is imported both on the laptop (to define the image) and inside the container
+# (to run the functions), where the repository is mounted at REMOTE_REPO, so look in both places.
+_lock_path = next(
+    p for p in (REPO / "envs/maniskill/requirements.lock.linux-py310.txt", Path(REMOTE_REPO, "envs/maniskill/requirements.lock.linux-py310.txt"))
+    if p.is_file()
+)
+_lock = _lock_path.read_text().splitlines()
 _drop = ("torch", "nvidia-", "triton", "mplib", "cuda-", "opencv-python")
 _cpu_lock = [
     line for line in _lock
