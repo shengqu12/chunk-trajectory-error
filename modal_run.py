@@ -7,8 +7,8 @@ directory per seed).
 
     pip install modal && modal setup                     # once, on your machine
     modal run modal_run.py --prepare                     # download + replay the official demos (once)
-    modal run modal_run.py --seeds 17 --smoke            # 10-minute check that the image and the sim work
-    modal run modal_run.py --seeds 17,18,19,20,21        # full pipeline, five seeds in parallel (~4 h wall)
+    modal run modal_run.py --seeds 17 --smoke --wait     # 20-minute check that the image and the sim work
+    modal run --detach modal_run.py --seeds 17,18,19,20,21   # full pipeline, five seeds in parallel (~4 h), survives disconnects
     modal volume get cte-runs maniskill_pickcube_seed17/results.md .   # fetch outputs
 
 Seed 17 reproduces the container run's configuration; the other seeds change the policy,
@@ -154,7 +154,9 @@ def seed_config(seed: int, smoke: bool) -> Path:
 
 @app.function(image=image, cpu=4, memory=16384, timeout=10 * 3600, volumes=VOLUMES)
 def run_seed(seed: int, smoke: bool = False) -> str:
-    """The whole pipeline for one seed: Experiment 1 (MLP), 1b (flow policy) and 1c (selector)."""
+    """The whole pipeline for one seed: Experiment 1 (MLP), 1b (flow policy) and 1c (selector).
+    Resumable: a stage whose outputs already exist in the run directory is skipped, so a
+    cancelled or timed-out run continues where it stopped instead of starting over."""
     import yaml
 
     config_path = seed_config(seed, smoke)
@@ -163,41 +165,61 @@ def run_seed(seed: int, smoke: bool = False) -> str:
     log = run_dir / "logs" / "modal_run.log"
     py, C = sys.executable, str(config_path)
     inits = ["--max-inits", "2"] if smoke else []
+    ck = run_dir / "checkpoints"
+    # (command, files that prove the stage finished)
     stages = [
-        [py, "scripts/00_audit_setup.py", "--config", C],
-        [py, "scripts/01_replay_expert.py", "--config", C, "--split", "train", "--max-anchors", "5" if smoke else "60", "--no-video"],
-        [py, "scripts/02_prepare_policy.py", "--config", C] + (["--baseline-episodes", "2"] if smoke else []),
-        [py, "scripts/03_collect_branches.py", "--config", C, "--split", "train", "--sample"],
-        *[[py, "scripts/03_collect_branches.py", "--config", C, "--split", s] for s in ("train", "val", "test")],
-        [py, "scripts/04_train_error.py", "--config", C],
-        [py, "scripts/04_train_error.py", "--config", C, "--no-history"],
-        [py, "scripts/05_audit_gradient.py", "--config", C] + (["--val-episodes", "3"] if smoke else []),
-        *[[py, "scripts/06_train_policy.py", "--config", C, "--variant", v] for v in ("bc", "error", "nohist", "smooth")],
-        [py, "scripts/07_eval_closed_loop.py", "--config", C, "--tag", "main"] + inits,
+        ([py, "scripts/00_audit_setup.py", "--config", C], [run_dir / "manifest.json"]),
+        ([py, "scripts/01_replay_expert.py", "--config", C, "--split", "train", "--max-anchors", "5" if smoke else "60", "--no-video"],
+         [run_dir / "replay_audit_summary.json"]),
+        ([py, "scripts/02_prepare_policy.py", "--config", C] + (["--baseline-episodes", "2"] if smoke else []),
+         [ck / "pi0.pt", run_dir / "pi0_baseline.json"]),
+        ([py, "scripts/03_collect_branches.py", "--config", C, "--split", "train", "--sample"], [run_dir / "branches_sample.json"]),
+        *[([py, "scripts/03_collect_branches.py", "--config", C, "--split", sp], [run_dir / f"branches_{sp}.h5", run_dir / f"branch_stats_{sp}.json"])
+          for sp in ("train", "val", "test")],
+        ([py, "scripts/04_train_error.py", "--config", C], [ck / "error_round0_history.pt", run_dir / "error_report_history.json"]),
+        ([py, "scripts/04_train_error.py", "--config", C, "--no-history"], [ck / "error_round0_nohist.pt", run_dir / "error_report_nohist.json"]),
+        ([py, "scripts/05_audit_gradient.py", "--config", C] + (["--val-episodes", "3"] if smoke else []), [run_dir / "gradient_audit_summary.json"]),
+        *[([py, "scripts/06_train_policy.py", "--config", C, "--variant", v], [ck / f"pi_{v}" / "pi.pt", run_dir / f"policy_training_{v}.json"])
+          for v in ("bc", "error", "nohist", "smooth")],
+        ([py, "scripts/07_eval_closed_loop.py", "--config", C, "--tag", "main"] + inits, [run_dir / "eval_latency_main.json"]),
         # Experiment 1b: flow-matching policy class
-        [py, "scripts/02_prepare_policy.py", "--config", C, "--policy", "flow"] + (["--baseline-episodes", "2"] if smoke else []),
-        [py, "scripts/05b_audit_flow_gradient.py", "--config", C] + (["--checkpoints", "2,4", "--val-episodes", "3"] if smoke else []),
-        [py, "scripts/05b_audit_flow_gradient.py", "--config", C, "--lr", "0.00001", "--checkpoints", "1,2,5,10,25", "--gate-steps", "25", "--tag", "lr1e-5"]
-        + (["--val-episodes", "3"] if smoke else []),
-        *[[py, "scripts/06_train_policy.py", "--config", C, "--policy", "flow", "--variant", v] for v in ("bc", "error", "smooth")],
-        [py, "scripts/07_eval_closed_loop.py", "--config", C, "--policies", "pi0_flow,bc_flow,error_flow,smooth_flow,error_flow_w0.3", "--tag", "flow"] + inits,
+        ([py, "scripts/02_prepare_policy.py", "--config", C, "--policy", "flow"] + (["--baseline-episodes", "2"] if smoke else []),
+         [ck / "pi0_flow.pt", run_dir / "pi0_flow_baseline.json"]),
+        ([py, "scripts/05b_audit_flow_gradient.py", "--config", C] + (["--checkpoints", "2,4", "--val-episodes", "3"] if smoke else []),
+         [run_dir / "flow_gradient_audit.json"]),
+        ([py, "scripts/05b_audit_flow_gradient.py", "--config", C, "--lr", "0.00001", "--checkpoints", "1,2,5,10,25", "--gate-steps", "25", "--tag", "lr1e-5"]
+         + (["--val-episodes", "3"] if smoke else []), [run_dir / "flow_gradient_audit_lr1e-5.json"]),
+        *[([py, "scripts/06_train_policy.py", "--config", C, "--policy", "flow", "--variant", v], [ck / f"pi_{v}_flow" / "pi.pt", run_dir / f"policy_training_{v}_flow.json"])
+          for v in ("bc", "error", "smooth")],
+        ([py, "scripts/07_eval_closed_loop.py", "--config", C, "--policies", "pi0_flow,bc_flow,error_flow,smooth_flow,error_flow_w0.3", "--tag", "flow"] + inits,
+         [run_dir / "eval_latency_flow.json"]),
         # Experiment 1c: critic as a selector
-        [py, "scripts/09_audit_selection.py", "--config", C, "--samples", "8"] + (["--episodes", "3"] if smoke else []),
-        [py, "scripts/07_eval_closed_loop.py", "--config", C, "--policies", "select_best8_flow,select_worst8_flow,select_best32_flow", "--tag", "sel"] + inits,
-        [py, "scripts/08_report.py", "--config", C],
+        ([py, "scripts/09_audit_selection.py", "--config", C, "--samples", "8"] + (["--episodes", "3"] if smoke else []), [run_dir / "selection_audit.json"]),
+        ([py, "scripts/07_eval_closed_loop.py", "--config", C, "--policies", "select_best8_flow,select_worst8_flow,select_best32_flow", "--tag", "sel"] + inits,
+         [run_dir / "eval_latency_sel.json"]),
+        ([py, "scripts/08_report.py", "--config", C], []),  # always regenerated
     ]
-    started = time.time()
-    for stage in stages:
-        sh(stage, log)
+    started, ran, skipped = time.time(), 0, 0
+    for command, outputs in stages:
+        if outputs and all(path.is_file() for path in outputs):
+            print("= skipping finished stage:", " ".join(command[1:3]), *command[3:], flush=True)
+            skipped += 1
+            continue
+        sh(command, log)
+        ran += 1
         runs_volume.commit()
         data_volume.commit()  # the first seed writes the locked split
-    return f"seed {seed}{' (smoke)' if smoke else ''}: {len(stages)} stages in {(time.time() - started) / 3600:.2f} h -> {run_dir}"
+    return (f"seed {seed}{' (smoke)' if smoke else ''}: {ran} stages run, {skipped} skipped, "
+            f"{(time.time() - started) / 3600:.2f} h -> {run_dir}")
 
 
 @app.local_entrypoint()
-def main(seeds: str = "", prepare: bool = False, smoke: bool = False) -> None:
-    """--prepare: download and replay the official demos.  --seeds 17,18: run those seeds in
-    parallel (add --smoke for a short end-to-end check).  Both flags can be combined."""
+def main(seeds: str = "", prepare: bool = False, smoke: bool = False, wait: bool = False) -> None:
+    """--prepare: download and replay the official demos.  --seeds 17,18: start those seeds in
+    parallel (add --smoke for a short end-to-end check).  Seeds are *spawned*: they keep running
+    after this command returns and after the laptop sleeps (run with ``modal run --detach``).
+    Progress is in each seed's ``logs/modal_run.log`` in the ``cte-runs`` volume; re-running the
+    same seed resumes at the first unfinished stage.  --wait blocks until the seeds finish."""
     if prepare:
         print(prepare_data.remote())
     seed_list = [int(s) for s in seeds.split(",") if s.strip()]
@@ -205,5 +227,11 @@ def main(seeds: str = "", prepare: bool = False, smoke: bool = False) -> None:
         if not prepare:
             print("nothing to do: pass --prepare and/or --seeds 17,18,...")
         return
-    for result in run_seed.map(seed_list, kwargs={"smoke": smoke}, order_outputs=False):
-        print(result)
+    calls = {seed: run_seed.spawn(seed, smoke=smoke) for seed in seed_list}
+    for seed, call in calls.items():
+        print(f"seed {seed}: spawned {call.object_id}")
+    if wait:
+        for seed, call in calls.items():
+            print(call.get())
+    else:
+        print("running detached; check:  modal volume get cte-runs maniskill_pickcube_seed<N>/logs/modal_run.log - | grep -E '^\\+ |exit [0-9]' | tail")
