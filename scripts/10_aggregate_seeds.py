@@ -345,7 +345,7 @@ def make_figures(out: Path, names, policies, delays, summary, seeds) -> None:
         plt.close(fig)
 
     # Figure 1: success by delay, two panels (MLP class, flow class)
-    fig, axes = plt.subplots(1, 2, figsize=(9.2, 3.4), sharey=True)
+    fig, axes = plt.subplots(1, 2, figsize=(10.5, 4.0), sharey=True)
     for ax, group, title in ((axes[0], MLP, "MLP chunk policies"), (axes[1], FLOW, "Flow-matching chunk policies")):
         group = [p for p in group if p in policies]
         for k, p in enumerate(group):
@@ -366,9 +366,10 @@ def make_figures(out: Path, names, policies, delays, summary, seeds) -> None:
         ax.set_xlabel("injected delay r (steps)")
         ax.set_xticks(delays)
         ax.set_ylim(0, 100)
-        ax.legend(fontsize=7, loc="lower right" if group is not FLOW else "lower left")
+        ax.legend(fontsize=6.5, loc="lower right" if group is not FLOW else "lower left", ncol=1)
     axes[0].set_ylabel("closed-loop success (%)")
     fig.suptitle(f"PickCube-v1, 150 shared initial states per seed, {len(names)} seeds (band: 95 % CI across seeds; dots: seeds)", fontsize=9, y=1.02)
+    fig.subplots_adjust(wspace=0.08)
     save(fig, "fig_success_by_delay")
 
     # Figure 2: paired success differences (forest)
@@ -390,22 +391,23 @@ def make_figures(out: Path, names, policies, delays, summary, seeds) -> None:
     ax.grid(axis="y", visible=False)
     save(fig, "fig_paired_success")
 
-    # Figure 3: anchor J relative to reference
+    # Figure 3: anchor J relative to reference (skip if no data)
     comp = [p for p in policies if p != reference(p) and summary["anchor_J"][p]["rel_vs_ref"]["n"]]
-    fig, ax = plt.subplots(figsize=(6.4, 0.3 * len(comp) + 1.0))
-    for i, p in enumerate(comp):
-        ci = summary["anchor_J"][p]["rel_vs_ref"]
-        y = len(comp) - i
-        ax.errorbar(100 * ci["mean"], y, xerr=[[100 * (ci["mean"] - ci["lo"])] if ci["n"] > 1 else [0], [100 * (ci["hi"] - ci["mean"])] if ci["n"] > 1 else [0]],
-                    fmt="o", color=COLORS[p], ms=4, capsize=2, lw=1.2)
-        ax.plot([100 * v for v in ci["per_seed"].values()], [y] * ci["n"], "|", color=COLORS[p], ms=7, alpha=0.6)
-    ax.axvline(0, color="#444", lw=0.8)
-    ax.set_yticks(range(len(comp), 0, -1))
-    ax.set_yticklabels([LABELS[p] for p in comp], fontsize=7.5)
-    ax.set_xscale("symlog", linthresh=50)
-    ax.set_xlabel("test-anchor J relative to same-class reference (%); symlog axis")
-    ax.grid(axis="y", visible=False)
-    save(fig, "fig_anchor_J")
+    if comp:
+        fig, ax = plt.subplots(figsize=(6.4, 0.3 * len(comp) + 1.0))
+        for i, p in enumerate(comp):
+            ci = summary["anchor_J"][p]["rel_vs_ref"]
+            y = len(comp) - i
+            ax.errorbar(100 * ci["mean"], y, xerr=[[100 * (ci["mean"] - ci["lo"])] if ci["n"] > 1 else [0], [100 * (ci["hi"] - ci["mean"])] if ci["n"] > 1 else [0]],
+                        fmt="o", color=COLORS[p], ms=4, capsize=2, lw=1.2)
+            ax.plot([100 * v for v in ci["per_seed"].values()], [y] * ci["n"], "|", color=COLORS[p], ms=7, alpha=0.6)
+        ax.axvline(0, color="#444", lw=0.8)
+        ax.set_yticks(range(len(comp), 0, -1))
+        ax.set_yticklabels([LABELS[p] for p in comp], fontsize=7.5)
+        ax.set_xscale("symlog", linthresh=50)
+        ax.set_xlabel("test-anchor J relative to same-class reference (%); symlog axis")
+        ax.grid(axis="y", visible=False)
+        save(fig, "fig_anchor_J")
 
     # Figure 4: selection audit
     sel = summary.get("selection_audit", {})
@@ -425,7 +427,8 @@ def make_figures(out: Path, names, policies, delays, summary, seeds) -> None:
         save(fig, "fig_selection_audit")
 
     # Figure 5: flow gradient audit: predicted E (top) and simulator J (bottom), both lr settings
-    fig, axes = plt.subplots(2, 2, figsize=(8.4, 5.2), sharex="col")
+    from matplotlib.ticker import LogLocator, ScalarFormatter
+    fig, axes = plt.subplots(2, 2, figsize=(8.4, 5.6), sharex="col")
     for col, (key, title) in enumerate((("flow_audit_fine", "lr = 1e-5"), ("flow_audit", "lr = 3e-4"))):
         for s in names:
             audit = seeds[s].get(key)
@@ -444,6 +447,9 @@ def make_figures(out: Path, names, policies, delays, summary, seeds) -> None:
         axes[0, col].set_title(f"Adam on the critic term alone, {title}", fontsize=9)
         axes[0, col].set_yscale("log")
         axes[1, col].set_yscale("log")
+        axes[1, col].yaxis.set_major_locator(LogLocator(base=10, numticks=6))
+        axes[1, col].yaxis.set_minor_locator(LogLocator(base=10, subs="auto", numticks=10))
+        axes[1, col].yaxis.set_minor_formatter(plt.NullFormatter())
         axes[1, col].axhline(1, color="#444", lw=0.6)
         axes[1, col].set_xlabel("updates from pi0_flow")
         axes[0, col].legend(fontsize=7, loc="lower left")
