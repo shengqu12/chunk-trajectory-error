@@ -9,6 +9,7 @@ directory per seed).
     modal run modal_run.py --prepare                     # download + replay the official demos (once)
     modal run modal_run.py --seeds 17 --smoke --wait     # 20-minute check that the image and the sim work
     modal run --detach modal_run.py --seeds 17,18,19,20,21   # full pipeline, five seeds in parallel (~4 h), survives disconnects
+    modal run --detach modal_run.py --videos 17          # side-by-side closed-loop videos for a finished seed
     modal volume get cte-runs maniskill_pickcube_seed17/results.md .   # fetch outputs
 
 Seed 17 reproduces the container run's configuration; the other seeds change the policy,
@@ -213,8 +214,42 @@ def run_seed(seed: int, smoke: bool = False) -> str:
             f"{(time.time() - started) / 3600:.2f} h -> {run_dir}")
 
 
+VIDEO_PAIRS = [  # (left policy, right policy, delay): the comparisons the report discusses
+    ("pi0", "pi0_flow", 0),            # policy class: MLP vs flow base policy
+    ("bc", "error", 0),                # Experiment 1: MLP fine-tune vs critic-regularised
+    ("bc", "error", 4),
+    ("bc_flow", "error_flow", 0),      # Experiment 1b: flow fine-tune vs critic-regularised
+    ("bc_flow", "error_flow", 4),
+    ("bc_flow", "error_flow_w0.3", 0), # the critic term when it dominates
+    ("bc_flow", "select_best8_flow", 0),   # Experiment 1c: the critic as a selector
+    ("bc_flow", "select_worst8_flow", 0),
+]
+
+
+@app.function(image=image, cpu=4, memory=16384, timeout=4 * 3600, volumes=VOLUMES)
+def render_videos(seed: int, inits: str = "0,1,2") -> str:
+    """Side-by-side closed-loop videos (software-rendered) for one finished seed, written to
+    ``<run_dir>/videos/`` in the runs volume."""
+    config_path = seed_config(seed, smoke=False)
+    run_dir = Path(f"{RUNS}/maniskill_pickcube_seed{seed}")
+    log = run_dir / "logs" / "modal_videos.log"
+    done = []
+    for init in (int(i) for i in inits.split(",") if i.strip()):
+        for left, right, delay in VIDEO_PAIRS:
+            target = run_dir / "videos" / f"eval_pair_{left}_vs_{right}_r{delay}_init{init}_seed*.mp4"
+            if list(target.parent.glob(target.name)):
+                continue
+            try:
+                sh([sys.executable, "scripts/07_eval_closed_loop.py", "--config", str(config_path), "--video", f"{left},{right},{delay}", "--video-init", str(init)], log)
+                done.append(f"{left}_vs_{right}_r{delay}_init{init}")
+            except RuntimeError as exc:  # a missing checkpoint should not stop the other videos
+                print("skipped:", exc, flush=True)
+            runs_volume.commit()
+    return f"seed {seed}: {len(done)} videos rendered -> {run_dir}/videos"
+
+
 @app.local_entrypoint()
-def main(seeds: str = "", prepare: bool = False, smoke: bool = False, wait: bool = False) -> None:
+def main(seeds: str = "", prepare: bool = False, smoke: bool = False, wait: bool = False, videos: str = "", inits: str = "0,1,2") -> None:
     """--prepare: download and replay the official demos.  --seeds 17,18: start those seeds in
     parallel (add --smoke for a short end-to-end check).  Seeds are *spawned*: they keep running
     after this command returns and after the laptop sleeps (run with ``modal run --detach``).
@@ -222,10 +257,16 @@ def main(seeds: str = "", prepare: bool = False, smoke: bool = False, wait: bool
     same seed resumes at the first unfinished stage.  --wait blocks until the seeds finish."""
     if prepare:
         print(prepare_data.remote())
+    if videos:
+        for seed in (int(v) for v in videos.split(",") if v.strip()):
+            call = render_videos.spawn(seed, inits=inits)
+            print(f"videos for seed {seed}: spawned {call.object_id}")
+            if wait:
+                print(call.get())
     seed_list = [int(s) for s in seeds.split(",") if s.strip()]
     if not seed_list:
-        if not prepare:
-            print("nothing to do: pass --prepare and/or --seeds 17,18,...")
+        if not prepare and not videos:
+            print("nothing to do: pass --prepare, --seeds 17,18,... and/or --videos 17")
         return
     calls = {seed: run_seed.spawn(seed, smoke=smoke) for seed in seed_list}
     for seed, call in calls.items():

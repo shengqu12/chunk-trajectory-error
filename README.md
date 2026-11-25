@@ -143,6 +143,12 @@ The container run, including the optional variants, took about two hours of wall
 | `eval_*.parquet`, `eval_latency_*.json` | closed-loop episodes, chunk boundaries, recomputed `J`, latency |
 | `logs/` | stage logs |
 
+## Several seeds on Modal
+
+`modal_run.py` runs the whole pipeline per seed in parallel cloud CPU containers and renders
+side-by-side videos; `scripts/10_aggregate_seeds.py` summarises several seeds with
+across-seed confidence intervals. See [docs/MODAL.md](docs/MODAL.md).
+
 ## Mid-point report
 
 `report/midterm/` holds what is needed to rebuild the report figures; the report itself is on Overleaf, using the course template. See [report/midterm/README.md](report/midterm/README.md).

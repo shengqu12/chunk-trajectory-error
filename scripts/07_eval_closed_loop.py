@@ -103,6 +103,7 @@ def main() -> int:
     parser.add_argument("--tag", default="main")
     parser.add_argument("--max-inits", type=int, default=None)
     parser.add_argument("--video", default=None, help="NAME_A,NAME_B,DELAY: render one paired episode and exit")
+    parser.add_argument("--video-init", type=int, default=0, help="index into the evaluation initial states used by --video")
     args = parser.parse_args()
     config = load_config(args.config)
     run_dir = out_dir(config)
@@ -124,7 +125,7 @@ def main() -> int:
     if args.video:
         name_a, name_b, delay = args.video.split(",")
         backend = ManiSkillBackend(config, render=True)
-        source, seed, init_state = inits[0]
+        source, seed, init_state = inits[args.video_init]
         sequences = []
         for name in (name_a, name_b):
             frames: list = []
@@ -134,7 +135,8 @@ def main() -> int:
             record, _ = closed_loop_episode(backend, video_bundle, chunk_spec(config), int(delay), seed, init_state, max_steps, demos.gripper_dims, frames)
             sequences.append((frames, f"{name}: {'success' if record['success'] else 'no success'} in {record['steps']} steps"))
         backend.close()
-        path = run_dir / f"eval_pair_{name_a}_vs_{name_b}_r{delay}_seed{seed}.mp4"
+        path = run_dir / "videos" / f"eval_pair_{name_a}_vs_{name_b}_r{delay}_init{args.video_init}_seed{seed}.mp4"
+        path.parent.mkdir(parents=True, exist_ok=True)
         write_pair_video(path, sequences[0][0], sequences[1][0], (sequences[0][1], sequences[1][1]), f"PickCube-v1 closed loop, seed {seed}, injected delay r = {delay}", config["audit"].get("video_fps", 10))
         print("video ->", path)
         return 0
